@@ -1,0 +1,22 @@
+<table>
+    <tr>
+        <td>Nickname</td>
+        <th>${user.nickname}</th>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <th>${user.name}</th>
+    </tr>
+    <tr>
+        <td>Surname</td>
+        <th>${user.surname}</th>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <th>${user.email}</th>
+    </tr>
+    <tr>
+        <td>Role</td>
+        <th>${user.role}</th>
+    </tr>
+</table>

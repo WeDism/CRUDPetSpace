@@ -11,12 +11,12 @@
     <div>
         <form id="loginForm" action="<c:url value="/login"/>" method="post">
             <div style="margin-bottom: 25px">
-                <span></span>
-                <input type="text" name="nickname" value="" placeholder="nickname or email">
+                <label>Nickname or Email
+                    <input type="text" name="nickname" placeholder="nickname or email"></label>
             </div>
             <div style="margin-bottom: 25px">
-                <span></span>
-                <input type="password" name="password" placeholder="password">
+                <label>Password
+                    <input type="password" name="password" placeholder="password"></label>
             </div>
             <div style="margin-top:10px">
                 <div>

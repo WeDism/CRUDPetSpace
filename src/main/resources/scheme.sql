@@ -38,8 +38,8 @@ CREATE TABLE state_friend (
 );
 
 CREATE TABLE friends (
-  entry_id  UUID         NOT NULL REFERENCES user_entry (user_entry_id),
-  friend_id UUID         NOT NULL REFERENCES user_entry (user_entry_id),
+  entry_id  UUID         REFERENCES user_entry (user_entry_id),
+  friend_id UUID         REFERENCES user_entry (user_entry_id),
   status    VARCHAR(100) NOT NULL REFERENCES state_friend (state),
   CONSTRAINT pk_friends_id PRIMARY KEY (entry_id, friend_id)
 );

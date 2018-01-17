@@ -8,10 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -32,6 +29,7 @@ public class FollowPetStorage {
                      connection.prepareStatement("INSERT INTO follow_pets VALUES (?,?)")) {
             statement.setObject(1, pet.getPetId());
             statement.setObject(2, userEntry.getUserEntryId());
+            statement.execute();
         } catch (SQLException e) {
             LOG.error("Error occurred in creating pet", e);
         }
@@ -42,10 +40,14 @@ public class FollowPetStorage {
     public Set<Pet> getFollowPets(UUID userEntryId) {
         Set<Pet> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM follow_pets WHERE user_entry_id=?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM follow_pets WHERE user_entry_id=?",
+                     ResultSet.TYPE_SCROLL_INSENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, userEntryId);
             try (ResultSet rs = statement.executeQuery()) {
-                result = new HashSet<>(rs.getFetchSize());
+                rs.last();
+                result = new HashSet<>(rs.getRow());
+                rs.beforeFirst();
                 if (rs.next()) {
                     Optional<Pet> pet = getPet(rs);
                     if (pet.isPresent()) result.add(pet.get());

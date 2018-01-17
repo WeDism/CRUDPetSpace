@@ -4,7 +4,7 @@
 </head>
 <body>
 <div>
-    <h2>Internal error </h2>
+    <h2>Internal error</h2>
 </div>
 </body>
 </html>

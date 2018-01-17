@@ -29,7 +29,7 @@ public class AuthFilter implements Filter {
 
         HttpSession session = req.getSession(true);
         UserEntry user = ((UserEntry) session.getAttribute("user"));
-        String path = PathHelper.redirectDependencyRole(user);
+        String path = PathHelper.createPathForRedirectDependencyRole(user);
 
         if (req.getRequestURI().contains(PathHelper.LOGIN_PATH))
             chain.doFilter(request, response);

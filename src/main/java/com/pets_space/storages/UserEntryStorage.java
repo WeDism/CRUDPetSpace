@@ -1,5 +1,7 @@
 package com.pets_space.storages;
 
+import com.google.common.collect.Sets;
+import com.pets_space.models.Pet;
 import com.pets_space.models.UserEntry;
 import org.slf4j.Logger;
 
@@ -13,6 +15,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class UserEntryStorage {
     private static final Logger LOG = getLogger(UserEntryStorage.class);
     private static final UserEntryStorage INSTANCE = new UserEntryStorage();
+    private final PetStorage pets = PetStorage.getInstance();
 
     private UserEntryStorage() {
     }
@@ -39,6 +42,8 @@ public class UserEntryStorage {
         final Timestamp birthday = rs.getTimestamp("birthday");
         userEntry.setBirthday(birthday != null ? LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()) : null);
         userEntry.setFollowPets(FollowPetStorage.getInstance().getFollowPets(userEntry.getUserEntryId()));
+
+        userEntry.setPets(this.pets.getPetsOfOwner(userEntry));
         return userEntry;
     }
 
@@ -56,6 +61,7 @@ public class UserEntryStorage {
             statement.setTimestamp(8, Timestamp.valueOf(userEntry.getBirthday()));
             statement.setString(9, userEntry.getRole().name());
             statement.setString(10, userEntry.getStatusEntry().name());
+            statement.execute();
         } catch (SQLException e) {
             LOG.error("Error occurred in creating userEntry", e);
         }
@@ -65,7 +71,9 @@ public class UserEntryStorage {
     public void update(UserEntry userEntry) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("UPDATE user_entry SET nickname=?,name=?,surname=?,pathronymic=?,password=?,email=?,role=?,status=?,birthday=?")) {
+                     connection.prepareStatement("UPDATE user_entry SET " +
+                             "nickname=?,name=?,surname=?,pathronymic=?,password=?,email=?,role=?,status=?,birthday=? WHERE user_entry_id=?")) {
+            connection.setAutoCommit(false);
             statement.setString(1, userEntry.getNickname());
             statement.setString(2, userEntry.getName());
             statement.setString(3, userEntry.getSurname());
@@ -74,23 +82,28 @@ public class UserEntryStorage {
             statement.setString(6, userEntry.getEmail());
             statement.setString(7, userEntry.getRole().name());
             statement.setString(8, userEntry.getStatusEntry().name());
-            statement.setTimestamp(9, Timestamp.valueOf(userEntry.getBirthday()));
+            statement.setTimestamp(9, userEntry.getBirthday() != null ? Timestamp.valueOf(userEntry.getBirthday()) : null);
+            statement.setObject(10, userEntry.getUserEntryId());
             statement.executeUpdate();
+            Set<Pet> differenceSets = Sets.difference(userEntry.getPets(), this.pets.getPetsOfOwner(userEntry));
+            this.pets.addAll(differenceSets);
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOG.error("Error occurred in update userEntry", e);
         }
     }
 
-    public List<UserEntry> getAll() {
-        List<UserEntry> result = null;
+    public Set<UserEntry> getAll() {
+        Set<UserEntry> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
-             Statement statement = connection.createStatement()) {
-            try (ResultSet rs = statement.executeQuery("SELECT * FROM user_entry")) {
-                result = new ArrayList<>(rs.getFetchSize());
-                while (rs.next()) {
-                    UserEntry userEntry = getUserEntry(rs);
-                    result.add(userEntry);
-                }
+             ResultSet rs = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+                     .executeQuery("SELECT * FROM user_entry")) {
+            rs.last();
+            result = new HashSet<>(rs.getRow());
+            rs.beforeFirst();
+            while (rs.next()) {
+                UserEntry userEntry = getUserEntry(rs);
+                result.add(userEntry);
             }
         } catch (SQLException e) {
             LOG.error("Error occurred in getting all users", e);

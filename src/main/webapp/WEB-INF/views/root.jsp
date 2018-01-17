@@ -15,6 +15,7 @@
         <%@include file="../jspf/tableUserInfo.jspf" %>
     </div>
     <table>
+        <caption>Users</caption>
         <thead>
         <tr>
             <th>Nickname</th>
@@ -46,7 +47,9 @@
         </c:forEach>
         </tbody>
     </table>
-
+    <div>
+        <%@include file="../jspf/addSpeciesPart.jspf" %>
+    </div>
 </div>
 </body>
 </html>

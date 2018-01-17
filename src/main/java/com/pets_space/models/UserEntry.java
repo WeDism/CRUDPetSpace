@@ -1,10 +1,7 @@
 package com.pets_space.models;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class UserEntry {
     public enum StatusEntry {
@@ -25,11 +22,11 @@ public class UserEntry {
     private String email;
     private Role role;
     private StatusEntry statusEntry;
-    private List<UserEntry> friends;
-    private List<Pet> pets;
+    private Set<UserEntry> friends;
+    private Set<Pet> pets = new HashSet<>();
     private Set<Pet> followPets;
-    private List<Message> sentMessages;
-    private List<Message> inboxMessages;
+    private Set<Message> sentMessages;
+    private Set<Message> inboxMessages;
     private LocalDateTime birthday;
 
     public UUID getUserEntryId() {
@@ -112,19 +109,24 @@ public class UserEntry {
         this.statusEntry = statusEntry;
     }
 
-    public List<UserEntry> getFriends() {
+    public Set<UserEntry> getFriends() {
         return this.friends;
     }
 
-    public void setFriends(List<UserEntry> friends) {
+    public void setFriends(Set<UserEntry> friends) {
         this.friends = friends;
     }
 
-    public List<Pet> getPets() {
-        return this.pets;
+    public Set<Pet> getPets() {
+        return Collections.unmodifiableSet(this.pets);
     }
 
-    public void setPets(List<Pet> pets) {
+    public void setPet(Pet pet) {
+        pet.setOwner(this.getUserEntryId());
+        this.pets.add(pet);
+    }
+
+    public void setPets(Set<Pet> pets) {
         this.pets = pets;
     }
 
@@ -136,19 +138,19 @@ public class UserEntry {
         this.followPets = followPets;
     }
 
-    public List<Message> getSentMessages() {
+    public Set<Message> getSentMessages() {
         return this.sentMessages;
     }
 
-    public void setSentMessages(List<Message> sentMessages) {
+    public void setSentMessages(Set<Message> sentMessages) {
         this.sentMessages = sentMessages;
     }
 
-    public List<Message> getInboxMessages() {
+    public Set<Message> getInboxMessages() {
         return this.inboxMessages;
     }
 
-    public void setInboxMessages(List<Message> inboxMessages) {
+    public void setInboxMessages(Set<Message> inboxMessages) {
         this.inboxMessages = inboxMessages;
     }
 

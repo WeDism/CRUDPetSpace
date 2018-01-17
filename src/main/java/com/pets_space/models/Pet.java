@@ -9,7 +9,7 @@ public class Pet {
     private String name;
     private double weight;
     private LocalDateTime birthday;
-    private UserEntry owner;
+    private UUID owner;
     private SpeciesPet species;
 
     public Pet() {
@@ -27,7 +27,7 @@ public class Pet {
         return this.weight;
     }
 
-    public UserEntry getOwner() {
+    public UUID getOwner() {
         return this.owner;
     }
 
@@ -55,7 +55,7 @@ public class Pet {
         this.birthday = birthday;
     }
 
-    public void setOwner(UserEntry owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 

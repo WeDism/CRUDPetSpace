@@ -16,6 +16,12 @@
     <div>
         <%@include file="../jspf/tableUserInfo.jspf" %>
     </div>
+    <div>
+       <%@include file="../jspf/tableYourPets.jspf"%>
+    </div>
+    <div>
+        <a href="<c:url value="/user/add_pet"/>">Add pet</a>
+    </div>
 </div>
 </body>
 </html>

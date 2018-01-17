@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
         Optional<UserEntry> result = this.userEntryStorage.findByCredential(req.getParameter("nickname"), req.getParameter("password"));
         if (result.isPresent()) {
             UserEntry user = result.get();
-            String path = PathHelper.redirectDependencyRole(user);
+            String path = PathHelper.createPathForRedirectDependencyRole(user);
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + path);
         } else {

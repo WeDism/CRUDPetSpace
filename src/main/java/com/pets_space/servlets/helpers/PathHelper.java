@@ -8,7 +8,7 @@ public interface PathHelper {
     String USER_PATH = "/user";
     String ADMIN_PATH = "/admin";
 
-    static String redirectDependencyRole(UserEntry userEntry) {
+    static String createPathForRedirectDependencyRole(UserEntry userEntry) {
         String path = LOGIN_PATH;
         if (userEntry != null) {
             switch (userEntry.getRole()) {

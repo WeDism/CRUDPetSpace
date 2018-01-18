@@ -35,7 +35,7 @@ public class AuthFilter implements Filter {
             chain.doFilter(request, response);
         else if (user == null)
             resp.sendRedirect(req.getContextPath() + path);
-        else if (!Strings.isNullOrEmpty(path) && req.getRequestURI().contains(path))
+        else if ((!Strings.isNullOrEmpty(path) && req.getRequestURI().contains(path)) || req.getRequestURI().contains("web_resources"))
             chain.doFilter(request, response);
         else
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN);

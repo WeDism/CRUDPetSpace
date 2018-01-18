@@ -1,9 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <%@include file="../jspf/htmlHeadTags.jspf" %>
+    <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
 </head>
 <body>
+<script>
+    init = function (button) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}${requestScope['javax.servlet.forward.servlet_path']}" + '?user=' + button.value,
+            async: false,
+            type: "DELETE",
+            success: function () {
+                button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
+            }
+        })
+    };
+</script>
 <div>
     <div>
         <div>Root space</div>
@@ -12,12 +24,13 @@
         </div>
     </div>
     <div>
-        <%@include file="../jspf/tableUserInfo.jspf" %>
+        <jsp:include page="../parts/jsp/tableUserInfo.jsp" flush="true"/>
     </div>
     <table>
         <caption>Users</caption>
         <thead>
         <tr>
+            <th>Actions</th>
             <th>Nickname</th>
             <th>Name</th>
             <th>Surname</th>
@@ -25,22 +38,27 @@
             <th>Email</th>
             <th>Role</th>
             <th>Status</th>
+            <th>Pets</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${users}" var="user" varStatus="status">
             <tr>
-                <td><a style="text-decoration: none; color:inherit;"
-                       href="<c:url value="/user?id=${user.userEntryId}"/>"><c:out value="${user.nickname}"/></a></td>
-                <td><c:out value="${user.name}"/></td>
-                <td><c:out value="${user.surname}"/></td>
-                <td><c:out value="${user.patronymic}"/></td>
-                <td><c:out value="${user.email}"/></td>
-                <td><c:out value="${user.role}"/></td>
-                <td><c:out value="${user.statusEntry}"/></td>
+                <td>
+                    <button value="${user.userEntryId}" onclick="init(this)">
+                        <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
+                    </button>
+                </td>
+                <td><a href="<c:url value="/user?id=${user.userEntryId}"/>">${user.nickname}</a></td>
+                <td>${user.name}</td>
+                <td>${user.surname}</td>
+                <td>${user.patronymic}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>${user.statusEntry}</td>
                 <td>
                     <c:forEach items="${user.pets}" var="pet" varStatus="status">
-                        <c:out value="${pet.name}"/>&nbsp;(<c:out value="${pet.species.name}"/>)<br/>
+                        ${pet.name}&nbsp;(${pet.species.name})<br/>
                     </c:forEach>
                 </td>
             </tr>
@@ -48,7 +66,7 @@
         </tbody>
     </table>
     <div>
-        <%@include file="../jspf/addSpeciesPart.jspf" %>
+        <jsp:include page="../parts/jsp/addSpeciesPart.jsp" flush="true"/>
     </div>
 </div>
 </body>

@@ -1,12 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <%@include file="../jspf/htmlHeadTags.jspf" %>
+    <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
 </head>
 <body>
 <div>
     <h2>
-        <div style="display: inline-block;">
+        <div>
             <a href="<c:url value="/admin"/>">Pet space</a>
         </div>
         <div style="width: 100%; display: inline-block; text-align: right;">
@@ -14,13 +14,13 @@
         </div>
     </h2>
     <div>
-        <%@include file="../jspf/tableUserInfo.jspf" %>
+        <jsp:include page="../parts/jsp/tableUserInfo.jsp" flush="true"/>
     </div>
     <div>
-        <%@include file="../jspf/tableYourPets.jspf"%>
+        <jsp:include page="../parts/jsp/tableYourPets.jsp" flush="true"/>
     </div>
     <div>
-        <%@include file="../jspf/addSpeciesPart.jspf" %>
+        <jsp:include page="../parts/jsp/addSpeciesPart.jsp" flush="true"/>
     </div>
     <div>
         <a href="<c:url value="/admin/add_pet"/>">Add pet</a>

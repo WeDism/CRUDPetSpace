@@ -1,6 +1,6 @@
 <html>
 <head>
-    <%@include file="../../jspf/htmlHeadTags.jspf" %>
+    <%@include file="../../parts/jspf/htmlHeadTags.jspf" %>
 </head>
 <body>
 <div>

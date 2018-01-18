@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <%@include file="../jspf/htmlHeadTags.jspf" %>
+    <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
 </head>
 <body>
 <div>
@@ -21,6 +22,7 @@
             <input type="text" name="name" placeholder="name" required></label></div>
         <div><input type="submit"></div>
     </form>
+    <a href="${pageContext.request.contextPath}/${fn:toLowerCase(user.role)}">Return to main page</a>
 </div>
 </body>
 </html>

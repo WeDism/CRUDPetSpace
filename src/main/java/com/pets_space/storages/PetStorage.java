@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -54,6 +51,31 @@ public class PetStorage {
         return pet;
     }
 
+    public void delete(Pet pet) {
+        try (Connection connection = Pool.getDataSource().getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement("DELETE FROM pet WHERE pet_id=?")) {
+            statement.setObject(1, pet.getPetId());
+            statement.execute();
+        } catch (SQLException e) {
+            LOG.error("Error occurred in delete pet", e);
+        }
+    }
+
+    public void delete(Collection<Pet> pets) {
+        try (Connection connection = Pool.getDataSource().getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement("DELETE FROM pet WHERE pet_id=?")) {
+            for (Pet pet : pets) {
+                statement.setObject(1, pet.getPetId());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        } catch (SQLException e) {
+            LOG.error("Error occurred in delete pets", e);
+        }
+    }
+
     public void addAll(Set<Pet> pets) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
@@ -76,8 +98,7 @@ public class PetStorage {
     public void update(Pet pet) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE pet SET name=?,weight=?,birthday=?,user_entry_id=?,species=?"
-             )) {
+                     "UPDATE pet SET name=?,weight=?,birthday=?,user_entry_id=?,species=?")) {
             statement.setString(1, pet.getName());
             statement.setDouble(2, pet.getWeight());
             statement.setTimestamp(3, Timestamp.valueOf(pet.getBirthday()));
@@ -101,10 +122,7 @@ public class PetStorage {
                 Pet pet = getPet(rs);
                 result.add(pet);
             }
-        } catch (
-                SQLException e)
-
-        {
+        } catch (SQLException e) {
             LOG.error("Error occurred in getting all pets", e);
         }
         return result;

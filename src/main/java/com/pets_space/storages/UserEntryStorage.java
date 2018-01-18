@@ -68,7 +68,7 @@ public class UserEntryStorage {
         return userEntry;
     }
 
-    public void update(UserEntry userEntry) {
+    public UserEntry update(UserEntry userEntry) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("UPDATE user_entry SET " +
@@ -86,10 +86,28 @@ public class UserEntryStorage {
             statement.setObject(10, userEntry.getUserEntryId());
             statement.executeUpdate();
             Set<Pet> differenceSets = Sets.difference(userEntry.getPets(), this.pets.getPetsOfOwner(userEntry));
-            this.pets.addAll(differenceSets);
+            if (!differenceSets.isEmpty()) this.pets.addAll(differenceSets);
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOG.error("Error occurred in update userEntry", e);
+        }
+        return userEntry;
+    }
+
+    public void delete(UUID userEntry) {
+        Optional<UserEntry> entry = this.findById(userEntry);
+        if (entry.isPresent()) {
+            try (Connection connection = Pool.getDataSource().getConnection();
+                 PreparedStatement statement =
+                         connection.prepareStatement("DELETE FROM user_entry WHERE user_entry_id=?")) {
+                connection.setAutoCommit(false);
+                this.pets.delete(entry.get().getPets());
+                statement.setObject(1, userEntry);
+                statement.executeUpdate();
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                LOG.error("Error occurred in update userEntry", e);
+            }
         }
     }
 

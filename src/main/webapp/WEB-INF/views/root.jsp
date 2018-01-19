@@ -2,20 +2,9 @@
 <html>
 <head>
     <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
+    <script src='<c:url value="/web_resources/js/delete.user.js"/>'></script>
 </head>
 <body>
-<script>
-    init = function (button) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}${requestScope['javax.servlet.forward.servlet_path']}" + '?user=' + button.value,
-            async: false,
-            type: "DELETE",
-            success: function () {
-                button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
-            }
-        })
-    };
-</script>
 <div>
     <div>
         <div>Root space</div>
@@ -45,7 +34,7 @@
         <c:forEach items="${users}" var="user" varStatus="status">
             <tr>
                 <td>
-                    <button value="${user.userEntryId}" onclick="init(this)">
+                    <button value="${user.userEntryId}" class="deleteUserOfButton">
                         <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
                     </button>
                 </td>

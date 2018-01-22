@@ -97,8 +97,9 @@ public class UserEntry {
         return this.role;
     }
 
-    public void setRole(Role role) {
+    public UserEntry setRole(Role role) {
         this.role = role;
+        return this;
     }
 
     public StatusEntry getStatusEntry() {

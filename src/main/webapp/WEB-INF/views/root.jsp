@@ -2,7 +2,7 @@
 <html>
 <head>
     <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
-    <script src='<c:url value="/web_resources/js/delete.user.js"/>'></script>
+    <script src='<c:url value="/web_resources/js/root.servlet.js"/>'></script>
 </head>
 <body>
 <div>
@@ -32,9 +32,9 @@
         </thead>
         <tbody>
         <c:forEach items="${users}" var="user" varStatus="status">
-            <tr>
+            <tr data-entry-id="${user.userEntryId}">
                 <td>
-                    <button value="${user.userEntryId}" class="deleteUserOfButton">
+                    <button class="delete-user-of-button">
                         <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
                     </button>
                 </td>
@@ -43,7 +43,12 @@
                 <td>${user.surname}</td>
                 <td>${user.patronymic}</td>
                 <td>${user.email}</td>
-                <td>${user.role}</td>
+                <td><select name="user-entry-roles" class="user-entry-roles">
+                    <c:forEach items="${roles}" var="role" varStatus="status">
+                        <option value="${role}" <c:if test="${role == user.role}"><c:out
+                                value="selected"/></c:if>>${role}</option>
+                    </c:forEach>
+                </select></td>
                 <td>${user.statusEntry}</td>
                 <td>
                     <c:forEach items="${user.pets}" var="pet" varStatus="status">

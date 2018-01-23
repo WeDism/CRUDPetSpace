@@ -1,6 +1,6 @@
 package com.pets_space.servlets.helpers;
 
-import com.pets_space.models.UserEntry;
+import com.pets_space.models.UserEssence;
 
 public interface PathHelper {
     String LOGIN_PATH = "/login";
@@ -8,10 +8,10 @@ public interface PathHelper {
     String USER_PATH = "/user";
     String ADMIN_PATH = "/admin";
 
-    static String createPathForRedirectDependencyRole(UserEntry userEntry) {
+    static String createPathForRedirectDependencyRole(UserEssence userEssence) {
         String path = LOGIN_PATH;
-        if (userEntry != null) {
-            switch (userEntry.getRole()) {
+        if (userEssence != null) {
+            switch (userEssence.getRole()) {
                 case ROOT:
                     path = ROOT_PATH;
                     break;

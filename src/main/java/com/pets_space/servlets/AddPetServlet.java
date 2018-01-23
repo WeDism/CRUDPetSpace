@@ -3,11 +3,11 @@ package com.pets_space.servlets;
 import com.google.common.base.Strings;
 import com.pets_space.models.Pet;
 import com.pets_space.models.SpeciesPet;
-import com.pets_space.models.UserEntry;
+import com.pets_space.models.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
 import com.pets_space.storages.PetStorage;
 import com.pets_space.storages.SpeciesPetStorage;
-import com.pets_space.storages.UserEntryStorage;
+import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
 
 import javax.servlet.ServletException;
@@ -26,7 +26,7 @@ public class AddPetServlet extends HttpServlet {
     private static final Logger LOG = getLogger(AddPetServlet.class);
     private final SpeciesPetStorage species = SpeciesPetStorage.getInstance();
     private final PetStorage pets = PetStorage.getInstance();
-    private final UserEntryStorage users = UserEntryStorage.getInstance();
+    private final UserEssenceStorage users = UserEssenceStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,7 +39,7 @@ public class AddPetServlet extends HttpServlet {
         String name = req.getParameter("name");
         Double weight = Double.valueOf(req.getParameter("weight"));
         LocalDateTime birthday = LocalDateTime.parse(req.getParameter("birthday"));
-        UserEntry user = (UserEntry) req.getSession().getAttribute("user");
+        UserEssence user = (UserEssence) req.getSession().getAttribute("user");
         String species = req.getParameter("species");
         SpeciesPet speciesPet = new SpeciesPet(species);
         if (!(Strings.isNullOrEmpty(name) && Strings.isNullOrEmpty(species)) && this.species.validateSpecies(speciesPet)) {

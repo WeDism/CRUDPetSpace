@@ -9,10 +9,10 @@ public class Message {
     private UUID messageId = UUID.randomUUID();
     private String text;
     private LocalDateTime time = LocalDateTime.now();
-    private UserEntry author;
-    private List<UserEntry> owners;
+    private UserEssence author;
+    private List<UserEssence> owners;
 
-    public Message(String text, UserEntry author, List<UserEntry> owners) {
+    public Message(String text, UserEssence author, List<UserEssence> owners) {
         this.text = text;
         this.author = author;
         this.owners = owners;

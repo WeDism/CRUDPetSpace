@@ -12,14 +12,14 @@ var deleteUser = function () {
         }
     })
 };
-var changeRoleUserEntry = function () {
+var changeRoleUserEssence = function () {
     var tr = this.closest('tr');
     $.ajax({
         url: window.location.href + '?' + $.param({user: tr.dataset.entryId, role: $(this).find(':selected')[0].value}),
         async: false,
         type: "PUT",
         success: function () {
-            alert('Role Entry is updated');
+            alert('Role Essence is updated');
         },
         error: function (xhr) {
             var previewValue = $(tr).find('.user-entry-roles')[0].dataset.previewValue;
@@ -41,6 +41,6 @@ var setPreviewDataValue = function () {
 
 var init = function () {
     $('.delete-user-of-button').on('click', deleteUser);
-    $('.user-entry-roles').on('change', changeRoleUserEntry).on('click', setPreviewDataValue);
+    $('.user-entry-roles').on('change', changeRoleUserEssence).on('click', setPreviewDataValue);
 };
 $(window).on('load', init);

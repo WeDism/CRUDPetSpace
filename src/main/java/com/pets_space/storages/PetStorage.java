@@ -2,7 +2,7 @@ package com.pets_space.storages;
 
 import com.pets_space.models.Pet;
 import com.pets_space.models.SpeciesPet;
-import com.pets_space.models.UserEntry;
+import com.pets_space.models.UserEssence;
 import org.slf4j.Logger;
 
 import java.sql.*;
@@ -145,8 +145,8 @@ public class PetStorage {
         return result;
     }
 
-    public Set<Pet> getPetsOfOwner(UserEntry owner) {
-        return this.getPetsOfOwner(owner.getUserEntryId());
+    public Set<Pet> getPetsOfOwner(UserEssence owner) {
+        return this.getPetsOfOwner(owner.getUserEssenceId());
     }
 
     public Set<Pet> getPetsOfOwner(UUID owner) {

@@ -3,8 +3,8 @@ package com.pets_space.models;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class UserEntry {
-    public enum StatusEntry {
+public class UserEssence {
+    public enum StatusEssence {
         ACTIVE, INACTIVE, DELETED
     }
 
@@ -12,7 +12,7 @@ public class UserEntry {
         ROOT, ADMIN, USER
     }
 
-    private UUID userEntryId;
+    private UUID userEssenceId;
     private String nickname;
     private String name;
     private String surname;
@@ -21,20 +21,20 @@ public class UserEntry {
     private List<Byte> phone;
     private String email;
     private Role role;
-    private StatusEntry statusEntry;
-    private Set<UserEntry> friends;
+    private StatusEssence statusEssence;
+    private Set<UserEssence> friends;
     private Set<Pet> pets = new HashSet<>();
     private Set<Pet> followPets;
     private Set<Message> sentMessages;
     private Set<Message> inboxMessages;
     private LocalDateTime birthday;
 
-    public UUID getUserEntryId() {
-        return this.userEntryId;
+    public UUID getUserEssenceId() {
+        return this.userEssenceId;
     }
 
-    public void setUserEntryId(UUID userEntryId) {
-        this.userEntryId = userEntryId;
+    public void setUserEssenceId(UUID userEssenceId) {
+        this.userEssenceId = userEssenceId;
     }
 
     public String getNickname() {
@@ -97,24 +97,24 @@ public class UserEntry {
         return this.role;
     }
 
-    public UserEntry setRole(Role role) {
+    public UserEssence setRole(Role role) {
         this.role = role;
         return this;
     }
 
-    public StatusEntry getStatusEntry() {
-        return this.statusEntry;
+    public StatusEssence getStatusEssence() {
+        return this.statusEssence;
     }
 
-    public void setStatusEntry(StatusEntry statusEntry) {
-        this.statusEntry = statusEntry;
+    public void setStatusEssence(StatusEssence statusEssence) {
+        this.statusEssence = statusEssence;
     }
 
-    public Set<UserEntry> getFriends() {
+    public Set<UserEssence> getFriends() {
         return this.friends;
     }
 
-    public void setFriends(Set<UserEntry> friends) {
+    public void setFriends(Set<UserEssence> friends) {
         this.friends = friends;
     }
 
@@ -123,7 +123,7 @@ public class UserEntry {
     }
 
     public void setPet(Pet pet) {
-        pet.setOwner(this.getUserEntryId());
+        pet.setOwner(this.getUserEssenceId());
         this.pets.add(pet);
     }
 
@@ -166,13 +166,13 @@ public class UserEntry {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserEntry)) return false;
-        UserEntry userEntry = (UserEntry) o;
-        return Objects.equals(getUserEntryId(), userEntry.getUserEntryId());
+        if (!(o instanceof UserEssence)) return false;
+        UserEssence userEssence = (UserEssence) o;
+        return Objects.equals(getUserEssenceId(), userEssence.getUserEssenceId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserEntryId());
+        return Objects.hash(getUserEssenceId());
     }
 }

@@ -1,6 +1,6 @@
 package com.pets_space.servlets;
 
-import com.pets_space.storages.UserEntryStorage;
+import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
     private static final Logger LOG = getLogger(UserServlet.class);
-    private final UserEntryStorage users = UserEntryStorage.getInstance();
+    private final UserEssenceStorage users = UserEssenceStorage.getInstance();
 
 
     @Override

@@ -32,13 +32,13 @@
         </thead>
         <tbody>
         <c:forEach items="${users}" var="user" varStatus="status">
-            <tr data-entry-id="${user.userEntryId}">
+            <tr data-entry-id="${user.userEssenceId}">
                 <td>
                     <button class="delete-user-of-button">
                         <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
                     </button>
                 </td>
-                <td><a href="<c:url value="/user?id=${user.userEntryId}"/>">${user.nickname}</a></td>
+                <td><a href="<c:url value="/user?id=${user.userEssenceId}"/>">${user.nickname}</a></td>
                 <td>${user.name}</td>
                 <td>${user.surname}</td>
                 <td>${user.patronymic}</td>
@@ -49,7 +49,7 @@
                                 value="selected"/></c:if>>${role}</option>
                     </c:forEach>
                 </select></td>
-                <td>${user.statusEntry}</td>
+                <td>${user.statusEssence}</td>
                 <td>
                     <c:forEach items="${user.pets}" var="pet" varStatus="status">
                         ${pet.name}&nbsp;(${pet.species.name})<br/>

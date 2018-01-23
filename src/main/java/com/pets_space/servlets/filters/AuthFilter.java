@@ -1,7 +1,7 @@
 package com.pets_space.servlets.filters;
 
 import com.google.common.base.Strings;
-import com.pets_space.models.UserEntry;
+import com.pets_space.models.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         HttpSession session = req.getSession(true);
-        UserEntry user = ((UserEntry) session.getAttribute("user"));
+        UserEssence user = ((UserEssence) session.getAttribute("user"));
         String path = PathHelper.createPathForRedirectDependencyRole(user);
 
         if (req.getRequestURI().contains(PathHelper.LOGIN_PATH))

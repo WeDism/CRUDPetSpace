@@ -1,8 +1,8 @@
 package com.pets_space.servlets;
 
-import com.pets_space.models.UserEntry;
+import com.pets_space.models.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
-import com.pets_space.storages.UserEntryStorage;
+import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
 
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final Logger LOG = getLogger(LoginServlet.class);
-    private final UserEntryStorage userEntryStorage = UserEntryStorage.getInstance();
+    private final UserEssenceStorage userEssenceStorage = UserEssenceStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,9 +28,9 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<UserEntry> result = this.userEntryStorage.findByCredential(req.getParameter("nickname"), req.getParameter("password"));
+        Optional<UserEssence> result = this.userEssenceStorage.findByCredential(req.getParameter("nickname"), req.getParameter("password"));
         if (result.isPresent()) {
-            UserEntry user = result.get();
+            UserEssence user = result.get();
             String path = PathHelper.createPathForRedirectDependencyRole(user);
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + path);

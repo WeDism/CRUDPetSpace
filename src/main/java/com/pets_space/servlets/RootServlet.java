@@ -1,8 +1,8 @@
 package com.pets_space.servlets;
 
-import com.pets_space.models.UserEntry;
+import com.pets_space.models.UserEssence;
 import com.pets_space.servlets.helpers.RootHelper;
-import com.pets_space.storages.UserEntryStorage;
+import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
 
 import javax.servlet.ServletException;
@@ -20,12 +20,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 @WebServlet("/root")
 public class RootServlet extends HttpServlet {
     private static final Logger LOG = getLogger(RootServlet.class);
-    private final UserEntryStorage users = UserEntryStorage.getInstance();
+    private final UserEssenceStorage users = UserEssenceStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", this.users.getAll());
-        req.setAttribute("roles", UserEntry.Role.values());
+        req.setAttribute("roles", UserEssence.Role.values());
         req.getRequestDispatcher("/WEB-INF/views/root.jsp").forward(req, resp);
     }
 
@@ -41,11 +41,11 @@ public class RootServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<UUID> user = RootHelper.validateRequest(req);
-        Optional<UserEntry.Role> role =
-                Arrays.stream(UserEntry.Role.values()).filter((r) -> req.getParameter("role").equalsIgnoreCase(r.name())).findFirst();
+        Optional<UserEssence.Role> role =
+                Arrays.stream(UserEssence.Role.values()).filter((r) -> req.getParameter("role").equalsIgnoreCase(r.name())).findFirst();
         if (user.isPresent() && role.isPresent()) {
-            UserEntry userEntry = this.users.findById(user.get()).get();
-            this.users.update(userEntry.setRole(role.get()));
+            UserEssence userEssence = this.users.findById(user.get()).get();
+            this.users.updateRole(userEssence.setRole(role.get()));
             resp.setStatus(HttpServletResponse.SC_OK);
         } else resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }

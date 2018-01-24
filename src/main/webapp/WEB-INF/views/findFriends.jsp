@@ -6,10 +6,7 @@
 <body>
 <div>
     <div>
-        <div>Pet network</div>
-    </div>
-    <div>
-        <div>Find friend</div>
+        <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
     </div>
     <div>
         <form id="findFriendForm"
@@ -53,7 +50,7 @@
                 <tbody>
                 <c:forEach items="${friends}" var="friend" varStatus="status">
                     <tr data-essence-id="${friend.userEssenceId}">
-                        <td><a href="<c:url value="/user?id=${friend.userEssenceId}"/>">${friend.nickname}</a></td>
+                        <td><a href="<c:url value="/essence?nickname=${friend.nickname}"/>">${friend.nickname}</a></td>
                         <td>${friend.name}</td>
                         <td>${friend.surname}</td>
                         <td>${friend.patronymic}</td>

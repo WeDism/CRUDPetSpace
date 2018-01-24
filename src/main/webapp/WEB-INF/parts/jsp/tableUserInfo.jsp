@@ -1,22 +1,22 @@
 <table>
     <tr>
         <td>Nickname</td>
-        <th>${user.nickname}</th>
+        <td>${user.nickname}</td>
     </tr>
     <tr>
         <td>Name</td>
-        <th>${user.name}</th>
+        <td>${user.name}</td>
     </tr>
     <tr>
         <td>Surname</td>
-        <th>${user.surname}</th>
+        <td>${user.surname}</td>
     </tr>
     <tr>
         <td>Email</td>
-        <th>${user.email}</th>
+        <td>${user.email}</td>
     </tr>
     <tr>
         <td>Role</td>
-        <th>${user.role}</th>
+        <td>${user.role}</td>
     </tr>
 </table>

@@ -180,6 +180,23 @@ public class UserEssenceStorage {
         return result;
     }
 
+    public Optional<UserEssence> findByNickname(String nickname) {
+        Optional<UserEssence> result = Optional.empty();
+        try (Connection connection = Pool.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_essence WHERE nickname=?")) {
+            statement.setString(1, nickname);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    UserEssence userEssence = getUserEssence(rs);
+                    result = Optional.of(userEssence);
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error("Error occurred in find by nickname user", e);
+        }
+        return result;
+    }
+
     public Optional<Set<UserEssence>> findFriends(EssenceForSearchFriend essence) {
         Iterator<String> essenceIterator = essence.iterator();
         Optional<Set<UserEssence>> result = Optional.empty();

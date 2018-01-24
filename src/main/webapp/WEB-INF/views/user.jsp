@@ -5,14 +5,9 @@
 </head>
 <body>
 <div>
-    <h2>
-        <div>
-            <a href="<c:url value="/user"/>">Pet space</a>
-        </div>
-        <div style="width: 100%; display: inline-block; text-align: right;">
-            <a href="<c:url value="/login?logout"/>">Exit</a>
-        </div>
-    </h2>
+    <div>
+        <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
+    </div>
     <div>
         <jsp:include page="../parts/jsp/tableUserInfo.jsp" flush="true"/>
     </div>

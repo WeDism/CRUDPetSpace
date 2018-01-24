@@ -6,7 +6,7 @@
 <body>
 <div>
     <div>
-        <div>Pet network</div>
+        <h2>Pet network</h2>
     </div>
     <div>
         <form id="loginForm" action="<c:url value="/login"/>" method="post">

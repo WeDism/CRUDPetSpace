@@ -7,6 +7,9 @@
 <body>
 <div>
     <div>
+        <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
+    </div>
+    <div>
         <c:choose>
             <c:when test="${speciesPetIsAdded}">
                 <h2>Species added</h2>

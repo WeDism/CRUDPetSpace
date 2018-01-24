@@ -5,6 +5,9 @@
 </head>
 <body>
 <div>
+    <div>
+        <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
+    </div>
     <form action="${pageContext.request.contextPath}${requestScope['javax.servlet.forward.servlet_path']}" method="post">
         <div><label>Name
             <input type="text" name="name" placeholder="name" required></label></div>

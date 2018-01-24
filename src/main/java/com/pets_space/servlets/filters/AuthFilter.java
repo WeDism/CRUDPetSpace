@@ -29,13 +29,16 @@ public class AuthFilter implements Filter {
 
         HttpSession session = req.getSession(true);
         UserEssence user = ((UserEssence) session.getAttribute("user"));
+        session.setAttribute("homePage", PathHelper.createPathForRedirectDependencyRole(user));
         String path = PathHelper.createPathForRedirectDependencyRole(user);
 
         if (req.getRequestURI().contains(PathHelper.LOGIN_PATH))
             chain.doFilter(request, response);
         else if (user == null)
             resp.sendRedirect(req.getContextPath() + path);
-        else if ((!Strings.isNullOrEmpty(path) && req.getRequestURI().contains(path)) || req.getRequestURI().contains("web_resources"))
+        else if ((!Strings.isNullOrEmpty(path) && req.getRequestURI().contains(path))
+                || req.getRequestURI().contains("web_resources")
+                || req.getRequestURI().contains("essence"))
             chain.doFilter(request, response);
         else
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN);

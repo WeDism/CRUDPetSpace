@@ -7,9 +7,8 @@
 <body>
 <div>
     <div>
-        <div>Root space</div>
-        <div style="width: 100%; display: inline-block; text-align: right;">
-            <a href="<c:url value="/login?logout"/>">Exit</a>
+        <div>
+            <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
         </div>
     </div>
     <div>
@@ -38,7 +37,7 @@
                         <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
                     </button>
                 </td>
-                <td><a href="<c:url value="/user?id=${user.userEssenceId}"/>">${user.nickname}</a></td>
+                <td><a href="<c:url value="/essence?nickname=${user.nickname}"/>">${user.nickname}</a></td>
                 <td>${user.name}</td>
                 <td>${user.surname}</td>
                 <td>${user.patronymic}</td>

@@ -22,6 +22,9 @@
     <div>
         <a href="<c:url value="/user/add_pet"/>">Add pet</a>
     </div>
+    <div>
+        <a href="<c:url value="/user/find_friend"/>">Find friend</a>
+    </div>
 </div>
 </body>
 </html>

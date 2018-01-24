@@ -29,7 +29,7 @@ public class PetStorage {
         pet.setName(rs.getString("name"));
         pet.setWeight(rs.getDouble("weight"));
         pet.setBirthday(LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()));
-        pet.setOwner(rs.getObject("user_entry_id", UUID.class));
+        pet.setOwner(rs.getObject("user_essence_id", UUID.class));
         pet.setSpecies(new SpeciesPet(rs.getString("species")));
         return pet;
     }
@@ -98,7 +98,7 @@ public class PetStorage {
     public void update(Pet pet) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE pet SET name=?,weight=?,birthday=?,user_entry_id=?,species=?")) {
+                     "UPDATE pet SET name=?,weight=?,birthday=?,user_essence_id=?,species=?")) {
             statement.setString(1, pet.getName());
             statement.setDouble(2, pet.getWeight());
             statement.setTimestamp(3, Timestamp.valueOf(pet.getBirthday()));
@@ -152,7 +152,7 @@ public class PetStorage {
     public Set<Pet> getPetsOfOwner(UUID owner) {
         Set<Pet> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM pet WHERE user_entry_id=?",
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM pet WHERE user_essence_id=?",
                      ResultSet.TYPE_SCROLL_INSENSITIVE,
                      ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, owner);

@@ -1,6 +1,7 @@
 package com.pets_space.storages;
 
 import com.google.common.collect.Sets;
+import com.pets_space.models.EssenceForSearchFriend;
 import com.pets_space.models.Pet;
 import com.pets_space.models.UserEssence;
 import org.slf4j.Logger;
@@ -26,10 +27,11 @@ public class UserEssenceStorage {
 
     private UserEssence getUserEssence(ResultSet rs) throws SQLException {
         UserEssence userEssence = new UserEssence();
-        userEssence.setUserEssenceId(rs.getObject("user_entry_id", UUID.class));
+        userEssence.setUserEssenceId(rs.getObject("user_essence_id", UUID.class));
         userEssence.setNickname(rs.getString("nickname"));
+        userEssence.setName(rs.getString("name"));
         userEssence.setSurname(rs.getString("surname"));
-        userEssence.setPatronymic(rs.getString("pathronymic"));
+        userEssence.setPatronymic(rs.getString("patronymic"));
         userEssence.setPassword(rs.getString("password"));
         userEssence.setEmail(rs.getString("email"));
 
@@ -50,7 +52,7 @@ public class UserEssenceStorage {
     public UserEssence add(UserEssence userEssence) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("INSERT INTO user_entry VALUES (?,?,?,?,?,?,?,?,?,?)")) {
+                     connection.prepareStatement("INSERT INTO user_essence VALUES (?,?,?,?,?,?,?,?,?,?)")) {
             statement.setObject(1, userEssence.getUserEssenceId());
             statement.setString(2, userEssence.getNickname());
             statement.setString(3, userEssence.getName());
@@ -71,8 +73,8 @@ public class UserEssenceStorage {
     public UserEssence update(UserEssence userEssence) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("UPDATE user_entry SET " +
-                             "nickname=?,name=?,surname=?,pathronymic=?,password=?,email=?,role=?,status=?,birthday=? WHERE user_entry_id=?")) {
+                     connection.prepareStatement("UPDATE user_essence SET " +
+                             "nickname=?,name=?,surname=?,pathronymic=?,password=?,email=?,role=?,status=?,birthday=? WHERE user_essence_id=?")) {
             connection.setAutoCommit(false);
             statement.setString(1, userEssence.getNickname());
             statement.setString(2, userEssence.getName());
@@ -97,8 +99,8 @@ public class UserEssenceStorage {
     public UserEssence updateRole(UserEssence userEssence) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("UPDATE user_entry SET " +
-                             "role=? WHERE user_entry_id=?")) {
+                     connection.prepareStatement("UPDATE user_essence SET " +
+                             "role=? WHERE user_essence_id=?")) {
             statement.setString(1, userEssence.getRole().name());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -108,13 +110,13 @@ public class UserEssenceStorage {
     }
 
     public void delete(UUID userEssence) {
-        Optional<UserEssence> entry = this.findById(userEssence);
-        if (entry.isPresent()) {
+        Optional<UserEssence> essence = this.findById(userEssence);
+        if (essence.isPresent()) {
             try (Connection connection = Pool.getDataSource().getConnection();
                  PreparedStatement statement =
-                         connection.prepareStatement("DELETE FROM user_entry WHERE user_entry_id=?")) {
+                         connection.prepareStatement("DELETE FROM user_essence WHERE user_essence_id=?")) {
                 connection.setAutoCommit(false);
-                this.pets.delete(entry.get().getPets());
+                this.pets.delete(essence.get().getPets());
                 statement.setObject(1, userEssence);
                 statement.executeUpdate();
                 connection.setAutoCommit(true);
@@ -128,7 +130,7 @@ public class UserEssenceStorage {
         Set<UserEssence> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
              ResultSet rs = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-                     .executeQuery("SELECT * FROM user_entry")) {
+                     .executeQuery("SELECT * FROM user_essence")) {
             rs.last();
             result = new HashSet<>(rs.getRow());
             rs.beforeFirst();
@@ -146,7 +148,7 @@ public class UserEssenceStorage {
         Optional<UserEssence> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     ("SELECT * FROM user_entry WHERE nickname=? AND password=?")) {
+                     ("SELECT * FROM user_essence WHERE nickname=? AND password=?")) {
             statement.setString(1, nickname);
             statement.setString(2, password);
             try (ResultSet rs = statement.executeQuery()) {
@@ -164,12 +166,38 @@ public class UserEssenceStorage {
     public Optional<UserEssence> findById(UUID userEssenceId) {
         Optional<UserEssence> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_entry WHERE user_entry_id=?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_essence WHERE user_essence_id=?")) {
             statement.setObject(1, userEssenceId);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     UserEssence userEssence = getUserEssence(rs);
                     result = Optional.of(userEssence);
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error("Error occurred in find by id user", e);
+        }
+        return result;
+    }
+
+    public Optional<Set<UserEssence>> findFriends(EssenceForSearchFriend essence) {
+        Iterator<String> essenceIterator = essence.iterator();
+        Optional<Set<UserEssence>> result = Optional.empty();
+        try (Connection connection = Pool.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_essence WHERE " + essence.resultPath(),
+                     ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+
+            if (essenceIterator.hasNext()) statement.setString(1, essenceIterator.next());
+            if (essenceIterator.hasNext()) statement.setString(2, essenceIterator.next());
+            if (essenceIterator.hasNext()) statement.setString(3, essenceIterator.next());
+
+            try (ResultSet rs = statement.executeQuery()) {
+                rs.last();
+                result = Optional.of(new HashSet<>(rs.getRow()));
+                rs.beforeFirst();
+                if (rs.next()) {
+                    UserEssence userEssence = getUserEssence(rs);
+                    result.get().add(userEssence);
                 }
             }
         } catch (SQLException e) {

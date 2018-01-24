@@ -40,7 +40,7 @@ public class FollowPetStorage {
     public Set<Pet> getFollowPets(UUID userEssenceId) {
         Set<Pet> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM follow_pets WHERE user_entry_id=?",
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM follow_pets WHERE user_essence_id=?",
                      ResultSet.TYPE_SCROLL_INSENSITIVE,
                      ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, userEssenceId);
@@ -60,7 +60,7 @@ public class FollowPetStorage {
     }
 
     private Optional<Pet> getPet(ResultSet rs) throws SQLException {
-        return PetStorage.getInstance().findById(rs.getObject("user_entry_id", UUID.class));
+        return PetStorage.getInstance().findById(rs.getObject("user_essence_id", UUID.class));
     }
 
 }

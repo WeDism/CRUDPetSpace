@@ -32,7 +32,7 @@
         </thead>
         <tbody>
         <c:forEach items="${users}" var="user" varStatus="status">
-            <tr data-entry-id="${user.userEssenceId}">
+            <tr data-essence-id="${user.userEssenceId}">
                 <td>
                     <button class="delete-user-of-button">
                         <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
@@ -43,7 +43,7 @@
                 <td>${user.surname}</td>
                 <td>${user.patronymic}</td>
                 <td>${user.email}</td>
-                <td><select name="user-entry-roles" class="user-entry-roles">
+                <td><select name="user-essence-roles" class="user-essence-roles">
                     <c:forEach items="${roles}" var="role" varStatus="status">
                         <option value="${role}" <c:if test="${role == user.role}"><c:out
                                 value="selected"/></c:if>>${role}</option>

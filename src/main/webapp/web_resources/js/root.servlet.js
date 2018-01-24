@@ -1,7 +1,7 @@
 var deleteUser = function () {
     var tr = this.closest('tr');
     $.ajax({
-        url: window.location.href + '?' + $.param({user: tr.dataset.entryId}),
+        url: window.location.href + '?' + $.param({user: tr.dataset.essenceId}),
         async: false,
         type: "DELETE",
         success: function () {
@@ -15,16 +15,16 @@ var deleteUser = function () {
 var changeRoleUserEssence = function () {
     var tr = this.closest('tr');
     $.ajax({
-        url: window.location.href + '?' + $.param({user: tr.dataset.entryId, role: $(this).find(':selected')[0].value}),
+        url: window.location.href + '?' + $.param({user: tr.dataset.essenceId, role: $(this).find(':selected')[0].value}),
         async: false,
         type: "PUT",
         success: function () {
             alert('Role Essence is updated');
         },
         error: function (xhr) {
-            var previewValue = $(tr).find('.user-entry-roles')[0].dataset.previewValue;
+            var previewValue = $(tr).find('.user-essence-roles')[0].dataset.previewValue;
             $(tr).find('[value=' + previewValue + ']')[0].setAttribute('selected', true);
-            var select = $(tr).find('.user-entry-roles')[0];
+            var select = $(tr).find('.user-essence-roles')[0];
             var options = $(select).children();
             for (var i = 0; options.length; i++) {
                 if (options[i].value == previewValue)
@@ -41,6 +41,6 @@ var setPreviewDataValue = function () {
 
 var init = function () {
     $('.delete-user-of-button').on('click', deleteUser);
-    $('.user-entry-roles').on('change', changeRoleUserEssence).on('click', setPreviewDataValue);
+    $('.user-essence-roles').on('change', changeRoleUserEssence).on('click', setPreviewDataValue);
 };
 $(window).on('load', init);

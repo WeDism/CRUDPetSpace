@@ -31,7 +31,7 @@ public class RootServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
-        Optional<UUID> user = Optional.of(UUID.fromString(req.getParameter("user")));
+        Optional<UUID> user = RootHelper.validateRequest(req);
         if (user.isPresent()) {
             this.users.delete(user.get());
             resp.setStatus(HttpServletResponse.SC_OK);

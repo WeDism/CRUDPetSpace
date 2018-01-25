@@ -2,17 +2,17 @@
 <html>
 <head>
     <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
-    <script src='<c:url value="/web_resources/js/root.servlet.js"/>'></script>
+    <script src='<c:url value="/web_resources/js/root.js"/>'></script>
 </head>
 <body>
 <div>
     <div>
         <div>
-            <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
+            <c:import url="../parts/jsp/bodyHeader.jsp"/>
         </div>
     </div>
     <div>
-        <jsp:include page="../parts/jsp/tableUserInfo.jsp" flush="true"/>
+        <c:import url="../parts/jsp/tableUserInfo.jsp"/>
     </div>
     <table>
         <caption>Users</caption>
@@ -59,7 +59,7 @@
         </tbody>
     </table>
     <div>
-        <jsp:include page="../parts/jsp/addSpeciesPart.jsp" flush="true"/>
+        <c:import url="../parts/jsp/addSpeciesPart.jsp"/>
     </div>
 </div>
 </body>

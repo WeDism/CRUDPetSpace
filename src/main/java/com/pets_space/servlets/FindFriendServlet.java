@@ -31,13 +31,12 @@ public class FindFriendServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<Set<UserEssence>> friends = this.users.findFriends(new EssenceForSearchFriend(req));
+        Optional<Set<UserEssence>> friends = this.users.findEssences(new EssenceForSearchFriend(req));
         req.getSession().setAttribute("friends", friends.get());
         UserEssence user = (UserEssence) req.getSession().getAttribute("user");
         if (user.getRole() == USER)
             resp.sendRedirect(req.getContextPath() + "/user/find_friend");
         else
             resp.sendRedirect(req.getContextPath() + "/admin/find_friend");
-
     }
 }

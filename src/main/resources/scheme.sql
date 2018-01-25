@@ -22,15 +22,15 @@ CREATE TABLE role_essence (
 
 CREATE TABLE user_essence (
   user_essence_id UUID PRIMARY KEY,
-  nickname      VARCHAR(300)   NOT NULL UNIQUE,
-  name          VARCHAR(200),
-  surname       VARCHAR(200),
-  patronymic   VARCHAR(200),
-  password      CHARACTER(32)  NOT NULL,
-  email         CHARACTER(254) NOT NULL,
-  birthday      TIMESTAMP,
-  role          VARCHAR(100)   NOT NULL REFERENCES role_essence (role),
-  status        VARCHAR(100)   NOT NULL REFERENCES status_essence (status)
+  nickname        VARCHAR(300)   NOT NULL UNIQUE,
+  name            VARCHAR(200),
+  surname         VARCHAR(200),
+  patronymic      VARCHAR(200),
+  password        CHARACTER(32)  NOT NULL,
+  email           CHARACTER(254) NOT NULL,
+  birthday        TIMESTAMP,
+  role            VARCHAR(100)   NOT NULL REFERENCES role_essence (role),
+  status          VARCHAR(100)   NOT NULL REFERENCES status_essence (status)
 );
 
 CREATE TABLE state_friend (
@@ -38,10 +38,10 @@ CREATE TABLE state_friend (
 );
 
 CREATE TABLE friends (
-  essence_id  UUID         REFERENCES user_essence (user_essence_id),
-  friend_id UUID         REFERENCES user_essence (user_essence_id),
-  status    VARCHAR(100) NOT NULL REFERENCES state_friend (state),
-  CONSTRAINT pk_friends_id PRIMARY KEY (essence_id, friend_id)
+  user_essence_id UUID REFERENCES user_essence (user_essence_id),
+  friend_id       UUID REFERENCES user_essence (user_essence_id),
+  status          VARCHAR(100) NOT NULL REFERENCES state_friend (state),
+  CONSTRAINT pk_friends_id PRIMARY KEY (user_essence_id, friend_id)
 );
 
 CREATE TABLE species_pet (
@@ -49,16 +49,16 @@ CREATE TABLE species_pet (
 );
 
 CREATE TABLE pet (
-  pet_id        UUID PRIMARY KEY,
-  name          VARCHAR(200),
-  weight        REAL,
-  birthday      TIMESTAMP,
+  pet_id          UUID PRIMARY KEY,
+  name            VARCHAR(200),
+  weight          REAL,
+  birthday        TIMESTAMP,
   user_essence_id UUID         NOT NULL REFERENCES user_essence (user_essence_id),
-  species       VARCHAR(200) NOT NULL REFERENCES species_pet (name)
+  species         VARCHAR(200) NOT NULL REFERENCES species_pet (name)
 );
 
 CREATE TABLE follow_pets (
-  pet_id        UUID REFERENCES pet (pet_id),
+  pet_id          UUID REFERENCES pet (pet_id),
   user_essence_id UUID REFERENCES user_essence (user_essence_id),
   CONSTRAINT pk_follow_pets_id PRIMARY KEY (pet_id, user_essence_id)
 );
@@ -84,6 +84,7 @@ CREATE TABLE message_of_user (
 
 INSERT INTO role_essence VALUES ('ROOT'), ('ADMIN'), ('USER');
 INSERT INTO status_essence VALUES ('ACTIVE'), ('INACTIVE'), ('DELETED');
+INSERT INTO state_friend VALUES ('REQUESTED'), ('REJECTED'), ('APPROVED');
 INSERT INTO user_essence (user_essence_id, nickname, password, name, email, role, status)
 VALUES (uuid('8ae453ef-4a97-46e9-803d-8502a446e6dc'), 'root', 'root', 'Andrey', 'root@root', 'ROOT', 'ACTIVE');
 INSERT INTO user_essence (user_essence_id, nickname, password, name, email, role, status)
@@ -92,5 +93,8 @@ INSERT INTO user_essence (user_essence_id, nickname, password, name, email, role
 VALUES (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'user@user', 'ADMIN', 'ACTIVE');
 --TODO create trigger for root on update and delete
 
-DELETE FROM user_essence;
-SELECT * FROM user_essence WHERE LOWER(nickname)=LOWER('user');
+SELECT * FROM friends;
+DELETE FROM friends;
+SELECT f.friend_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE ue.user_essence_id='7c20a4d7-5f9b-416f-a910-b13a816ba90b'::uuid;
+SELECT user_essence_id FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE ue.user_essence_id='7c20a4d7-5f9b-416f-a910-b13a816ba90b'::uuid AND f.status='REQUESTED';
+SELECT f.user_essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.friend_id='7c20a4d7-5f9b-416f-a910-b13a816ba90b'::uuid;

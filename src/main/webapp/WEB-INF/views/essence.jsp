@@ -6,7 +6,7 @@
 <body>
 <div>
     <div>
-        <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
+        <c:import url="../parts/jsp/bodyHeader.jsp"/>
     </div>
     <div>
         <table>

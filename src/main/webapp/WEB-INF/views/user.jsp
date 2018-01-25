@@ -6,13 +6,13 @@
 <body>
 <div>
     <div>
-        <jsp:include page="../parts/jsp/bodyHeader.jsp"/>
+        <c:import url="../parts/jsp/bodyHeader.jsp"/>
     </div>
     <div>
-        <jsp:include page="../parts/jsp/tableUserInfo.jsp" flush="true"/>
+        <c:import url="../parts/jsp/tableUserInfo.jsp"/>
     </div>
     <div>
-        <jsp:include page="../parts/jsp/tableYourPets.jsp" flush="true"/>
+        <c:import url="../parts/jsp/tableYourPets.jsp"/>
     </div>
     <div>
         <a href="<c:url value="/user/add_pet"/>">Add pet</a>

@@ -12,6 +12,10 @@ public class UserEssence {
         ROOT, ADMIN, USER
     }
 
+    public enum StateFriend {
+        REQUESTED, REJECTED, APPROVED
+    }
+
     private UUID userEssenceId;
     private String nickname;
     private String name;
@@ -22,7 +26,8 @@ public class UserEssence {
     private String email;
     private Role role;
     private StatusEssence statusEssence;
-    private Set<UserEssence> friends;
+    private Map<UUID, UserEssence.StateFriend> requestedFriendsFrom = new HashMap<>();
+    private Map<UUID, UserEssence.StateFriend> requestedFriendsTo = new HashMap<>();
     private Set<Pet> pets = new HashSet<>();
     private Set<Pet> followPets;
     private Set<Message> sentMessages;
@@ -110,12 +115,20 @@ public class UserEssence {
         this.statusEssence = statusEssence;
     }
 
-    public Set<UserEssence> getFriends() {
-        return this.friends;
+    public Map<UUID, StateFriend> getRequestedFriendsFrom() {
+        return this.requestedFriendsFrom;
     }
 
-    public void setFriends(Set<UserEssence> friends) {
-        this.friends = friends;
+    public void setRequestedFriendsFrom(Map<UUID, StateFriend> requestedFriendsFrom) {
+        this.requestedFriendsFrom = requestedFriendsFrom;
+    }
+
+    public Map<UUID, StateFriend> getRequestedFriendsTo() {
+        return this.requestedFriendsTo;
+    }
+
+    public void setRequestedFriendsTo(Map<UUID, StateFriend> requestedFriendsTo) {
+        this.requestedFriendsTo = requestedFriendsTo;
     }
 
     public Set<Pet> getPets() {

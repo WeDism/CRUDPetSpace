@@ -89,7 +89,7 @@ public class UserEssenceStorage {
             result = Optional.of(new HashMap<>(rs.getRow()));
             rs.beforeFirst();
             if (rs.next()) {
-                UUID userEssenceId = rs.getObject("friend_id", UUID.class);
+                UUID userEssenceId = rs.getObject("essence_id", UUID.class);
                 final String status = rs.getString("status");
                 StateFriend stateFriend = Arrays.stream(StateFriend.values()).filter(e -> e.name().equals(status)).findFirst().orElse(null);
                 result.get().put(userEssenceId, stateFriend);
@@ -102,7 +102,7 @@ public class UserEssenceStorage {
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     ("SELECT f.friend_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE ue.user_essence_id=?",
+                     ("SELECT f.friend_id as essence_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE ue.user_essence_id=?",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, essence);
             result = this.getSetUserEssencesId(statement);
@@ -116,7 +116,7 @@ public class UserEssenceStorage {
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     ("SELECT f.user_essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.friend_id=?",
+                     ("SELECT f.friend_id as essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.friend_id=?",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, essence);
             result = this.getSetUserEssencesId(statement);

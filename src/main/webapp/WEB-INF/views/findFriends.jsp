@@ -54,18 +54,20 @@
                 <tbody data-path-for-essence-friend="${pageContext.request.contextPath}/${fn:toLowerCase(user.role)}/friend_controller">
                 <c:forEach items="${friends}" var="friend" varStatus="status">
                     <tr data-essence-id="${friend.userEssenceId}">
-                        <td><a href="<c:url value="/essence?nickname=${friend.nickname}"/>">${friend.nickname}</a></td>
-                        <td><input class="essence-friend-checkbox" type="checkbox" <ctg:map_contains
-                                essenceMap="${user.requestedFriendsFrom}" userEssence="${friend.userEssenceId}"/></td>
-                        <td>${friend.name}</td>
-                        <td>${friend.surname}</td>
-                        <td>${friend.patronymic}</td>
-                        <td>${friend.email}</td>
-                        <td>${friend.role}</td>
-                        <td>${friend.statusEssence}</td>
+                        <td><a href="<c:url value="/essence?nickname=${friend.nickname}"/>"><c:out value="${friend.nickname}"/></a></td>
+                        <td><input class="essence-friend-checkbox" type="checkbox"
+                            <ctg:map_contains essenceMap="${user.requestedFriendsFrom}"
+                                              userEssence="${friend.userEssenceId}"
+                                              text="checked=\"true\""/></td>
+                        <td><c:out value="${friend.name}"/></td>
+                        <td><c:out value="${friend.surname}"/></td>
+                        <td><c:out value="${friend.patronymic}"/></td>
+                        <td><c:out value="${friend.email}"/></td>
+                        <td><c:out value="${friend.role}"/></td>
+                        <td><c:out value="${friend.statusEssence}"/></td>
                         <td>
                             <c:forEach items="${friend.pets}" var="pet" varStatus="status">
-                                ${pet.name}&nbsp;(${pet.species.name})<br/>
+                                <c:out value="${pet.name}"/>&nbsp;(<c:out value="${pet.species.name}"/>)<br/>
                             </c:forEach>
                         </td>
                     </tr>

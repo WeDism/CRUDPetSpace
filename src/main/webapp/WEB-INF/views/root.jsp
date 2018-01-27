@@ -37,15 +37,18 @@
                         <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
                     </button>
                 </td>
-                <td><a href="<c:url value="/essence?nickname=${user.nickname}"/>">${user.nickname}</a></td>
-                <td>${user.name}</td>
-                <td>${user.surname}</td>
-                <td>${user.patronymic}</td>
-                <td>${user.email}</td>
+                <td><a href="<c:url value="/essence?nickname=${user.nickname}"/>"><c:out value="${user.nickname}"/></a>
+                </td>
+                <td><c:out value="${user.name}"/></td>
+                <td><c:out value="${user.surname}"/></td>
+                <td><c:out value="${user.patronymic}"/></td>
+                <td><c:out value="${user.email}"/></td>
                 <td><select name="user-essence-roles" class="user-essence-roles">
                     <c:forEach items="${roles}" var="role" varStatus="status">
-                        <option value="${role}" <c:if test="${role == user.role}"><c:out
-                                value="selected"/></c:if>>${role}</option>
+                        <option value="<c:out value="${role}"/>"
+                                <c:if test="${role == user.role}"> <c:out
+                                        value="selected"/></c:if>>
+                            <c:out value="${role}"/></option>
                     </c:forEach>
                 </select></td>
                 <td>${user.statusEssence}</td>

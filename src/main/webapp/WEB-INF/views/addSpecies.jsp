@@ -22,10 +22,8 @@
     <form action="${pageContext.request.contextPath}${requestScope['javax.servlet.forward.servlet_path']}"
           method="post">
         <div><label>Name
-            <input type="text" name="name" placeholder="name" required></label></div>
-        <div><input type="submit"></div>
+            <input type="text" name="name" placeholder="name" required><input type="submit"></label></div>
     </form>
-    <a href="${pageContext.request.contextPath}/${fn:toLowerCase(user.role)}">Return to main page</a>
 </div>
 </body>
 </html>

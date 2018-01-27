@@ -15,6 +15,7 @@ public class MapContainsTag extends TagSupport {
     private static Logger LOG = getLogger(MapContainsTag.class);
     private Map<UUID, UserEssence> essenceMap;
     private UUID userEssence;
+    private String text;
 
     public void setEssenceMap(Map<UUID, UserEssence> essenceMap) {
         this.essenceMap = essenceMap;
@@ -24,11 +25,15 @@ public class MapContainsTag extends TagSupport {
         this.userEssence = userEssence;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     @Override
     public int doStartTag() throws JspException {
         try {
             if (this.essenceMap.containsKey(userEssence)) {
-                this.pageContext.getOut().write("checked=\"true\"");
+                this.pageContext.getOut().write(text);
             }
         } catch (IOException e) {
             LOG.error(e.getMessage());

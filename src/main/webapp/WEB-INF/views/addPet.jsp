@@ -19,7 +19,7 @@
         <div><label>Species
             <select name="species" required>
                 <c:forEach items="${species}" var="species" varStatus="status">
-                    <option>${species.name}</option>
+                    <option><c:out value="${species.name}"/></option>
                 </c:forEach>
             </select></label></div>
         <div><input type="submit"></div>

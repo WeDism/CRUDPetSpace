@@ -12,10 +12,10 @@
     <tbody>
     <c:forEach items="${user.pets}" var="pet" varStatus="status">
         <tr>
-            <td>${pet.name}</td>
-            <td>${pet.weight}</td>
-            <td>${pet.birthday}</td>
-            <td>${pet.species.name}</td>
+            <td><c:out value="${pet.name}"/></td>
+            <td><c:out value="${pet.weight}"/></td>
+            <td><c:out value="${pet.birthday}"/></td>
+            <td><c:out value="${pet.species.name}"/></td>
         </tr>
     </c:forEach>
     </tbody>

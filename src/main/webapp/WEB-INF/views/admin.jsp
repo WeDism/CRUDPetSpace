@@ -9,6 +9,9 @@
         <c:import url="../parts/jsp/bodyHeader.jsp"/>
     </div>
     <div>
+        <c:import url="../parts/jsp/tableYourFriends.jsp"/>
+    </div>
+    <div>
         <c:import url="../parts/jsp/tableUserInfo.jsp"/>
     </div>
     <div>

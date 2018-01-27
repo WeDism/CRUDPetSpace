@@ -12,23 +12,23 @@
         <table>
             <tr>
                 <td>Nickname</td>
-                <td>${foundEssence.nickname}</td>
+                <td><c:out value="${foundEssence.nickname}"/></td>
             </tr>
             <tr>
                 <td>Name</td>
-                <td>${foundEssence.name}</td>
+                <td><c:out value="${foundEssence.name}"/></td>
             </tr>
             <tr>
                 <td>Surname</td>
-                <td>${foundEssence.surname}</td>
+                <td><c:out value="${foundEssence.surname}"/></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td>${foundEssence.email}</td>
+                <td><c:out value="${foundEssence.email}"/></td>
             </tr>
             <tr>
                 <td>Role</td>
-                <td>${foundEssence.role}</td>
+                <td><c:out value="${foundEssence.role}"/></td>
             </tr>
         </table>
     </div>

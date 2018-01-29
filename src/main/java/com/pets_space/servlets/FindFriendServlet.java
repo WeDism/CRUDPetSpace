@@ -1,7 +1,7 @@
 package com.pets_space.servlets;
 
 import com.pets_space.models.EssenceForSearchFriend;
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.UserEssence;
 import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
 
@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.pets_space.models.UserEssence.Role.ADMIN;
-import static com.pets_space.models.UserEssence.Role.ROOT;
-import static com.pets_space.models.UserEssence.Role.USER;
+import static com.pets_space.models.essences.Role.USER;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @WebServlet({"/admin/find_friend", "/user/find_friend"})

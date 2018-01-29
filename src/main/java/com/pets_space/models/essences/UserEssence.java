@@ -1,78 +1,23 @@
-package com.pets_space.models;
+package com.pets_space.models.essences;
+
+import com.pets_space.models.Message;
+import com.pets_space.models.Pet;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class UserEssence {
-    public enum StatusEssence {
-        ACTIVE, INACTIVE, DELETED
-    }
-
-    public enum Role {
-        ROOT, ADMIN, USER
-    }
-
-    public enum StateFriend {
-        REQUESTED, REJECTED, APPROVED
-    }
-
-    private UUID userEssenceId;
-    private String nickname;
-    private String name;
-    private String surname;
-    private String patronymic;
+public class UserEssence extends Essence{
     private String password;
     private List<Byte> phone;
     private String email;
-    private Role role;
     private StatusEssence statusEssence;
-    private Map<UUID, UserEssence.StateFriend> requestedFriendsFrom = new HashMap<>();
-    private Map<UUID, UserEssence.StateFriend> requestedFriendsTo = new HashMap<>();
+    private Map<UUID, StateFriend> requestedFriendsFrom = new HashMap<>();
+    private Map<UUID, StateFriend> requestedFriendsTo = new HashMap<>();
     private Set<Pet> pets = new HashSet<>();
     private Set<Pet> followPets;
     private Set<Message> sentMessages;
     private Set<Message> inboxMessages;
     private LocalDateTime birthday;
-
-    public UUID getUserEssenceId() {
-        return this.userEssenceId;
-    }
-
-    public void setUserEssenceId(UUID userEssenceId) {
-        this.userEssenceId = userEssenceId;
-    }
-
-    public String getNickname() {
-        return this.nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return this.surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPatronymic() {
-        return this.patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
 
     public String getPassword() {
         return this.password;
@@ -98,10 +43,7 @@ public class UserEssence {
         this.email = email;
     }
 
-    public Role getRole() {
-        return this.role;
-    }
-
+    @Override
     public UserEssence setRole(Role role) {
         this.role = role;
         return this;

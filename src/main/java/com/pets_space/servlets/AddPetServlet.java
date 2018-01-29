@@ -3,7 +3,7 @@ package com.pets_space.servlets;
 import com.google.common.base.Strings;
 import com.pets_space.models.Pet;
 import com.pets_space.models.SpeciesPet;
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
 import com.pets_space.storages.PetStorage;
 import com.pets_space.storages.SpeciesPetStorage;

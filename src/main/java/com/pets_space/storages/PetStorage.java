@@ -2,7 +2,7 @@ package com.pets_space.storages;
 
 import com.pets_space.models.Pet;
 import com.pets_space.models.SpeciesPet;
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.UserEssence;
 import org.slf4j.Logger;
 
 import java.sql.*;

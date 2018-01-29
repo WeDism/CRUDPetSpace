@@ -11,11 +11,13 @@
     </div>
     <div>
         <c:choose>
-            <c:when test="${speciesPetIsAdded}">
+            <c:when test="${empty speciesPetIsAdded}">
+            </c:when>
+            <c:when test="${speciesPetIsAdded.present}">
                 <h2>Species added</h2>
             </c:when>
             <c:otherwise>
-                <h2>Species not added</h2>
+                <h2>Your species not added. Species could have been added earlier.</h2>
             </c:otherwise>
         </c:choose>
     </div>

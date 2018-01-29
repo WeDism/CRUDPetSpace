@@ -1,6 +1,6 @@
 package com.pets_space.servlets.helpers;
 
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.UserEssence;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;

@@ -1,14 +1,17 @@
 package com.pets_space.storages;
 
 import com.pets_space.models.Pet;
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.UserEssence;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.slf4j.LoggerFactory.getLogger;
 

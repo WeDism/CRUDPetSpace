@@ -3,7 +3,10 @@ package com.pets_space.storages;
 import com.google.common.collect.Sets;
 import com.pets_space.models.EssenceForSearchFriend;
 import com.pets_space.models.Pet;
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.Role;
+import com.pets_space.models.essences.StateFriend;
+import com.pets_space.models.essences.StatusEssence;
+import com.pets_space.models.essences.UserEssence;
 import org.slf4j.Logger;
 
 import java.sql.*;
@@ -11,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-import static com.pets_space.models.UserEssence.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class UserEssenceStorage {

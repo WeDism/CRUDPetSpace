@@ -1,6 +1,6 @@
 package com.pets_space.jstl_tags;
 
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.UserEssence;
 import org.slf4j.Logger;
 
 import javax.servlet.jsp.JspException;

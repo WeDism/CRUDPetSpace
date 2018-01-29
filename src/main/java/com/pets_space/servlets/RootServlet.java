@@ -1,6 +1,7 @@
 package com.pets_space.servlets;
 
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.Role;
+import com.pets_space.models.essences.UserEssence;
 import com.pets_space.servlets.helpers.RootHelper;
 import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class RootServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", this.users.getAll());
-        req.setAttribute("roles", UserEssence.Role.values());
+        req.setAttribute("roles", Role.values());
         req.getRequestDispatcher("/WEB-INF/views/root.jsp").forward(req, resp);
     }
 
@@ -41,8 +42,8 @@ public class RootServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<UUID> user = RootHelper.validateRequest(req);
-        Optional<UserEssence.Role> role =
-                Arrays.stream(UserEssence.Role.values()).filter((r) -> req.getParameter("role").equalsIgnoreCase(r.name())).findFirst();
+        Optional<Role> role =
+                Arrays.stream(Role.values()).filter((r) -> req.getParameter("role").equalsIgnoreCase(r.name())).findFirst();
         if (user.isPresent() && role.isPresent()) {
             UserEssence userEssence = this.users.findById(user.get()).get();
             this.users.updateRole(userEssence.setRole(role.get()));

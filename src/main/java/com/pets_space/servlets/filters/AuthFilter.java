@@ -1,7 +1,7 @@
 package com.pets_space.servlets.filters;
 
 import com.google.common.base.Strings;
-import com.pets_space.models.UserEssence;
+import com.pets_space.models.essences.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +40,10 @@ public class AuthFilter implements Filter {
                 || req.getRequestURI().contains("web_resources")
                 || req.getRequestURI().contains("essence"))
             chain.doFilter(request, response);
+        else if (req.getRequestURI().equalsIgnoreCase(req.getContextPath() + "/"))
+            resp.sendRedirect(req.getContextPath() + path);
         else
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN);
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
 
     @Override

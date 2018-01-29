@@ -10,7 +10,7 @@
     <tbody>
     <c:forEach items="${user.requestedFriendsTo}" var="entry">
         <tr>
-            <td><c:out value="${entry.key}"/></td>
+            <td><a href="<c:url value="/essence"/>?nickname=<c:out value="${entry.key}"/>">Friend</a></td>
             <td><c:out value="${entry.value}"/></td>
         </tr>
     </c:forEach>

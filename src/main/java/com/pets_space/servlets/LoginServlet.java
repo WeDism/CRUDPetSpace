@@ -1,6 +1,7 @@
 package com.pets_space.servlets;
 
-import com.pets_space.models.UserEssence;
+import com.google.common.base.Strings;
+import com.pets_space.models.essences.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
 import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("logout") != null) req.getSession().removeAttribute("user");
+        if (!Strings.isNullOrEmpty(req.getParameter("logout"))) req.getSession().removeAttribute("user");
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
     }
 

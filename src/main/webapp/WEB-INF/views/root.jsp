@@ -1,18 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-    <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
+<head><c:import url="../parts/fragments/htmlHeadTags.jsp"/>
     <script src='<c:url value="/web_resources/js/root.js"/>'></script>
 </head>
 <body>
 <div>
     <div>
         <div>
-            <c:import url="../parts/jsp/bodyHeader.jsp"/>
+            <c:import url="../parts/fragments/bodyHeader.jsp"/>
         </div>
     </div>
     <div>
-        <c:import url="../parts/jsp/tableUserInfo.jsp"/>
+        <c:import url="../parts/fragments/tableUserInfo.jsp"/>
     </div>
     <table>
         <caption>Users</caption>
@@ -37,7 +36,8 @@
                         <img src="<c:url value="/web_resources/images/delete.ico"/>" alt="delete user" width="8">
                     </button>
                 </td>
-                <td><a href="<c:url value="/essence?nickname=${user.nickname}"/>"><c:out value="${user.nickname}"/></a>
+                <td>
+                    <a href="<c:url value="${homepage}"/>/essence?nickname=<c:out value="${user.nickname}"/>">${user.nickname}</a>
                 </td>
                 <td><c:out value="${user.name}"/></td>
                 <td><c:out value="${user.surname}"/></td>
@@ -62,7 +62,7 @@
         </tbody>
     </table>
     <div>
-        <c:import url="../parts/jsp/addSpeciesPart.jsp"/>
+        <c:import url="../parts/fragments/addSpeciesPart.jsp"/>
     </div>
 </div>
 </body>

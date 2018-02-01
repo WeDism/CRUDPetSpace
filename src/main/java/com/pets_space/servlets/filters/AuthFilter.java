@@ -8,29 +8,33 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
-@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = {"/*"}, initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
 public class AuthFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(AuthFilter.class);
+    private String setUpCharacterEncoding;
 
     @Override
     public void init(FilterConfig filterConfig) {
-
+        this.setUpCharacterEncoding = filterConfig.getInitParameter("encoding");
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+        this.validateAndSetUpCharacterEncoding(request, response);
 
-        HttpSession session = req.getSession(true);
+        HttpSession session = req.getSession();
         UserEssence user = ((UserEssence) session.getAttribute("user"));
-        session.setAttribute("homePage", PathHelper.createPathForRedirectDependencyRole(user));
-        String path = PathHelper.createPathForRedirectDependencyRole(user);
+        final String path = PathHelper.createPathForRedirectDependencyRole(user);
+        session.setAttribute(PathHelper.HOME_PAGE, path);
 
         if (req.getRequestURI().contains(PathHelper.LOGIN_PATH))
             chain.doFilter(request, response);
@@ -46,8 +50,16 @@ public class AuthFilter implements Filter {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
 
+    private void validateAndSetUpCharacterEncoding(ServletRequest request, ServletResponse response) throws UnsupportedEncodingException {
+        final String characterEncoding = request.getCharacterEncoding();
+        if (Strings.isNullOrEmpty(characterEncoding) && !this.setUpCharacterEncoding.equalsIgnoreCase(characterEncoding)) {
+            request.setCharacterEncoding(this.setUpCharacterEncoding);
+            response.setCharacterEncoding(this.setUpCharacterEncoding);
+        }
+    }
+
     @Override
     public void destroy() {
-
+        setUpCharacterEncoding = null;
     }
 }

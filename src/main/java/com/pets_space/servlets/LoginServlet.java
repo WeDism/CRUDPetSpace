@@ -1,6 +1,5 @@
 package com.pets_space.servlets;
 
-import com.google.common.base.Strings;
 import com.pets_space.models.essences.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
 import com.pets_space.storages.UserEssenceStorage;
@@ -11,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Strings.isNullOrEmpty(req.getParameter("logout"))) req.getSession().removeAttribute("user");
+        if ("".equals(req.getParameter("logout"))) req.getSession().removeAttribute("user");
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
     }
 
@@ -32,9 +32,9 @@ public class LoginServlet extends HttpServlet {
         Optional<UserEssence> result = this.userEssenceStorage.findByCredential(req.getParameter("nickname"), req.getParameter("password"));
         if (result.isPresent()) {
             UserEssence user = result.get();
-            String path = PathHelper.createPathForRedirectDependencyRole(user);
-            req.getSession().setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + path);
+            HttpSession session = req.getSession();
+            session.setAttribute("user", user);
+            resp.sendRedirect(req.getContextPath() + session.getAttribute(PathHelper.HOME_PAGE));
         } else {
             this.doGet(req, resp);
         }

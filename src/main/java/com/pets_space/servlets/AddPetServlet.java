@@ -51,7 +51,7 @@ public class AddPetServlet extends HttpServlet {
             pet.setBirthday(birthday);
             user.setPet(pet);
             this.users.update(user);
-            resp.sendRedirect(req.getContextPath() + PathHelper.createPathForRedirectDependencyRole(user));
+            resp.sendRedirect(req.getContextPath() + req.getSession().getAttribute(PathHelper.HOME_PAGE));
         } else resp.sendRedirect("/WEB-INF/views/errors/error404.jsp");
     }
 }

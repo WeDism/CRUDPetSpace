@@ -93,8 +93,30 @@ INSERT INTO user_essence (user_essence_id, nickname, password, name, email, role
 VALUES (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'user@user', 'ADMIN', 'ACTIVE');
 --TODO create trigger for root on update and delete
 
-SELECT * FROM friends;
+SELECT *
+FROM friends;
 DELETE FROM friends;
-SELECT f.friend_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE ue.user_essence_id='7c20a4d7-5f9b-416f-a910-b13a816ba90b'::uuid;
-SELECT user_essence_id FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE ue.user_essence_id='7c20a4d7-5f9b-416f-a910-b13a816ba90b'::uuid AND f.status='REQUESTED';
-SELECT f.user_essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.friend_id='7c20a4d7-5f9b-416f-a910-b13a816ba90b'::uuid;
+SELECT
+  f.friend_id,
+  f.status
+FROM user_essence ue
+  JOIN friends f USING (user_essence_id)
+WHERE ue.user_essence_id = '7c20a4d7-5f9b-416f-a910-b13a816ba90b' :: UUID;
+SELECT user_essence_id
+FROM user_essence ue
+  JOIN friends f USING (user_essence_id)
+WHERE ue.user_essence_id = '7c20a4d7-5f9b-416f-a910-b13a816ba90b' :: UUID AND f.status = 'REQUESTED';
+SELECT
+  f.user_essence_id,
+  f.status
+FROM user_essence ue
+  JOIN friends f ON ue.user_essence_id = f.friend_id AND f.friend_id = '7c20a4d7-5f9b-416f-a910-b13a816ba90b' :: UUID;
+SELECT
+  user_essence_id,
+  nickname,
+  name,
+  surname,
+  patronymic,
+  role
+FROM user_essence
+WHERE user_essence_id IN (array_to_string('{"14c88e00-a325-4ac7-8c04-a43bc72cdc4a"}', ',')::uuid)

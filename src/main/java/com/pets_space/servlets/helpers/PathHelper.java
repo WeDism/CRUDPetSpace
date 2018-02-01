@@ -3,6 +3,7 @@ package com.pets_space.servlets.helpers;
 import com.pets_space.models.essences.UserEssence;
 
 public interface PathHelper {
+    String HOME_PAGE = "homepage";
     String LOGIN_PATH = "/login";
     String ROOT_PATH = "/root";
     String USER_PATH = "/user";

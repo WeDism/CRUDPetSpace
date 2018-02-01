@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-@WebServlet("/essence")
+@WebServlet({"/user/essence", "/admin/essence", "/root/essence"})
 public class EssenceServlet extends HttpServlet {
     private static final Logger LOG = getLogger(AddPetServlet.class);
     private final UserEssenceStorage users = UserEssenceStorage.getInstance();
@@ -29,7 +29,7 @@ public class EssenceServlet extends HttpServlet {
         Optional<UserEssence> essence = this.users.findByNickname(nickname);
         if (!nickname.equalsIgnoreCase(user.getNickname()) && essence.isPresent()) {
             session.setAttribute("foundEssence", essence.get());
-            req.getRequestDispatcher("WEB-INF/views/essence.jsp").forward(req, resp);
-        } else resp.sendRedirect(req.getContextPath() + PathHelper.createPathForRedirectDependencyRole(user));
+            req.getRequestDispatcher("/WEB-INF/views/essence.jsp").forward(req, resp);
+        } else resp.sendRedirect(req.getContextPath() + session.getAttribute(PathHelper.HOME_PAGE));
     }
 }

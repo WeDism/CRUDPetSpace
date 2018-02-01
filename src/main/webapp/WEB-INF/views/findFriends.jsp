@@ -1,15 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ctg" uri="custom_tags" %>
 <html>
-<head>
-    <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
+<head><c:import url="../parts/fragments/htmlHeadTags.jsp"/>
     <script src='<c:url value="/web_resources/js/findFriend.js"/>'></script>
 </head>
 <body>
 <div>
     <div>
-        <c:import url="../parts/jsp/bodyHeader.jsp"/>
+        <c:import url="../parts/fragments/bodyHeader.jsp"/>
     </div>
     <div>
         <form id="findFriendForm"
@@ -51,10 +49,12 @@
                     <th>Pets</th>
                 </tr>
                 </thead>
-                <tbody data-path-for-essence-friend="${pageContext.request.contextPath}/${fn:toLowerCase(user.role)}/friend_controller">
+                <tbody data-path-for-essence-friend="${pageContext.request.contextPath}${homepage}/friend_controller">
                 <c:forEach items="${friends}" var="friend" varStatus="status">
                     <tr data-essence-id="${friend.userEssenceId}">
-                        <td><a href="<c:url value="/essence?nickname=${friend.nickname}"/>"><c:out value="${friend.nickname}"/></a></td>
+                        <td>
+                            <a href="<c:url value="${homepage}"/>/essence?nickname=<c:out value="${friend.nickname}"/>">${friend.nickname}</a>
+                        </td>
                         <td><input class="essence-friend-checkbox" type="checkbox"
                             <ctg:map_contains essenceMap="${user.requestedFriendsFrom}"
                                               userEssence="${friend.userEssenceId}"

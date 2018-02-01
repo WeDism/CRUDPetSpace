@@ -39,9 +39,9 @@ public class LiteEssenceStorage {
         Optional<Set<LiteEssence>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role FROM user_essence WHERE user_essence_id IN (?)",
+                     connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role FROM user_essence WHERE user_essence_id = ALL(?)",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-            Array varchar = statement.getConnection().createArrayOf("VARCHAR", userEssenceIds.toArray());
+            Array varchar = statement.getConnection().createArrayOf("UUID", userEssenceIds.toArray());
 
             statement.setArray(1, varchar);
             try (ResultSet rs = statement.executeQuery()) {

@@ -50,8 +50,8 @@ public class UserEssenceStorage {
 
         userEssence.setPets(this.pets.getPetsOfOwner(userEssence));
 
-        Optional<Map<UUID, StateFriend>> friendRequestFrom = this.getFriendRequestFrom(userEssence.getUserEssenceId());
-        friendRequestFrom.ifPresent(userEssence::setRequestedFriendsFrom);
+        Optional<Map<UUID, StateFriend>> friendsRequestedFrom = this.getFriendsRequestedFrom(userEssence.getUserEssenceId());
+        friendsRequestedFrom.ifPresent(userEssence::setRequestedFriendsFrom);
 
         Optional<Map<UUID, StateFriend>> friendsRequestedTo = this.getFriendsRequestedTo(userEssence.getUserEssenceId());
         friendsRequestedTo.ifPresent(userEssence::setRequestedFriendsTo);
@@ -100,7 +100,7 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public Optional<Map<UUID, StateFriend>> getFriendRequestFrom(UUID essence) {
+    public Optional<Map<UUID, StateFriend>> getFriendsRequestedTo(UUID essence) {
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
@@ -114,7 +114,7 @@ public class UserEssenceStorage {
         return result;
     }
 
-    private Optional<Map<UUID, StateFriend>> getFriendsRequestedTo(UUID essence) {
+    private Optional<Map<UUID, StateFriend>> getFriendsRequestedFrom(UUID essence) {
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement

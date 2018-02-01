@@ -1,12 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-    <%@include file="../parts/jspf/htmlHeadTags.jspf" %>
-</head>
+<head><c:import url="../parts/fragments/htmlHeadTags.jsp"/></head>
 <body>
 <div>
     <div>
-        <c:import url="../parts/jsp/bodyHeader.jsp"/>
+        <c:import url="../parts/fragments/bodyHeader.jsp"/>
     </div>
     <div>
         <table>

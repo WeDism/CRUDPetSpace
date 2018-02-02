@@ -51,7 +51,7 @@ public class FollowPetStorage {
                 rs.last();
                 result = new HashSet<>(rs.getRow());
                 rs.beforeFirst();
-                if (rs.next()) {
+                while (rs.next()) {
                     Optional<Pet> pet = getPet(rs);
                     if (pet.isPresent()) result.add(pet.get());
                 }

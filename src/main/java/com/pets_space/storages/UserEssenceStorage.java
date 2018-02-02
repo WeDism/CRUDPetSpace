@@ -29,23 +29,23 @@ public class UserEssenceStorage {
     }
 
     private UserEssence getUserEssence(ResultSet rs) throws SQLException {
-        UserEssence userEssence = new UserEssence();
-        userEssence.setUserEssenceId(rs.getObject("user_essence_id", UUID.class));
-        userEssence.setNickname(rs.getString("nickname"));
-        userEssence.setName(rs.getString("name"));
-        userEssence.setSurname(rs.getString("surname"));
-        userEssence.setPatronymic(rs.getString("patronymic"));
-        userEssence.setPassword(rs.getString("password"));
-        userEssence.setEmail(rs.getString("email"));
-
         final String role = rs.getString("role");
-        userEssence.setRole(Arrays.stream(Role.values()).filter(e -> e.name().equals(role)).findFirst().orElse(null));
-
         final String status = rs.getString("status");
-        userEssence.setStatusEssence(Arrays.stream(StatusEssence.values()).filter(e -> e.name().equals(status)).findFirst().orElse(null));
-
         final Timestamp birthday = rs.getTimestamp("birthday");
-        userEssence.setBirthday(birthday != null ? LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()) : null);
+
+        UserEssence userEssence = UserEssence.builder()
+                .userEssenceId(rs.getObject("user_essence_id", UUID.class))
+                .nickname(rs.getString("nickname"))
+                .name(rs.getString("name"))
+                .surname(rs.getString("surname"))
+                .role(Arrays.stream(Role.values()).filter(e -> e.name().equals(role)).findFirst().orElse(null))
+                .statusEssence(Arrays.stream(StatusEssence.values()).filter(e -> e.name().equals(status)).findFirst().orElse(null))
+                .email(rs.getString("email"))
+                .password(rs.getString("password"))
+                .patronymic(rs.getString("patronymic"))
+                .birthday(birthday != null ? LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()) : null)
+                .build();
+
         userEssence.setFollowPets(FollowPetStorage.getInstance().getFollowPets(userEssence.getUserEssenceId()));
 
         userEssence.setPets(this.pets.getPetsOfOwner(userEssence));
@@ -76,7 +76,7 @@ public class UserEssenceStorage {
             rs.last();
             result = Optional.of(new HashSet<>(rs.getRow()));
             rs.beforeFirst();
-            if (rs.next()) {
+            while (rs.next()) {
                 UserEssence userEssence = getUserEssence(rs);
                 result.get().add(userEssence);
             }
@@ -90,7 +90,7 @@ public class UserEssenceStorage {
             rs.last();
             result = Optional.of(new HashMap<>(rs.getRow()));
             rs.beforeFirst();
-            if (rs.next()) {
+            while (rs.next()) {
                 UUID userEssenceId = rs.getObject("essence_id", UUID.class);
                 final String status = rs.getString("status");
                 StateFriend stateFriend = Arrays.stream(StateFriend.values()).filter(e -> e.name().equals(status)).findFirst().orElse(null);
@@ -104,7 +104,7 @@ public class UserEssenceStorage {
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     ("SELECT f.friend_id as essence_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE ue.user_essence_id=?",
+                     ("SELECT f.user_essence_id AS essence_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE f.friend_id=?",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, essence);
             result = this.getSetUserEssencesId(statement);
@@ -118,7 +118,7 @@ public class UserEssenceStorage {
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     ("SELECT f.friend_id as essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.friend_id=?",
+                     ("SELECT f.friend_id AS essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.user_essence_id=?",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, essence);
             result = this.getSetUserEssencesId(statement);

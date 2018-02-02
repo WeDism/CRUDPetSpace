@@ -36,6 +36,8 @@ public class LiteEssenceStorage {
     }
 
     public Optional<Set<LiteEssence>> findByIds(Set<UUID> userEssenceIds) {
+        if (userEssenceIds.size() == 0) return Optional.empty();
+
         Optional<Set<LiteEssence>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
@@ -48,7 +50,7 @@ public class LiteEssenceStorage {
                 rs.last();
                 result = Optional.of(new HashSet<>(rs.getRow()));
                 rs.beforeFirst();
-                if (rs.next()) {
+                while (rs.next()) {
                     result.get().add(this.getLiteEssence(rs));
                 }
             }

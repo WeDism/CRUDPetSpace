@@ -23,14 +23,16 @@ CREATE TABLE role_essence (
 CREATE TABLE user_essence (
   user_essence_id UUID PRIMARY KEY,
   nickname        VARCHAR(300)   NOT NULL UNIQUE,
-  name            VARCHAR(200),
-  surname         VARCHAR(200),
+  name            VARCHAR(200)   NOT NULL,
+  surname         VARCHAR(200)   NOT NULL,
   patronymic      VARCHAR(200),
   password        CHARACTER(32)  NOT NULL,
   email           CHARACTER(254) NOT NULL,
+  phone           CHARACTER(15),
   birthday        TIMESTAMP,
   role            VARCHAR(100)   NOT NULL REFERENCES role_essence (role),
-  status          VARCHAR(100)   NOT NULL REFERENCES status_essence (status)
+  status          VARCHAR(100)   NOT NULL REFERENCES status_essence (status),
+  CONSTRAINT numbers CHECK (phone ~* '^[0-9]')
 );
 
 CREATE TABLE state_friend (
@@ -85,38 +87,17 @@ CREATE TABLE message_of_user (
 INSERT INTO role_essence VALUES ('ROOT'), ('ADMIN'), ('USER');
 INSERT INTO status_essence VALUES ('ACTIVE'), ('INACTIVE'), ('DELETED');
 INSERT INTO state_friend VALUES ('REQUESTED'), ('REJECTED'), ('APPROVED');
-INSERT INTO user_essence (user_essence_id, nickname, password, name, email, role, status)
-VALUES (uuid('8ae453ef-4a97-46e9-803d-8502a446e6dc'), 'root', 'root', 'Andrey', 'root@root', 'ROOT', 'ACTIVE');
-INSERT INTO user_essence (user_essence_id, nickname, password, name, email, role, status)
-VALUES (uuid('14c88e00-a325-4ac7-8c04-a43bc72cdc4a'), 'user', 'user', 'Ivan', 'user@user', 'USER', 'ACTIVE');
-INSERT INTO user_essence (user_essence_id, nickname, password, name, email, role, status)
-VALUES (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'user@user', 'ADMIN', 'ACTIVE');
+INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status)
+VALUES
+  (uuid('8ae453ef-4a97-46e9-803d-8502a446e6dc'), 'root', 'root', 'Andrey', 'Krasnov', 'root@root', 'ROOT', 'ACTIVE');
+INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status)
+VALUES
+  (uuid('14c88e00-a325-4ac7-8c04-a43bc72cdc4a'), 'user', 'user', 'Ivan', 'Makarenko', 'user@user', 'USER', 'ACTIVE');
+INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status)
+VALUES
+  (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'Shevtsov', 'USER@USER', 'ADMIN', 'ACTIVE');
 --TODO create trigger for root on update and delete
 
-SELECT *
-FROM friends;
-DELETE FROM friends;
-SELECT
-  f.friend_id,
-  f.status
-FROM user_essence ue
-  JOIN friends f USING (user_essence_id)
-WHERE ue.user_essence_id = '7c20a4d7-5f9b-416f-a910-b13a816ba90b' :: UUID;
-SELECT user_essence_id
-FROM user_essence ue
-  JOIN friends f USING (user_essence_id)
-WHERE ue.user_essence_id = '7c20a4d7-5f9b-416f-a910-b13a816ba90b' :: UUID AND f.status = 'REQUESTED';
-SELECT
-  f.user_essence_id,
-  f.status
-FROM user_essence ue
-  JOIN friends f ON ue.user_essence_id = f.friend_id AND f.friend_id = '7c20a4d7-5f9b-416f-a910-b13a816ba90b' :: UUID;
-SELECT
-  user_essence_id,
-  nickname,
-  name,
-  surname,
-  patronymic,
-  role
-FROM user_essence
-WHERE user_essence_id IN (array_to_string('{"14c88e00-a325-4ac7-8c04-a43bc72cdc4a"}', ',')::uuid)
+SELECT * FROM friends;
+SELECT f.user_essence_id AS essence_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE f.friend_id='14c88e00-a325-4ac7-8c04-a43bc72cdc4a'::uuid;
+SELECT f.friend_id AS essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.user_essence_id='14c88e00-a325-4ac7-8c04-a43bc72cdc4a'::uuid;

@@ -34,7 +34,9 @@ public class LoginServlet extends HttpServlet {
             UserEssence user = result.get();
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + session.getAttribute(PathHelper.HOME_PAGE));
+            final String path = PathHelper.createPathForRedirectDependencyRole(user);
+            session.setAttribute(PathHelper.HOME_PAGE, path);
+            resp.sendRedirect(req.getContextPath() + path);
         } else {
             this.doGet(req, resp);
         }

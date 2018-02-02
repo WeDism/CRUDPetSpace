@@ -33,13 +33,12 @@ public class AuthFilter implements Filter {
 
         HttpSession session = req.getSession();
         UserEssence user = ((UserEssence) session.getAttribute("user"));
-        final String path = PathHelper.createPathForRedirectDependencyRole(user);
-        session.setAttribute(PathHelper.HOME_PAGE, path);
+        String path = (String) session.getAttribute(PathHelper.HOME_PAGE);
 
         if (req.getRequestURI().contains(PathHelper.LOGIN_PATH))
             chain.doFilter(request, response);
         else if (user == null)
-            resp.sendRedirect(req.getContextPath() + path);
+            resp.sendRedirect(req.getContextPath() + PathHelper.LOGIN_PATH);
         else if ((!Strings.isNullOrEmpty(path) && req.getRequestURI().contains(path))
                 || req.getRequestURI().contains("web_resources")
                 || req.getRequestURI().contains("essence"))

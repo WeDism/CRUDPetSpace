@@ -1,7 +1,5 @@
 package com.pets_space.models;
 
-import com.pets_space.models.essences.UserEssence;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;

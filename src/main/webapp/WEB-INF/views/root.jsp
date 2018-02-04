@@ -46,8 +46,7 @@
                 <td><select name="user-essence-roles" class="user-essence-roles">
                     <c:forEach items="${roles}" var="role" varStatus="status">
                         <option value="<c:out value="${role}"/>"
-                                <c:if test="${role == user.role}"> <c:out
-                                        value="selected"/></c:if>>
+                                <c:if test="${role == user.role}">selected</c:if>>
                             <c:out value="${role}"/></option>
                     </c:forEach>
                 </select></td>

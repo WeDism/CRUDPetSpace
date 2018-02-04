@@ -5,37 +5,36 @@ import java.util.UUID;
 public class LiteEssence extends Essence {
     @Override
     public LiteEssence setUserEssenceId(UUID userEssenceId) {
-        this.userEssenceId = userEssenceId;
-        return this;
+        return (LiteEssence) super.setUserEssenceId(userEssenceId);
     }
 
     @Override
     public LiteEssence setNickname(String nickname) {
-        this.nickname = nickname;
-        return this;
+        return (LiteEssence) super.setNickname(nickname);
     }
 
     @Override
     public LiteEssence setName(String name) {
-        this.name = name;
-        return this;
+        return (LiteEssence) super.setName(name);
     }
 
     @Override
     public LiteEssence setSurname(String surname) {
-        this.surname = surname;
-        return this;
+        return (LiteEssence) super.setSurname(surname);
     }
 
     @Override
     public LiteEssence setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-        return this;
+        return (LiteEssence) super.setPatronymic(patronymic);
     }
 
     @Override
     public LiteEssence setRole(Role role) {
-        this.role = role;
-        return this;
+        return (LiteEssence) super.setRole(role);
+    }
+
+    @Override
+    public LiteEssence setStatusEssence(StatusEssence statusEssence) {
+        return (LiteEssence) super.setStatusEssence(statusEssence);
     }
 }

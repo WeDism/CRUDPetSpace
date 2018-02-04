@@ -35,6 +35,29 @@ public class LiteEssenceStorage {
         return liteEssence;
     }
 
+    private Optional<LiteEssence> getOptional(PreparedStatement statement) throws SQLException {
+        Optional<LiteEssence> result = Optional.empty();
+        try (ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                LiteEssence liteEssence = this.getLiteEssence(rs);
+                result = Optional.of(liteEssence);
+            }
+        }
+        return result;
+    }
+
+    public Optional<LiteEssence> findById(UUID userEssenceId) {
+        Optional<LiteEssence> result = Optional.empty();
+        try (Connection connection = Pool.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role FROM user_essence WHERE user_essence_id=?")) {
+            statement.setObject(1, userEssenceId);
+            result = this.getOptional(statement);
+        } catch (SQLException e) {
+            LOG.error("Error occurred in find by id user", e);
+        }
+        return result;
+    }
+
     public Optional<Set<LiteEssence>> findByIds(Set<UUID> userEssenceIds) {
         if (userEssenceIds.size() == 0) return Optional.empty();
 

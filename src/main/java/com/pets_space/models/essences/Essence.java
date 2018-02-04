@@ -9,6 +9,7 @@ public abstract class Essence implements IEssence {
     protected String surname;
     protected String patronymic;
     protected Role role;
+    protected StatusEssence statusEssence;
 
     public UUID getUserEssenceId() {
         return this.userEssenceId;
@@ -34,7 +35,7 @@ public abstract class Essence implements IEssence {
 
     public Essence setName(String name) {
         this.name = name;
-                return this;
+        return this;
     }
 
     public String getSurname() {
@@ -43,7 +44,7 @@ public abstract class Essence implements IEssence {
 
     public Essence setSurname(String surname) {
         this.surname = surname;
-                return this;
+        return this;
     }
 
     public String getPatronymic() {
@@ -62,5 +63,14 @@ public abstract class Essence implements IEssence {
     public Essence setRole(Role role) {
         this.role = role;
         return this;
+    }
+
+    public Essence setStatusEssence(StatusEssence statusEssence) {
+        this.statusEssence = statusEssence;
+        return this;
+    }
+
+    public StatusEssence getStatusEssence() {
+        return this.statusEssence;
     }
 }

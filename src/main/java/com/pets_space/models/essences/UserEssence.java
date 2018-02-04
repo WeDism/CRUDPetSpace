@@ -12,7 +12,6 @@ public class UserEssence extends Essence {
     private String password;
     private List<Byte> phone;
     private String email;
-    private StatusEssence statusEssence;
     private Map<UUID, StateFriend> requestedFriendsFrom = new HashMap<>();
     private Map<UUID, StateFriend> requestedFriendsTo = new HashMap<>();
     private Set<Pet> pets = new HashSet<>();
@@ -228,12 +227,9 @@ public class UserEssence extends Essence {
         return this;
     }
 
-    public StatusEssence getStatusEssence() {
-        return this.statusEssence;
-    }
-
-    public void setStatusEssence(StatusEssence statusEssence) {
-        this.statusEssence = statusEssence;
+    @Override
+    public UserEssence setStatusEssence(StatusEssence statusEssence) {
+        return (UserEssence) super.setStatusEssence(statusEssence);
     }
 
     public Map<UUID, StateFriend> getRequestedFriendsFrom() {

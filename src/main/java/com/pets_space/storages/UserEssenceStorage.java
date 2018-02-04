@@ -128,15 +128,19 @@ public class UserEssenceStorage {
         return result;
     }
 
-    private void setFriend(UUID essence, UUID friend, StateFriend stateFriend) throws SQLException {
+    public boolean setFriendState(UUID essence, UUID friend, StateFriend stateFriend) {
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("UPDATE friends SET user_essence_id=?,friend_id=?,status=?")) {
+             PreparedStatement statement = connection.prepareStatement("UPDATE friends SET status=? WHERE user_essence_id=? AND friend_id=?")) {
 
-            statement.setObject(1, essence);
+            statement.setString(1, stateFriend.name());
             statement.setObject(2, friend);
-            statement.setString(3, stateFriend.name());
+            statement.setObject(3, essence);
             statement.execute();
+            return true;
+        } catch (SQLException e) {
+            LOG.error("Error occurred in set friend state", e);
         }
+        return false;
     }
 
     public UserEssence add(UserEssence userEssence) {
@@ -322,22 +326,6 @@ public class UserEssenceStorage {
             return false;
         }
         return true;
-    }
-
-    public void setFriendsRejectedTo(UUID essence, UUID friend) {
-        try {
-            this.setFriend(essence, friend, StateFriend.REJECTED);
-        } catch (SQLException e) {
-            LOG.error("Error occurred in set friend rejected", e);
-        }
-    }
-
-    public void setFriendsApprovedTo(UUID essence, UUID friend) {
-        try {
-            this.setFriend(essence, friend, StateFriend.APPROVED);
-        } catch (SQLException e) {
-            LOG.error("Error occurred in set friend approved", e);
-        }
     }
 
 }

@@ -7,7 +7,7 @@ var doFriend = function (input, typeRequest, bool) {
         type: typeRequest,
         success: function () {
             $(input).prop('checked', bool);
-            bool ? alert('Friend requested'):alert('Delete request');
+            bool ? alert('Friend requested') : alert('Delete request');
         },
         error: function (xhr) {
             $(input).prop('checked', !bool);

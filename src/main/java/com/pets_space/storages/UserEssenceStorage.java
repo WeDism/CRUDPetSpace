@@ -1,5 +1,6 @@
 package com.pets_space.storages;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.pets_space.models.EssenceForSearchFriend;
 import com.pets_space.models.Pet;
@@ -13,6 +14,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -143,46 +145,68 @@ public class UserEssenceStorage {
         return false;
     }
 
-    public UserEssence add(UserEssence userEssence) {
+    public boolean add(UserEssence userEssence) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("INSERT INTO user_essence VALUES (?,?,?,?,?,?,?,?,?,?)")) {
+                     connection.prepareStatement("INSERT INTO user_essence VALUES (?,?,?,?,?,?,?,?,?,?,?)")) {
 
             statement.setObject(1, userEssence.getUserEssenceId());
             statement.setString(2, userEssence.getNickname());
             statement.setString(3, userEssence.getName());
             statement.setString(4, userEssence.getSurname());
-            statement.setString(5, userEssence.getPatronymic());
             statement.setString(6, userEssence.getPassword());
             statement.setString(7, userEssence.getEmail());
-            statement.setTimestamp(8, Timestamp.valueOf(userEssence.getBirthday()));
-            statement.setString(9, userEssence.getRole().name());
-            statement.setString(10, userEssence.getStatusEssence().name());
+            statement.setString(10, userEssence.getRole().name());
+            statement.setString(11, userEssence.getStatusEssence().name());
+
+            if (!Strings.isNullOrEmpty(userEssence.getPatronymic()))
+                statement.setString(5, userEssence.getPatronymic());
+            else statement.setNull(5, Types.VARCHAR);
+
+            String numberPhone = userEssence.getPhone().stream().map(String::valueOf).collect(Collectors.joining());
+            if (!Strings.isNullOrEmpty(numberPhone)) statement.setString(8, numberPhone);
+            else statement.setNull(8, Types.VARCHAR);
+
+            if (userEssence.getBirthday() != null)
+                statement.setTimestamp(9, Timestamp.valueOf(userEssence.getBirthday()));
+            else statement.setNull(9, Types.TIMESTAMP);
 
             statement.execute();
         } catch (SQLException e) {
             LOG.error("Error occurred in creating userEssence", e);
+            return false;
         }
-        return userEssence;
+        return true;
     }
 
-    public UserEssence update(UserEssence userEssence) {
+    public boolean update(UserEssence userEssence) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("UPDATE user_essence SET " +
-                             "nickname=?,name=?,surname=?,pathronymic=?,password=?,email=?,role=?,status=?,birthday=? WHERE user_essence_id=?")) {
+                             "nickname=?,name=?,surname=?,patronymic=?,password=?,email=?,role=?,phone=?,status=?,birthday=? WHERE user_essence_id=?")) {
             connection.setAutoCommit(false);
 
             statement.setString(1, userEssence.getNickname());
             statement.setString(2, userEssence.getName());
             statement.setString(3, userEssence.getSurname());
-            statement.setString(4, userEssence.getPatronymic());
             statement.setString(5, userEssence.getPassword());
             statement.setString(6, userEssence.getEmail());
             statement.setString(7, userEssence.getRole().name());
-            statement.setString(8, userEssence.getStatusEssence().name());
-            statement.setTimestamp(9, userEssence.getBirthday() != null ? Timestamp.valueOf(userEssence.getBirthday()) : null);
-            statement.setObject(10, userEssence.getUserEssenceId());
+            statement.setString(9, userEssence.getStatusEssence().name());
+            statement.setObject(11, userEssence.getUserEssenceId());
+
+
+            if (!Strings.isNullOrEmpty(userEssence.getPatronymic()))
+                statement.setString(4, userEssence.getPatronymic());
+            else statement.setNull(4, Types.VARCHAR);
+
+            String numberPhone = userEssence.getPhone().stream().map(String::valueOf).collect(Collectors.joining());
+            if (!Strings.isNullOrEmpty(numberPhone)) statement.setString(8, numberPhone);
+            else statement.setNull(8, Types.VARCHAR);
+
+            if (userEssence.getBirthday() != null)
+                statement.setTimestamp(10, Timestamp.valueOf(userEssence.getBirthday()));
+            else statement.setNull(10, Types.TIMESTAMP);
 
             statement.executeUpdate();
             Set<Pet> differenceSets = Sets.difference(userEssence.getPets(), this.pets.getPetsOfOwner(userEssence));
@@ -190,23 +214,26 @@ public class UserEssenceStorage {
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOG.error("Error occurred in update userEssence", e);
+            return false;
         }
-        return userEssence;
+        return true;
     }
 
-    public UserEssence updateRole(UserEssence userEssence) {
+    public boolean updateRole(UserEssence userEssence) {
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("UPDATE user_essence SET role=? WHERE user_essence_id=?")) {
             statement.setString(1, userEssence.getRole().name());
+            statement.setObject(2, userEssence.getUserEssenceId());
             statement.executeUpdate();
         } catch (SQLException e) {
             LOG.error("Error occurred in update userEssence role", e);
+            return false;
         }
-        return userEssence;
+        return true;
     }
 
-    public void delete(UUID userEssence) {
+    public boolean delete(UUID userEssence) {
         Optional<UserEssence> essence = this.findById(userEssence);
         if (essence.isPresent()) {
             try (Connection connection = Pool.getDataSource().getConnection();
@@ -219,8 +246,10 @@ public class UserEssenceStorage {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
                 LOG.error("Error occurred in update userEssence", e);
+                return false;
             }
         }
+        return true;
     }
 
     public Set<UserEssence> getAll() {

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class UserEssence extends Essence {
     private String password;
-    private List<Byte> phone;
+    private List<Byte> phone = new ArrayList<>();
     private String email;
     private Map<UUID, StateFriend> requestedFriendsFrom = new HashMap<>();
     private Map<UUID, StateFriend> requestedFriendsTo = new HashMap<>();
@@ -33,49 +33,49 @@ public class UserEssence extends Essence {
 
         @Override
         public INickname userEssenceId(@NotNull UUID userEssenceId) {
-            this.userEssence.userEssenceId = userEssenceId;
+            this.userEssence.setUserEssenceId(userEssenceId);
             return this;
         }
 
         @Override
         public IName nickname(@NotNull String nickname) {
-            this.userEssence.nickname = nickname;
+            this.userEssence.setNickname(nickname);
             return this;
         }
 
         @Override
         public ISurname name(@NotNull String name) {
-            this.userEssence.name = name;
+            this.userEssence.setName(name);
             return this;
         }
 
         @Override
         public IRole surname(@NotNull String surname) {
-            this.userEssence.surname = surname;
+            this.userEssence.setSurname(surname);
             return this;
         }
 
         @Override
         public IStatusEssence role(@NotNull Role role) {
-            this.userEssence.role = role;
+            this.userEssence.setRole(role);
             return this;
         }
 
         @Override
         public IEmail statusEssence(@NotNull StatusEssence statusEssence) {
-            this.userEssence.statusEssence = statusEssence;
+            this.userEssence.setStatusEssence(statusEssence);
             return this;
         }
 
         @Override
         public IPassword email(@NotNull String email) {
-            this.userEssence.email = email;
+            this.userEssence.setEmail(email);
             return this;
         }
 
         @Override
         public IBuild password(@NotNull String password) {
-            this.userEssence.password = password;
+            this.userEssence.setPassword(password);
             return this;
         }
 
@@ -91,47 +91,47 @@ public class UserEssence extends Essence {
         }
 
         public BuilderUserEssence patronymic(String patronymic) {
-            this.userEssence.patronymic = patronymic;
+            this.userEssence.setPatronymic(patronymic);
             return this;
         }
 
         public BuilderUserEssence phone(List<Byte> phone) {
-            this.userEssence.phone = phone;
+            this.userEssence.setPhone(phone);
             return this;
         }
 
         public BuilderUserEssence birthday(LocalDateTime birthday) {
-            this.userEssence.birthday = birthday;
+            this.userEssence.setBirthday(birthday);
             return this;
         }
 
         public BuilderUserEssence inboxMessages(Set<Message> inboxMessages) {
-            this.userEssence.inboxMessages = inboxMessages;
+            this.userEssence.setInboxMessages(inboxMessages);
             return this;
         }
 
         public BuilderUserEssence sentMessages(Set<Message> sentMessages) {
-            this.userEssence.sentMessages = sentMessages;
+            this.userEssence.setSentMessages(sentMessages);
             return this;
         }
 
         public BuilderUserEssence followPets(Set<Pet> followPets) {
-            this.userEssence.followPets = followPets;
+            this.userEssence.setFollowPets(followPets);
             return this;
         }
 
         public BuilderUserEssence pets(Set<Pet> pets) {
-            this.userEssence.pets = pets;
+            this.userEssence.setPets(pets);
             return this;
         }
 
         public BuilderUserEssence requestedFriendsTo(Map<UUID, StateFriend> requestedFriendsTo) {
-            this.userEssence.requestedFriendsTo = requestedFriendsTo;
+            this.userEssence.setRequestedFriendsTo(requestedFriendsTo);
             return this;
         }
 
         public BuilderUserEssence requestedFriendsFrom(Map<UUID, StateFriend> requestedFriendsFrom) {
-            this.userEssence.requestedFriendsFrom = requestedFriendsFrom;
+            this.userEssence.setRequestedFriendsFrom(requestedFriendsFrom);
             return this;
         }
 
@@ -195,8 +195,9 @@ public class UserEssence extends Essence {
         return this.password;
     }
 
-    public void setPassword(String password) {
+    public UserEssence setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public List<Byte> getPhone() {
@@ -211,8 +212,9 @@ public class UserEssence extends Essence {
         return this.email;
     }
 
-    public void setEmail(String email) {
+    public UserEssence setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     @Override
@@ -230,6 +232,11 @@ public class UserEssence extends Essence {
     @Override
     public UserEssence setStatusEssence(StatusEssence statusEssence) {
         return (UserEssence) super.setStatusEssence(statusEssence);
+    }
+
+    @Override
+    public UserEssence setUserEssenceId(UUID userEssenceId) {
+        return (UserEssence) super.setUserEssenceId(userEssenceId);
     }
 
     public Map<UUID, StateFriend> getRequestedFriendsFrom() {

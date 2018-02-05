@@ -23,6 +23,7 @@ public class Pool {
             source.setUser(properties.getProperty("username"));
             source.setPassword(properties.getProperty("password"));
             source.setDriverClass(properties.getProperty("driver"));
+            source.setInitialPoolSize(5);
             source.setMinPoolSize(5);
             source.setAcquireIncrement(5);
             source.setMaxPoolSize(20);

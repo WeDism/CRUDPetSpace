@@ -8,6 +8,7 @@ import com.pets_space.models.essences.Role;
 import com.pets_space.models.essences.StateFriend;
 import com.pets_space.models.essences.StatusEssence;
 import com.pets_space.models.essences.UserEssence;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.sql.*;
@@ -16,6 +17,8 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class UserEssenceStorage {
@@ -30,7 +33,9 @@ public class UserEssenceStorage {
         return UserEssenceStorage.INSTANCE;
     }
 
-    private UserEssence getUserEssence(ResultSet rs) throws SQLException {
+    private UserEssence getUserEssence(@NotNull ResultSet rs) throws SQLException {
+        checkNotNull(rs);
+
         final String role = rs.getString("role");
         final String status = rs.getString("status");
         final Timestamp birthday = rs.getTimestamp("birthday");
@@ -61,7 +66,9 @@ public class UserEssenceStorage {
         return userEssence;
     }
 
-    private Optional<UserEssence> getOptional(PreparedStatement statement) throws SQLException {
+    private Optional<UserEssence> getOptional(@NotNull PreparedStatement statement) throws SQLException {
+        checkNotNull(statement);
+
         Optional<UserEssence> result = Optional.empty();
         try (ResultSet rs = statement.executeQuery()) {
             if (rs.next()) {
@@ -72,7 +79,9 @@ public class UserEssenceStorage {
         return result;
     }
 
-    private Optional<Set<UserEssence>> getSetUserEssences(PreparedStatement statement) throws SQLException {
+    private Optional<Set<UserEssence>> getSetUserEssences(@NotNull PreparedStatement statement) throws SQLException {
+        checkNotNull(statement);
+
         Optional<Set<UserEssence>> result = Optional.empty();
         try (ResultSet rs = statement.executeQuery()) {
             rs.last();
@@ -86,7 +95,9 @@ public class UserEssenceStorage {
         return result;
     }
 
-    private Optional<Map<UUID, StateFriend>> getSetUserEssencesId(PreparedStatement statement) throws SQLException {
+    private Optional<Map<UUID, StateFriend>> getSetUserEssencesId(@NotNull PreparedStatement statement) throws SQLException {
+        checkNotNull(statement);
+
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (ResultSet rs = statement.executeQuery()) {
             rs.last();
@@ -102,11 +113,13 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public Optional<Map<UUID, StateFriend>> getFriendsRequestedTo(UUID essence) {
+    private Optional<Map<UUID, StateFriend>> getFriendsRequestedTo(@NotNull UUID essence) {
+        checkNotNull(essence);
+
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     ("SELECT f.user_essence_id AS essence_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE f.friend_id=?",
+                     ("SELECT f.user_essence_id AS essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.user_essence_id WHERE f.friend_id=?",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, essence);
             result = this.getSetUserEssencesId(statement);
@@ -116,7 +129,9 @@ public class UserEssenceStorage {
         return result;
     }
 
-    private Optional<Map<UUID, StateFriend>> getFriendsRequestedFrom(UUID essence) {
+    private Optional<Map<UUID, StateFriend>> getFriendsRequestedFrom(@NotNull UUID essence) {
+        checkNotNull(essence);
+
         Optional<Map<UUID, StateFriend>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
@@ -130,7 +145,11 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public boolean setFriendState(UUID essence, UUID friend, StateFriend stateFriend) {
+    public boolean setFriendState(@NotNull UUID essence, @NotNull UUID friend, @NotNull StateFriend stateFriend) {
+        checkNotNull(essence);
+        checkNotNull(stateFriend);
+        checkArgument(!essence.equals(friend));
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("UPDATE friends SET status=? WHERE user_essence_id=? AND friend_id=?")) {
 
@@ -138,14 +157,16 @@ public class UserEssenceStorage {
             statement.setObject(2, friend);
             statement.setObject(3, essence);
             statement.execute();
-            return true;
         } catch (SQLException e) {
             LOG.error("Error occurred in set friend state", e);
+            return false;
         }
-        return false;
+        return true;
     }
 
-    public boolean add(UserEssence userEssence) {
+    public boolean add(@NotNull UserEssence userEssence) {
+        checkNotNull(userEssence);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("INSERT INTO user_essence VALUES (?,?,?,?,?,?,?,?,?,?,?)")) {
@@ -179,7 +200,9 @@ public class UserEssenceStorage {
         return true;
     }
 
-    public boolean update(UserEssence userEssence) {
+    public boolean update(@NotNull UserEssence userEssence) {
+        checkNotNull(userEssence);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("UPDATE user_essence SET " +
@@ -219,7 +242,9 @@ public class UserEssenceStorage {
         return true;
     }
 
-    public boolean updateRole(UserEssence userEssence) {
+    public boolean updateRole(@NotNull UserEssence userEssence) {
+        checkNotNull(userEssence);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("UPDATE user_essence SET role=? WHERE user_essence_id=?")) {
@@ -233,7 +258,9 @@ public class UserEssenceStorage {
         return true;
     }
 
-    public boolean delete(UUID userEssence) {
+    public boolean delete(@NotNull UUID userEssence) {
+        checkNotNull(userEssence);
+
         Optional<UserEssence> essence = this.findById(userEssence);
         if (essence.isPresent()) {
             try (Connection connection = Pool.getDataSource().getConnection();
@@ -270,7 +297,10 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public Optional<UserEssence> findByCredential(String nickname, String password) {
+    public Optional<UserEssence> findByCredential(@NotNull String nickname, @NotNull String password) {
+        checkNotNull(nickname);
+        checkNotNull(password);
+
         Optional<UserEssence> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
@@ -284,7 +314,9 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public Optional<UserEssence> findById(UUID userEssenceId) {
+    public Optional<UserEssence> findById(@NotNull UUID userEssenceId) {
+        checkNotNull(userEssenceId);
+
         Optional<UserEssence> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_essence WHERE user_essence_id=?")) {
@@ -296,7 +328,9 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public Optional<UserEssence> findByNickname(String nickname) {
+    public Optional<UserEssence> findByNickname(@NotNull String nickname) {
+        checkNotNull(nickname);
+
         Optional<UserEssence> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_essence WHERE nickname=?")) {
@@ -308,7 +342,9 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public Optional<Set<UserEssence>> findEssences(EssenceForSearchFriend essence) {
+    public Optional<Set<UserEssence>> findEssences(@NotNull EssenceForSearchFriend essence) {
+        checkNotNull(essence);
+
         Iterator<String> essenceIterator = essence.iterator();
         Optional<Set<UserEssence>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
@@ -326,15 +362,17 @@ public class UserEssenceStorage {
         return result;
     }
 
-    public boolean setFriendsRequest(UserEssence essence, UUID friend) {
+    public boolean setFriendsRequest(@NotNull UUID essence, @NotNull UUID friend) {
+        checkNotNull(essence);
+        checkArgument(!essence.equals(friend));
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO friends VALUES (?,?,?)")) {
 
-            statement.setObject(1, essence.getUserEssenceId());
+            statement.setObject(1, essence);
             statement.setObject(2, friend);
             statement.setString(3, StateFriend.REQUESTED.name());
             statement.execute();
-            essence.getRequestedFriendsFrom().put(friend, StateFriend.REQUESTED);
         } catch (SQLException e) {
             LOG.error("Error occurred in set friend request", e);
             return false;
@@ -342,14 +380,16 @@ public class UserEssenceStorage {
         return true;
     }
 
-    public boolean deleteFriendsRequest(UserEssence essence, UUID friend) {
+    public boolean deleteFriendsRequest(@NotNull UUID essence, @NotNull UUID friend) {
+        checkNotNull(essence);
+        checkNotNull(friend);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("DELETE FROM friends WHERE user_essence_id=? AND friend_id=?")) {
 
-            statement.setObject(1, essence.getUserEssenceId());
+            statement.setObject(1, essence);
             statement.setObject(2, friend);
             statement.execute();
-            essence.getRequestedFriendsFrom().remove(friend);
         } catch (SQLException e) {
             LOG.error("Error occurred in set friend request", e);
             return false;

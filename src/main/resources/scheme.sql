@@ -73,7 +73,7 @@ CREATE TABLE message (
   message_id UUID PRIMARY KEY,
   text       TEXT,
   date       TIMESTAMP REFERENCES date_of_message (date),
-  author_id  UUID NOT NULL REFERENCES user_essence (user_essence_id)
+  author_id  UUID NULL REFERENCES user_essence (user_essence_id)
 );
 
 

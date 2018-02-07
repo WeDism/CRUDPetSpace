@@ -1,5 +1,6 @@
 package com.pets_space.servlets;
 
+import com.pets_space.models.essences.StateFriend;
 import com.pets_space.models.essences.UserEssence;
 import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
@@ -23,16 +24,20 @@ public class FriendController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserEssence user = (UserEssence) req.getSession().getAttribute("user");
         UUID friendEssenceId = UUID.fromString(req.getParameter("user_essence_id"));
-        if (this.users.setFriendsRequest(user, friendEssenceId)) resp.setStatus(HttpServletResponse.SC_OK);
-        else resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        if (this.users.setFriendsRequest(user.getUserEssenceId(), friendEssenceId)) {
+            user.getRequestedFriendsFrom().put(friendEssenceId, StateFriend.REQUESTED);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } else resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserEssence user = (UserEssence) req.getSession().getAttribute("user");
         UUID friendEssenceId = UUID.fromString(req.getParameter("user_essence_id"));
-        if (this.users.deleteFriendsRequest(user, friendEssenceId)) resp.setStatus(HttpServletResponse.SC_OK);
-        else resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        if (this.users.deleteFriendsRequest(user.getUserEssenceId(), friendEssenceId)) {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            user.getRequestedFriendsFrom().remove(friendEssenceId);
+        } else resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override

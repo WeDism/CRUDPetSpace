@@ -1,6 +1,7 @@
 package com.pets_space.models;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +13,28 @@ public class EssenceForSearchFriend implements Iterable<String> {
     private String surname;
     private String patronymic;
     private List<String> listParams = new LinkedList<>();
-    private StringBuilder resultString = new StringBuilder();
+    private String resultString;
+    private StringBuilder resultStringBuilder = new StringBuilder();
+    private final List<Runnable> construct = Arrays.asList(
+            () -> {
+                if (!isNullOrEmpty(this.name)) {
+                    this.resultStringBuilder.append("LOWER(name)=LOWER(?) %1$s ");
+                    this.listParams.add(this.name);
+                }
+            },
+            () -> {
+                if (!isNullOrEmpty(this.surname)) {
+                    this.resultStringBuilder.append("LOWER(surname)=LOWER(?) %1$s ");
+                    this.listParams.add(this.surname);
+                }
+            },
+            () -> {
+                if (!isNullOrEmpty(this.patronymic)) {
+                    this.resultStringBuilder.append("LOWER(patronymic)=LOWER(?)");
+                    this.listParams.add(this.patronymic);
+                }
+            }
+    );
 
 
     public EssenceForSearchFriend(HttpServletRequest req) {
@@ -23,18 +45,10 @@ public class EssenceForSearchFriend implements Iterable<String> {
         if (isNullOrEmpty(this.name) && isNullOrEmpty(this.surname) && isNullOrEmpty(this.patronymic))
             throw new IllegalArgumentException();
 
-        if (!isNullOrEmpty(this.name)) {
-            this.resultString.append("LOWER(name)=LOWER(?) ");
-            this.listParams.add(this.name);
-        }
-        if (!isNullOrEmpty(this.surname)) {
-            this.resultString.append("LOWER(surname)=LOWER(?) ");
-            this.listParams.add(this.surname);
-        }
-        if (!isNullOrEmpty(this.patronymic)) {
-            this.resultString.append("LOWER(patronymic)=LOWER(?)");
-            this.listParams.add(this.patronymic);
-        }
+        construct.forEach(Runnable::run);
+
+        if (this.listParams.size() > 1) this.resultString = String.format(this.resultStringBuilder.toString(), "AND");
+        else this.resultString = String.format(this.resultStringBuilder.toString(), "");
     }
 
     @Override
@@ -55,6 +69,6 @@ public class EssenceForSearchFriend implements Iterable<String> {
     }
 
     public String resultPath() {
-        return this.resultString.toString();
+        return this.resultString;
     }
 }

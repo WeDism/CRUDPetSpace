@@ -1,5 +1,3 @@
--- CREATE DATABASE pets_space;
-
 DROP TABLE IF EXISTS status_essence CASCADE;
 DROP TABLE IF EXISTS role_essence CASCADE;
 DROP TABLE IF EXISTS user_essence CASCADE;
@@ -31,8 +29,7 @@ CREATE TABLE user_essence (
   phone           CHARACTER(15),
   birthday        TIMESTAMP,
   role            VARCHAR(100)   NOT NULL REFERENCES role_essence (role),
-  status          VARCHAR(100)   NOT NULL REFERENCES status_essence (status),
-  CONSTRAINT numbers CHECK (phone ~* '^[0-9]')
+  status          VARCHAR(100)   NOT NULL REFERENCES status_essence (status)
 );
 
 CREATE TABLE state_friend (
@@ -66,14 +63,14 @@ CREATE TABLE follow_pets (
 );
 
 CREATE TABLE date_of_message (
-  date TIMESTAMP PRIMARY KEY  DEFAULT now()
+  date TIMESTAMP PRIMARY KEY
 );
 
 CREATE TABLE message (
   message_id UUID PRIMARY KEY,
-  text       TEXT,
+  text       VARCHAR(1000),
   date       TIMESTAMP REFERENCES date_of_message (date),
-  author_id  UUID NOT NULL REFERENCES user_essence (user_essence_id)
+  author_id  UUID REFERENCES user_essence (user_essence_id)
 );
 
 

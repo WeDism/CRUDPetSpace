@@ -7,7 +7,7 @@ import com.pets_space.models.essences.UserEssence;
 import java.util.UUID;
 
 public interface UserEssenceStorageTestData {
-    static UserEssence getUseerEssence() {
+    static UserEssence getUserEssenceSteven() {
         return UserEssence.builder()
                 .userEssenceId(UUID.randomUUID())
                 .nickname("Test User")
@@ -17,30 +17,30 @@ public interface UserEssenceStorageTestData {
                 .statusEssence(StatusEssence.ACTIVE)
                 .email("email@email")
                 .password("password")
-                .patronymic("Padre")
+                .patronymic("son of William")
                 .build();
     }
 
-    static UserEssence getUseerEssence1() {
+    static UserEssence getUserEssenceAndrey() {
         return UserEssence.builder()
                 .userEssenceId(UUID.randomUUID())
                 .nickname("Test User1")
                 .name("Andrey")
-                .surname("Portnov")
+                .surname("Richardson")
                 .role(Role.ADMIN)
                 .statusEssence(StatusEssence.ACTIVE)
                 .email("email@email")
                 .password("password")
-                .patronymic("Padre")
+                .patronymic("son of Gerald")
                 .build();
     }
 
-    static UserEssence getUseerEssence2() {
+    static UserEssence getUserEssenceRichard() {
         return UserEssence.builder()
                 .userEssenceId(UUID.randomUUID())
                 .nickname("Test User2")
-                .name("Dmitry")
-                .surname("Bykov")
+                .name("Richard")
+                .surname("Wilson")
                 .role(Role.ROOT)
                 .statusEssence(StatusEssence.ACTIVE)
                 .email("email1@email1")

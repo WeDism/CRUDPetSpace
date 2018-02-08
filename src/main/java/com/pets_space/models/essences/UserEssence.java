@@ -31,6 +31,9 @@ public class UserEssence extends Essence {
 
         UserEssence userEssence = new UserEssence();
 
+        private BuilderUserEssence() {
+        }
+
         @Override
         public INickname userEssenceId(@NotNull UUID userEssenceId) {
             this.userEssence.setUserEssenceId(userEssenceId);
@@ -170,23 +173,23 @@ public class UserEssence extends Essence {
     }
 
     public interface IBuild {
-        BuilderUserEssence patronymic(String patronymic);
+        IBuild patronymic(String patronymic);
 
-        BuilderUserEssence phone(List<Byte> phone);
+        IBuild phone(List<Byte> phone);
 
-        BuilderUserEssence birthday(LocalDateTime birthday);
+        IBuild birthday(LocalDateTime birthday);
 
-        BuilderUserEssence inboxMessages(Set<Message> inboxMessages);
+        IBuild inboxMessages(Set<Message> inboxMessages);
 
-        BuilderUserEssence sentMessages(Set<Message> sentMessages);
+        IBuild sentMessages(Set<Message> sentMessages);
 
-        BuilderUserEssence followPets(Set<Pet> followPets);
+        IBuild followPets(Set<Pet> followPets);
 
-        BuilderUserEssence pets(Set<Pet> pets);
+        IBuild pets(Set<Pet> pets);
 
-        BuilderUserEssence requestedFriendsTo(Map<UUID, StateFriend> requestedFriendsTo);
+        IBuild requestedFriendsTo(Map<UUID, StateFriend> requestedFriendsTo);
 
-        BuilderUserEssence requestedFriendsFrom(Map<UUID, StateFriend> requestedFriendsFrom);
+        IBuild requestedFriendsFrom(Map<UUID, StateFriend> requestedFriendsFrom);
 
         UserEssence build();
     }

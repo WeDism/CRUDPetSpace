@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet({"/admin/add_species", "/root/add_species"})
 public class AddSpeciesServlet extends HttpServlet {
@@ -26,8 +25,7 @@ public class AddSpeciesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<SpeciesPet> speciesPet = this.species.add(new SpeciesPet(req.getParameter("name")));
-        req.getSession().setAttribute("speciesPetIsAdded", speciesPet);
+        req.getSession().setAttribute("speciesPetIsAdded", this.species.add(new SpeciesPet(req.getParameter("name"))));
         req.getRequestDispatcher("/WEB-INF/views/addSpecies.jsp").forward(req, resp);
     }
 }

@@ -43,13 +43,14 @@ public class AddPetServlet extends HttpServlet {
         String species = req.getParameter("species");
         SpeciesPet speciesPet = new SpeciesPet(species);
         if (!(Strings.isNullOrEmpty(name) && Strings.isNullOrEmpty(species)) && this.species.validateSpecies(speciesPet)) {
-            Pet pet = new Pet();
-            pet.setName(name);
-            pet.setPetId(UUID.randomUUID());
-            pet.setSpecies(speciesPet);
-            pet.setWeight(weight);
-            pet.setBirthday(birthday);
-            user.setPet(pet);
+            user.setPet(Pet.builder()
+                    .petId(UUID.randomUUID())
+                    .name(name)
+                    .owner(user.getUserEssenceId())
+                    .species(speciesPet)
+                    .weight(weight)
+                    .birthday(birthday)
+                    .build());
             this.users.update(user);
             resp.sendRedirect(req.getContextPath() + req.getSession().getAttribute(PathHelper.HOME_PAGE));
         } else resp.sendRedirect("/WEB-INF/views/errors/error404.jsp");

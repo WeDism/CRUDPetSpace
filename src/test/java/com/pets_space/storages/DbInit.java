@@ -14,6 +14,9 @@ import java.sql.Statement;
 public abstract class DbInit {
     private static final Logger LOG = LoggerFactory.getLogger(DbInit.class);
     protected final UserEssenceStorage userEssenceStorage = UserEssenceStorage.getInstance();
+    protected final PetStorage petStorage = PetStorage.getInstance();
+    protected final SpeciesPetStorage speciesPetStorage = SpeciesPetStorage.getInstance();
+    protected final FollowPetStorage followPetStorage = FollowPetStorage.getInstance();
 
     @Before
     public void initDb() {

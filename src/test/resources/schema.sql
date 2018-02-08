@@ -49,7 +49,7 @@ CREATE TABLE species_pet (
 
 CREATE TABLE pet (
   pet_id          UUID PRIMARY KEY,
-  name            VARCHAR(200),
+  name            VARCHAR(200) NOT NULL,
   weight          REAL,
   birthday        TIMESTAMP,
   user_essence_id UUID         NOT NULL REFERENCES user_essence (user_essence_id),

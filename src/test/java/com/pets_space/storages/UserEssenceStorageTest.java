@@ -20,17 +20,17 @@ public class UserEssenceStorageTest extends DbInit {
 
     @Test
     public void add() {
-        UserEssence userEssence = getUseerEssence();
-        assertTrue(this.userEssenceStorage.add(userEssence));
-        assertThat(userEssence, is(this.userEssenceStorage.findById(userEssence.getUserEssenceId()).orElse(null)));
+        UserEssence userEssenceSteven = getUserEssenceSteven();
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
+        assertThat(userEssenceSteven, is(this.userEssenceStorage.findById(userEssenceSteven.getUserEssenceId()).orElse(null)));
     }
 
     @Test
     public void getAll() {
-        UserEssence userEssence1 = getUseerEssence1();
-        UserEssence userEssence2 = getUseerEssence2();
-        assertTrue(this.userEssenceStorage.add(userEssence1));
-        assertTrue(this.userEssenceStorage.add(userEssence2));
+        UserEssence userEssenceAndrey = getUserEssenceAndrey();
+        UserEssence userEssenceRichard = getUserEssenceRichard();
+        assertTrue(this.userEssenceStorage.add(userEssenceAndrey));
+        assertTrue(this.userEssenceStorage.add(userEssenceRichard));
         Set<UserEssence> all = this.userEssenceStorage.getAll();
         assertThat(all.size(), is(2));
         assertThat(all.size(), not(3));
@@ -38,11 +38,11 @@ public class UserEssenceStorageTest extends DbInit {
 
     @Test
     public void delete() {
-        UserEssence userEssence = getUseerEssence();
-        assertTrue(this.userEssenceStorage.add(userEssence));
+        UserEssence userEssenceSteven = getUserEssenceSteven();
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         Set<UserEssence> all = this.userEssenceStorage.getAll();
         assertThat(all.size(), is(1));
-        assertTrue(this.userEssenceStorage.delete(userEssence.getUserEssenceId()));
+        assertTrue(this.userEssenceStorage.delete(userEssenceSteven.getUserEssenceId()));
         all = this.userEssenceStorage.getAll();
         assertThat(all.size(), not(1));
         assertThat(all.size(), is(0));
@@ -52,47 +52,47 @@ public class UserEssenceStorageTest extends DbInit {
     @Test
     public void update() {
         UUID uuid = UUID.randomUUID();
-        UserEssence userEssence1 = getUseerEssence1().setUserEssenceId(uuid);
-        UserEssence userEssence2 = getUseerEssence2().setUserEssenceId(uuid);
-        assertTrue(this.userEssenceStorage.add(userEssence1));
-        assertThat(userEssence1, is(this.userEssenceStorage.findById(userEssence1.getUserEssenceId()).orElse(null)));
-        assertTrue(this.userEssenceStorage.update(userEssence2));
-        assertThat(userEssence2, is(this.userEssenceStorage.findById(userEssence2.getUserEssenceId()).orElse(null)));
+        UserEssence userEssenceAndrey = getUserEssenceAndrey().setUserEssenceId(uuid);
+        UserEssence userEssenceRichard = getUserEssenceRichard().setUserEssenceId(uuid);
+        assertTrue(this.userEssenceStorage.add(userEssenceAndrey));
+        assertThat(userEssenceAndrey, is(this.userEssenceStorage.findById(userEssenceAndrey.getUserEssenceId()).orElse(null)));
+        assertTrue(this.userEssenceStorage.update(userEssenceRichard));
+        assertThat(userEssenceRichard, is(this.userEssenceStorage.findById(userEssenceRichard.getUserEssenceId()).orElse(null)));
     }
 
     @Test
     public void findByCredential() {
-        UserEssence userEssence = getUseerEssence();
-        assertTrue(this.userEssenceStorage.add(userEssence));
-        UserEssence userEssence1 = this.userEssenceStorage.findByCredential(userEssence.getNickname(), userEssence.getPassword()).orElse(null);
-        assertThat(userEssence, is(userEssence1));
+        UserEssence userEssenceSteven = getUserEssenceSteven();
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
+        UserEssence userEssence = this.userEssenceStorage.findByCredential(userEssenceSteven.getNickname(), userEssenceSteven.getPassword()).orElse(null);
+        assertThat(userEssenceSteven, is(userEssence));
     }
 
     @Test
     public void findByNickname() {
-        UserEssence userEssence = getUseerEssence();
-        assertTrue(this.userEssenceStorage.add(userEssence));
-        UserEssence userEssence1 = this.userEssenceStorage.findByNickname(userEssence.getNickname()).orElse(null);
-        assertThat(userEssence, is(userEssence1));
+        UserEssence userEssenceSteven = getUserEssenceSteven();
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
+        UserEssence userEssence = this.userEssenceStorage.findByNickname(userEssenceSteven.getNickname()).orElse(null);
+        assertThat(userEssenceSteven, is(userEssence));
     }
 
     @Test
     public void updateRole() {
-        UserEssence userEssence = getUseerEssence();
-        assertTrue(this.userEssenceStorage.add(userEssence));
-        assertTrue(this.userEssenceStorage.updateRole(userEssence.setRole(Role.USER)));
-        userEssence = this.userEssenceStorage.findByNickname(userEssence.getNickname()).orElse(null);
-        assertNotNull(userEssence);
-        assertThat(Role.USER, is(userEssence.getRole()));
+        UserEssence userEssenceSteven = getUserEssenceSteven();
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
+        assertTrue(this.userEssenceStorage.updateRole(userEssenceSteven.setRole(Role.USER)));
+        userEssenceSteven = this.userEssenceStorage.findByNickname(userEssenceSteven.getNickname()).orElse(null);
+        assertNotNull(userEssenceSteven);
+        assertThat(Role.USER, is(userEssenceSteven.getRole()));
     }
 
     @Test
     public void findById() {
-        UserEssence userEssence = getUseerEssence();
-        assertTrue(this.userEssenceStorage.add(userEssence));
-        assertThat(userEssence, is(this.userEssenceStorage.findById(userEssence.getUserEssenceId()).orElse(null)));
-        assertTrue(this.userEssenceStorage.delete(userEssence.getUserEssenceId()));
-        assertThat(userEssence, not(this.userEssenceStorage.findById(userEssence.getUserEssenceId()).orElse(null)));
+        UserEssence userEssenceSteven = getUserEssenceSteven();
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
+        assertThat(userEssenceSteven, is(this.userEssenceStorage.findById(userEssenceSteven.getUserEssenceId()).orElse(null)));
+        assertTrue(this.userEssenceStorage.delete(userEssenceSteven.getUserEssenceId()));
+        assertThat(userEssenceSteven, not(this.userEssenceStorage.findById(userEssenceSteven.getUserEssenceId()).orElse(null)));
     }
 
     @Test
@@ -102,76 +102,76 @@ public class UserEssenceStorageTest extends DbInit {
 
     @Test(expected = IllegalArgumentException.class)
     public void setFriendState() {
-        UserEssence userEssence1 = getUseerEssence1();
-        UserEssence userEssence2 = getUseerEssence2();
+        UserEssence userEssenceAndrey = getUserEssenceAndrey();
+        UserEssence userEssenceRichard = getUserEssenceRichard();
 
-        assertTrue(this.userEssenceStorage.add(userEssence1));
-        assertTrue(this.userEssenceStorage.add(userEssence2));
-        assertTrue(this.userEssenceStorage.setFriendState(userEssence1.getUserEssenceId(), userEssence2.getUserEssenceId(), StateFriend.REQUESTED));
-        assertTrue(this.userEssenceStorage.setFriendState(userEssence1.getUserEssenceId(), userEssence1.getUserEssenceId(), StateFriend.REQUESTED));
+        assertTrue(this.userEssenceStorage.add(userEssenceAndrey));
+        assertTrue(this.userEssenceStorage.add(userEssenceRichard));
+        assertTrue(this.userEssenceStorage.setFriendState(userEssenceAndrey.getUserEssenceId(), userEssenceRichard.getUserEssenceId(), StateFriend.REQUESTED));
+        assertTrue(this.userEssenceStorage.setFriendState(userEssenceAndrey.getUserEssenceId(), userEssenceAndrey.getUserEssenceId(), StateFriend.REQUESTED));
     }
 
     @Test
     public void findEssences() {
-        UserEssence userEssence = getUseerEssence();
+        UserEssence userEssenceSteven = getUserEssenceSteven();
         HttpServletRequest mockHttpServletRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(mockHttpServletRequest.getParameter("name")).thenReturn(userEssence.getName());
+        Mockito.when(mockHttpServletRequest.getParameter("name")).thenReturn(userEssenceSteven.getName());
         EssenceForSearchFriend essenceForSearchFriend = new EssenceForSearchFriend(mockHttpServletRequest);
 
-        assertTrue(this.userEssenceStorage.add(userEssence));
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         Set<UserEssence> userEssences = this.userEssenceStorage.findEssences(essenceForSearchFriend).orElse(null);
-        assertTrue(userEssences.contains(userEssence));
+        assertTrue(userEssences.contains(userEssenceSteven));
 
         mockHttpServletRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(mockHttpServletRequest.getParameter("name")).thenReturn(userEssence.getName());
-        Mockito.when(mockHttpServletRequest.getParameter("surname")).thenReturn(userEssence.getSurname());
-        Mockito.when(mockHttpServletRequest.getParameter("patronymic")).thenReturn(userEssence.getPatronymic());
+        Mockito.when(mockHttpServletRequest.getParameter("name")).thenReturn(userEssenceSteven.getName());
+        Mockito.when(mockHttpServletRequest.getParameter("surname")).thenReturn(userEssenceSteven.getSurname());
+        Mockito.when(mockHttpServletRequest.getParameter("patronymic")).thenReturn(userEssenceSteven.getPatronymic());
         essenceForSearchFriend = new EssenceForSearchFriend(mockHttpServletRequest);
         userEssences = this.userEssenceStorage.findEssences(essenceForSearchFriend).orElse(null);
-        assertTrue(userEssences.contains(userEssence));
+        assertTrue(userEssences.contains(userEssenceSteven));
     }
 
     @Test
     public void setFriendsRequest() {
-        UserEssence userEssence1 = getUseerEssence1();
-        UserEssence userEssence2 = getUseerEssence2();
+        UserEssence userEssenceAndrey = getUserEssenceAndrey();
+        UserEssence userEssenceRichard = getUserEssenceRichard();
 
-        assertTrue(this.userEssenceStorage.add(userEssence1));
-        assertTrue(this.userEssenceStorage.add(userEssence2));
-        assertTrue(this.userEssenceStorage.setFriendsRequest(userEssence1.getUserEssenceId(), userEssence2.getUserEssenceId()));
+        assertTrue(this.userEssenceStorage.add(userEssenceAndrey));
+        assertTrue(this.userEssenceStorage.add(userEssenceRichard));
+        assertTrue(this.userEssenceStorage.setFriendsRequest(userEssenceAndrey.getUserEssenceId(), userEssenceRichard.getUserEssenceId()));
 
-        userEssence1 = this.userEssenceStorage.findById(userEssence1.getUserEssenceId()).orElse(null);
-        userEssence2 = this.userEssenceStorage.findById(userEssence2.getUserEssenceId()).orElse(null);
-        assertNotNull(userEssence1);
-        assertNotNull(userEssence2);
-        assertTrue(userEssence1.getRequestedFriendsFrom().containsKey(userEssence2.getUserEssenceId()));
-        assertTrue(userEssence2.getRequestedFriendsTo().containsKey(userEssence1.getUserEssenceId()));
+        userEssenceAndrey = this.userEssenceStorage.findById(userEssenceAndrey.getUserEssenceId()).orElse(null);
+        userEssenceRichard = this.userEssenceStorage.findById(userEssenceRichard.getUserEssenceId()).orElse(null);
+        assertNotNull(userEssenceAndrey);
+        assertNotNull(userEssenceRichard);
+        assertTrue(userEssenceAndrey.getRequestedFriendsFrom().containsKey(userEssenceRichard.getUserEssenceId()));
+        assertTrue(userEssenceRichard.getRequestedFriendsTo().containsKey(userEssenceAndrey.getUserEssenceId()));
     }
 
     @Test
     public void deleteFriendsRequest() {
-        UserEssence userEssence1 = getUseerEssence1();
-        UserEssence userEssence2 = getUseerEssence2();
+        UserEssence userEssenceAndrey = getUserEssenceAndrey();
+        UserEssence userEssenceRichard = getUserEssenceRichard();
 
-        assertTrue(this.userEssenceStorage.add(userEssence1));
-        assertTrue(this.userEssenceStorage.add(userEssence2));
-        assertTrue(this.userEssenceStorage.setFriendsRequest(userEssence1.getUserEssenceId(), userEssence2.getUserEssenceId()));
+        assertTrue(this.userEssenceStorage.add(userEssenceAndrey));
+        assertTrue(this.userEssenceStorage.add(userEssenceRichard));
+        assertTrue(this.userEssenceStorage.setFriendsRequest(userEssenceAndrey.getUserEssenceId(), userEssenceRichard.getUserEssenceId()));
 
-        userEssence1 = this.userEssenceStorage.findById(userEssence1.getUserEssenceId()).orElse(null);
-        userEssence2 = this.userEssenceStorage.findById(userEssence2.getUserEssenceId()).orElse(null);
-        assertNotNull(userEssence1);
-        assertNotNull(userEssence2);
-        assertTrue(userEssence1.getRequestedFriendsFrom().containsKey(userEssence2.getUserEssenceId()));
-        assertTrue(userEssence2.getRequestedFriendsTo().containsKey(userEssence1.getUserEssenceId()));
+        userEssenceAndrey = this.userEssenceStorage.findById(userEssenceAndrey.getUserEssenceId()).orElse(null);
+        userEssenceRichard = this.userEssenceStorage.findById(userEssenceRichard.getUserEssenceId()).orElse(null);
+        assertNotNull(userEssenceAndrey);
+        assertNotNull(userEssenceRichard);
+        assertTrue(userEssenceAndrey.getRequestedFriendsFrom().containsKey(userEssenceRichard.getUserEssenceId()));
+        assertTrue(userEssenceRichard.getRequestedFriendsTo().containsKey(userEssenceAndrey.getUserEssenceId()));
 
-        assertTrue(this.userEssenceStorage.deleteFriendsRequest(userEssence1.getUserEssenceId(), userEssence2.getUserEssenceId()));
+        assertTrue(this.userEssenceStorage.deleteFriendsRequest(userEssenceAndrey.getUserEssenceId(), userEssenceRichard.getUserEssenceId()));
 
-        userEssence1 = this.userEssenceStorage.findById(userEssence1.getUserEssenceId()).orElse(null);
-        userEssence2 = this.userEssenceStorage.findById(userEssence2.getUserEssenceId()).orElse(null);
-        assertNotNull(userEssence1);
-        assertNotNull(userEssence2);
-        assertFalse(userEssence1.getRequestedFriendsFrom().containsKey(userEssence2.getUserEssenceId()));
-        assertFalse(userEssence2.getRequestedFriendsTo().containsKey(userEssence1.getUserEssenceId()));
+        userEssenceAndrey = this.userEssenceStorage.findById(userEssenceAndrey.getUserEssenceId()).orElse(null);
+        userEssenceRichard = this.userEssenceStorage.findById(userEssenceRichard.getUserEssenceId()).orElse(null);
+        assertNotNull(userEssenceAndrey);
+        assertNotNull(userEssenceRichard);
+        assertFalse(userEssenceAndrey.getRequestedFriendsFrom().containsKey(userEssenceRichard.getUserEssenceId()));
+        assertFalse(userEssenceRichard.getRequestedFriendsTo().containsKey(userEssenceAndrey.getUserEssenceId()));
 
     }
 }

@@ -3,13 +3,17 @@ package com.pets_space.storages;
 import com.pets_space.models.Pet;
 import com.pets_space.models.SpeciesPet;
 import com.pets_space.models.essences.UserEssence;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class PetStorage {
@@ -24,34 +28,48 @@ public class PetStorage {
     }
 
     private Pet getPet(ResultSet rs) throws SQLException {
-        Pet pet = new Pet();
-        pet.setPetId(rs.getObject("pet_id", UUID.class));
-        pet.setName(rs.getString("name"));
-        pet.setWeight(rs.getDouble("weight"));
-        pet.setBirthday(LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()));
-        pet.setOwner(rs.getObject("user_essence_id", UUID.class));
-        pet.setSpecies(new SpeciesPet(rs.getString("species")));
-        return pet;
+        return Pet.builder()
+                .petId(rs.getObject("pet_id", UUID.class))
+                .name(rs.getString("name"))
+                .owner(rs.getObject("user_essence_id", UUID.class))
+                .species(new SpeciesPet(rs.getString("species")))
+                .weight(rs.getDouble("weight"))
+                .birthday(rs.getTimestamp("birthday") != null
+                        ? LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()) : null)
+                .build();
     }
 
-    public Pet add(Pet pet) {
+    private void setPet(@NotNull Pet pet, PreparedStatement statement) throws SQLException {
+        statement.setObject(1, pet.getPetId());
+        statement.setString(2, pet.getName());
+        statement.setObject(5, pet.getOwner());
+        statement.setString(6, pet.getSpecies().getName());
+
+        if (pet.getBirthday() != null) statement.setTimestamp(4, Timestamp.valueOf(pet.getBirthday()));
+        else statement.setNull(4, Types.TIMESTAMP);
+        if (pet.getWeight() != null) statement.setDouble(3, pet.getWeight());
+        else statement.setNull(3, Types.REAL);
+    }
+
+    public boolean add(@NotNull Pet pet) {
+        checkNotNull(pet);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("INSERT INTO pet VALUES (?,?,?,?,?,?)")) {
-            statement.setObject(1, pet.getPetId());
-            statement.setString(2, pet.getName());
-            statement.setDouble(3, pet.getWeight());
-            statement.setTimestamp(4, Timestamp.valueOf(pet.getBirthday()));
-            statement.setObject(5, pet.getOwner());
-            statement.setString(6, pet.getSpecies().getName());
+            setPet(pet, statement);
+
             statement.execute();
         } catch (SQLException e) {
             LOG.error("Error occurred in creating pet", e);
+            return false;
         }
-        return pet;
+        return true;
     }
 
-    public void delete(Pet pet) {
+    public boolean delete(@NotNull Pet pet) {
+        checkNotNull(pet);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("DELETE FROM pet WHERE pet_id=?")) {
@@ -59,7 +77,9 @@ public class PetStorage {
             statement.execute();
         } catch (SQLException e) {
             LOG.error("Error occurred in delete pet", e);
+            return false;
         }
+        return true;
     }
 
     public void delete(Collection<Pet> pets) {
@@ -76,23 +96,23 @@ public class PetStorage {
         }
     }
 
-    public void addAll(Set<Pet> pets) {
+    public boolean addAll(@NotNull Set<Pet> pets) {
+        checkState(!pets.isEmpty());
+        checkState(pets.size() == pets.stream().filter(Objects::nonNull).collect(Collectors.toSet()).size());
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("INSERT INTO pet VALUES (?,?,?,?,?,?)")) {
             for (Pet pet : pets) {
-                statement.setObject(1, pet.getPetId());
-                statement.setString(2, pet.getName());
-                statement.setDouble(3, pet.getWeight());
-                statement.setTimestamp(4, Timestamp.valueOf(pet.getBirthday()));
-                statement.setObject(5, pet.getOwner());
-                statement.setString(6, pet.getSpecies().getName());
+                setPet(pet, statement);
                 statement.addBatch();
             }
             statement.executeBatch();
         } catch (SQLException e) {
             LOG.error("Error occurred in creating pet", e);
+            return false;
         }
+        return true;
     }
 
     public void update(Pet pet) {

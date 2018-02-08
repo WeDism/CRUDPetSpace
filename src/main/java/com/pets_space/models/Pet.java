@@ -1,18 +1,100 @@
 package com.pets_space.models;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Pet {
-    private UUID petId = UUID.randomUUID();
+    private UUID petId;
     private String name;
-    private double weight;
+    private Double weight;
     private LocalDateTime birthday;
     private UUID owner;
     private SpeciesPet species;
 
-    public Pet() {
+    private Pet() {
+    }
+
+    public static IPetId builder() {
+        return new BuilderPet();
+    }
+
+    public static class BuilderPet implements IPetId, IName, IOwner, ISpeciesPet, IBuild {
+        Pet pet = new Pet();
+
+        @Override
+        public IName petId(@NotNull UUID petId) {
+            this.pet.setPetId(petId);
+            return this;
+        }
+
+        @Override
+        public IOwner name(@NotNull String name) {
+            this.pet.setName(name);
+            return this;
+        }
+
+        @Override
+        public ISpeciesPet owner(@NotNull UUID owner) {
+            this.pet.setOwner(owner);
+            return this;
+        }
+
+        @Override
+        public IBuild species(SpeciesPet species) {
+            this.pet.setSpecies(species);
+            return this;
+        }
+
+        @Override
+        public Pet build() {
+            Set<?> setArguments = Set.of(this.pet.petId, this.pet.name, this.pet.owner, this.pet.species);
+            if (setArguments.stream().anyMatch(Objects::isNull)) {
+                throw new IllegalArgumentException(
+                        String.format("The arguments(%s) are null", setArguments.stream().filter(Objects::isNull).collect(Collectors.toList())));
+            }
+            return this.pet;
+        }
+
+        @Override
+        public IBuild weight(Double weight) {
+            this.pet.setWeight(weight);
+            return this;
+        }
+
+        @Override
+        public IBuild birthday(LocalDateTime birthday) {
+            this.pet.setBirthday(birthday);
+            return this;
+        }
+    }
+
+    public interface IPetId {
+        IName petId(@NotNull UUID petId);
+    }
+
+    public interface IName {
+        IOwner name(@NotNull String name);
+    }
+
+    public interface IOwner {
+        ISpeciesPet owner(@NotNull UUID owner);
+    }
+
+    public interface ISpeciesPet {
+        IBuild species(SpeciesPet species);
+    }
+
+    public interface IBuild {
+        IBuild weight(Double weight);
+
+        IBuild birthday(LocalDateTime birthday);
+
+        Pet build();
     }
 
     public UUID getPetId() {
@@ -23,7 +105,7 @@ public class Pet {
         return this.name;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return this.weight;
     }
 
@@ -47,7 +129,7 @@ public class Pet {
         this.name = name;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 

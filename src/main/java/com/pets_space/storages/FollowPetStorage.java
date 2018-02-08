@@ -1,7 +1,7 @@
 package com.pets_space.storages;
 
 import com.pets_space.models.Pet;
-import com.pets_space.models.essences.UserEssence;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class FollowPetStorage {
@@ -26,21 +28,26 @@ public class FollowPetStorage {
         return INSTANCE;
     }
 
-    public UserEssence add(UserEssence userEssence, Pet pet) {
+    public boolean add(@NotNull UUID userEssenceId, @NotNull UUID petId) {
+        checkNotNull(userEssenceId);
+        checkArgument(userEssenceId.equals(petId));
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("INSERT INTO follow_pets VALUES (?,?)")) {
-            statement.setObject(1, pet.getPetId());
-            statement.setObject(2, userEssence.getUserEssenceId());
+            statement.setObject(1, petId);
+            statement.setObject(2, userEssenceId);
             statement.execute();
         } catch (SQLException e) {
             LOG.error("Error occurred in creating pet", e);
+            return false;
         }
-        userEssence.getFollowPets().add(pet);
-        return userEssence;
+        return true;
     }
 
-    public Set<Pet> getFollowPets(UUID userEssenceId) {
+    public Set<Pet> getFollowPets(@NotNull UUID userEssenceId) {
+        checkNotNull(userEssenceId);
+
         Set<Pet> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM follow_pets WHERE user_essence_id=?",

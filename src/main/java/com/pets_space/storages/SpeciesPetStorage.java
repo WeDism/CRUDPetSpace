@@ -1,6 +1,7 @@
 package com.pets_space.storages;
 
 import com.pets_space.models.SpeciesPet;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -8,9 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class SpeciesPetStorage {
@@ -24,17 +25,18 @@ public class SpeciesPetStorage {
         return SpeciesPetStorage.INSTANCE;
     }
 
-    public Optional<SpeciesPet> add(SpeciesPet speciesPet) {
-        Optional<SpeciesPet> speciesPetOptional = Optional.of(speciesPet);
+    public boolean add(@NotNull SpeciesPet speciesPet) {
+        checkNotNull(speciesPet);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO species_pet VALUES (?)")) {
             statement.setString(1, speciesPet.getName());
             statement.execute();
         } catch (SQLException e) {
             LOG.error("Error occurred in creating speciesPet", e);
-            speciesPetOptional = Optional.empty();
+            return false;
         }
-        return speciesPetOptional;
+        return true;
     }
 
     public Set<SpeciesPet> getAll() {
@@ -54,14 +56,17 @@ public class SpeciesPetStorage {
         return result;
     }
 
-    public boolean validateSpecies(SpeciesPet speciesPet) {
-        boolean isValidate = false;
+    public boolean validateSpecies(@NotNull SpeciesPet speciesPet) {
+        checkNotNull(speciesPet);
+
+        boolean isValidate;
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM species_pet WHERE name=?")) {
             statement.setString(1, speciesPet.getName());
             isValidate = statement.executeQuery().next();
         } catch (SQLException e) {
             LOG.error("Error occurred in getting all speciesPet", e);
+            return false;
         }
         return isValidate;
     }

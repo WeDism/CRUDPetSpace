@@ -32,8 +32,8 @@ public class UserEssenceStorageTest extends DbInit {
         assertTrue(this.userEssenceStorage.add(userEssenceAndrey));
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
         Set<UserEssence> all = this.userEssenceStorage.getAll();
-        assertThat(all.size(), is(2));
-        assertThat(all.size(), not(3));
+        assertFalse(all.size() == 3);
+        assertTrue(all.size() == 2);
     }
 
     @Test
@@ -41,11 +41,11 @@ public class UserEssenceStorageTest extends DbInit {
         UserEssence userEssenceSteven = getUserEssenceSteven();
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         Set<UserEssence> all = this.userEssenceStorage.getAll();
-        assertThat(all.size(), is(1));
+        assertTrue(all.size() == 1);
         assertTrue(this.userEssenceStorage.delete(userEssenceSteven.getUserEssenceId()));
         all = this.userEssenceStorage.getAll();
-        assertThat(all.size(), not(1));
-        assertThat(all.size(), is(0));
+        assertFalse(all.size() == 1);
+        assertTrue(all.size() == 0);
     }
 
 
@@ -120,6 +120,7 @@ public class UserEssenceStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         Set<UserEssence> userEssences = this.userEssenceStorage.findEssences(essenceForSearchFriend).orElse(null);
+        assertNotNull(userEssences);
         assertTrue(userEssences.contains(userEssenceSteven));
 
         mockHttpServletRequest = Mockito.mock(HttpServletRequest.class);
@@ -128,6 +129,7 @@ public class UserEssenceStorageTest extends DbInit {
         Mockito.when(mockHttpServletRequest.getParameter("patronymic")).thenReturn(userEssenceSteven.getPatronymic());
         essenceForSearchFriend = new EssenceForSearchFriend(mockHttpServletRequest);
         userEssences = this.userEssenceStorage.findEssences(essenceForSearchFriend).orElse(null);
+        assertNotNull(userEssences);
         assertTrue(userEssences.contains(userEssenceSteven));
     }
 

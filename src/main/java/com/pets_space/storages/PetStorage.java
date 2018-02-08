@@ -2,7 +2,6 @@ package com.pets_space.storages;
 
 import com.pets_space.models.Pet;
 import com.pets_space.models.SpeciesPet;
-import com.pets_space.models.essences.UserEssence;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -39,7 +38,7 @@ public class PetStorage {
                 .build();
     }
 
-    private void setPet(@NotNull Pet pet, PreparedStatement statement) throws SQLException {
+    private void setPet(Pet pet, PreparedStatement statement) throws SQLException {
         statement.setObject(1, pet.getPetId());
         statement.setString(2, pet.getName());
         statement.setObject(5, pet.getOwner());
@@ -82,7 +81,10 @@ public class PetStorage {
         return true;
     }
 
-    public void delete(Collection<Pet> pets) {
+    public boolean delete(@NotNull Set<Pet> pets) {
+        checkState(!pets.isEmpty());
+        checkState(pets.size() == pets.stream().filter(Objects::nonNull).collect(Collectors.toSet()).size());
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
                      connection.prepareStatement("DELETE FROM pet WHERE pet_id=?")) {
@@ -93,7 +95,9 @@ public class PetStorage {
             statement.executeBatch();
         } catch (SQLException e) {
             LOG.error("Error occurred in delete pets", e);
+            return false;
         }
+        return true;
     }
 
     public boolean addAll(@NotNull Set<Pet> pets) {
@@ -115,18 +119,25 @@ public class PetStorage {
         return true;
     }
 
-    public void update(Pet pet) {
+    public boolean update(@NotNull Pet pet) {
+        checkNotNull(pet);
+
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE pet SET name=?,weight=?,birthday=?,user_essence_id=?,species=?")) {
             statement.setString(1, pet.getName());
-            statement.setDouble(2, pet.getWeight());
-            statement.setTimestamp(3, Timestamp.valueOf(pet.getBirthday()));
             statement.setObject(4, pet.getOwner());
             statement.setString(5, pet.getSpecies().getName());
-            statement.executeUpdate();
+
+            if (pet.getBirthday() != null) statement.setTimestamp(3, Timestamp.valueOf(pet.getBirthday()));
+            else statement.setNull(3, Types.TIMESTAMP);
+            if (pet.getWeight() != null) statement.setDouble(2, pet.getWeight());
+            else statement.setNull(2, Types.REAL);
+
+            return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             LOG.error("Error occurred in update pet", e);
+            return false;
         }
     }
 
@@ -148,7 +159,9 @@ public class PetStorage {
         return result;
     }
 
-    public Optional<Pet> findById(UUID petId) {
+    public Optional<Pet> findById(@NotNull UUID petId) {
+        checkNotNull(petId);
+
         Optional<Pet> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM pet WHERE pet_id=?")) {
@@ -165,11 +178,9 @@ public class PetStorage {
         return result;
     }
 
-    public Set<Pet> getPetsOfOwner(UserEssence owner) {
-        return this.getPetsOfOwner(owner.getUserEssenceId());
-    }
+    public Set<Pet> getPetsOfOwner(@NotNull UUID owner) {
+        checkNotNull(owner);
 
-    public Set<Pet> getPetsOfOwner(UUID owner) {
         Set<Pet> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM pet WHERE user_essence_id=?",
@@ -183,6 +194,29 @@ public class PetStorage {
                 while (rs.next()) {
                     Pet pet = getPet(rs);
                     result.add(pet);
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error("Error occurred in get pets of owner", e);
+        }
+        return result;
+    }
+
+    public Set<UUID> getUuidPetsOfOwner(@NotNull UUID owner) {
+        checkNotNull(owner);
+
+        Set<UUID> result = null;
+        try (Connection connection = Pool.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT pet_id FROM pet WHERE user_essence_id=?",
+                     ResultSet.TYPE_SCROLL_INSENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY)) {
+            statement.setObject(1, owner);
+            try (ResultSet rs = statement.executeQuery()) {
+                rs.last();
+                result = new HashSet<>(rs.getRow());
+                rs.beforeFirst();
+                while (rs.next()) {
+                    result.add(rs.getObject("pet_id", UUID.class));
                 }
             }
         } catch (SQLException e) {

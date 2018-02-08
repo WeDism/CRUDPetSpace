@@ -121,28 +121,34 @@ public class Pet {
         return this.birthday;
     }
 
-    public void setPetId(UUID petId) {
+    public Pet setPetId(UUID petId) {
         this.petId = petId;
+        return this;
     }
 
-    public void setName(String name) {
+    public Pet setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public void setWeight(Double weight) {
+    public Pet setWeight(Double weight) {
         this.weight = weight;
+        return this;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public Pet setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
+        return this;
     }
 
-    public void setOwner(UUID owner) {
+    public Pet setOwner(UUID owner) {
         this.owner = owner;
+        return this;
     }
 
-    public void setSpecies(SpeciesPet species) {
+    public Pet setSpecies(SpeciesPet species) {
         this.species = species;
+        return this;
     }
 
     @Override

@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,6 +19,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class FollowPetStorage {
     private static final Logger LOG = getLogger(FollowPetStorage.class);
     private static final FollowPetStorage INSTANCE = new FollowPetStorage();
+    private final PetStorage pets = PetStorage.getInstance();
 
     private FollowPetStorage() {
     }
@@ -30,7 +30,8 @@ public class FollowPetStorage {
 
     public boolean add(@NotNull UUID userEssenceId, @NotNull UUID petId) {
         checkNotNull(userEssenceId);
-        checkArgument(userEssenceId.equals(petId));
+        checkArgument(!userEssenceId.equals(petId));
+        checkArgument(!this.pets.getUuidPetsOfOwner(userEssenceId).contains(petId));
 
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
@@ -50,7 +51,7 @@ public class FollowPetStorage {
 
         Set<Pet> result = null;
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM follow_pets WHERE user_essence_id=?",
+             PreparedStatement statement = connection.prepareStatement("SELECT pet_id FROM follow_pets WHERE user_essence_id=?",
                      ResultSet.TYPE_SCROLL_INSENSITIVE,
                      ResultSet.CONCUR_READ_ONLY)) {
             statement.setObject(1, userEssenceId);
@@ -59,8 +60,7 @@ public class FollowPetStorage {
                 result = new HashSet<>(rs.getRow());
                 rs.beforeFirst();
                 while (rs.next()) {
-                    Optional<Pet> pet = getPet(rs);
-                    if (pet.isPresent()) result.add(pet.get());
+                    result.add(pets.findById(rs.getObject("pet_id", UUID.class)).orElse(null));
                 }
             }
         } catch (SQLException e) {
@@ -68,9 +68,4 @@ public class FollowPetStorage {
         }
         return result;
     }
-
-    private Optional<Pet> getPet(ResultSet rs) throws SQLException {
-        return PetStorage.getInstance().findById(rs.getObject("user_essence_id", UUID.class));
-    }
-
 }

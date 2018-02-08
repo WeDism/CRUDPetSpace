@@ -45,8 +45,8 @@ public class UserEssenceStorage {
                 .nickname(rs.getString("nickname"))
                 .name(rs.getString("name"))
                 .surname(rs.getString("surname"))
-                .role(Arrays.stream(Role.values()).filter(e -> e.name().equals(role)).findFirst().orElse(null))
-                .statusEssence(Arrays.stream(StatusEssence.values()).filter(e -> e.name().equals(status)).findFirst().orElse(null))
+                .role(Arrays.stream(Role.values()).filter(e -> e.name().equals(role)).findFirst().get())
+                .statusEssence(Arrays.stream(StatusEssence.values()).filter(e -> e.name().equals(status)).findFirst().get())
                 .email(rs.getString("email"))
                 .password(rs.getString("password"))
                 .patronymic(rs.getString("patronymic"))
@@ -55,7 +55,7 @@ public class UserEssenceStorage {
 
         userEssence.setFollowPets(FollowPetStorage.getInstance().getFollowPets(userEssence.getUserEssenceId()));
 
-        userEssence.setPets(this.pets.getPetsOfOwner(userEssence));
+        userEssence.setPets(this.pets.getPetsOfOwner(userEssence.getUserEssenceId()));
 
         Optional<Map<UUID, StateFriend>> friendsRequestedFrom = this.getFriendsRequestedFrom(userEssence.getUserEssenceId());
         friendsRequestedFrom.ifPresent(userEssence::setRequestedFriendsFrom);
@@ -232,7 +232,7 @@ public class UserEssenceStorage {
             else statement.setNull(10, Types.TIMESTAMP);
 
             statement.executeUpdate();
-            Set<Pet> differenceSets = Sets.difference(userEssence.getPets(), this.pets.getPetsOfOwner(userEssence));
+            Set<Pet> differenceSets = Sets.difference(userEssence.getPets(), this.pets.getPetsOfOwner(userEssence.getUserEssenceId()));
             if (!differenceSets.isEmpty()) this.pets.addAll(differenceSets);
             connection.setAutoCommit(true);
         } catch (SQLException e) {
@@ -267,7 +267,7 @@ public class UserEssenceStorage {
                  PreparedStatement statement =
                          connection.prepareStatement("DELETE FROM user_essence WHERE user_essence_id=?")) {
                 connection.setAutoCommit(false);
-                this.pets.delete(essence.get().getPets());
+                if (essence.get().getPets().size() > 0) this.pets.delete(essence.get().getPets());
                 statement.setObject(1, userEssence);
                 statement.executeUpdate();
                 connection.setAutoCommit(true);

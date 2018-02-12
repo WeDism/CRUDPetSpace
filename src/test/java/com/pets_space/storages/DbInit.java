@@ -17,6 +17,7 @@ public abstract class DbInit {
     protected final PetStorage petStorage = PetStorage.getInstance();
     protected final SpeciesPetStorage speciesPetStorage = SpeciesPetStorage.getInstance();
     protected final FollowPetStorage followPetStorage = FollowPetStorage.getInstance();
+    protected final LiteEssenceStorage liteEssenceStorage = LiteEssenceStorage.getInstance();
 
     @Before
     public void initDb() {

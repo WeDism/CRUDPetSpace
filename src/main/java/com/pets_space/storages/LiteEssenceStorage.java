@@ -2,11 +2,15 @@ package com.pets_space.storages;
 
 import com.pets_space.models.essences.LiteEssence;
 import com.pets_space.models.essences.Role;
+import com.pets_space.models.essences.StatusEssence;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.sql.*;
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class LiteEssenceStorage {
@@ -31,6 +35,8 @@ public class LiteEssenceStorage {
 
         final String role = rs.getString("role");
         liteEssence.setRole(Arrays.stream(Role.values()).filter(e -> e.name().equals(role)).findFirst().orElse(null));
+        final String status = rs.getString("status");
+        liteEssence.setStatusEssence(Arrays.stream(StatusEssence.values()).filter(e -> e.name().equals(status)).findFirst().orElse(null));
 
         return liteEssence;
     }
@@ -46,10 +52,12 @@ public class LiteEssenceStorage {
         return result;
     }
 
-    public Optional<LiteEssence> findById(UUID userEssenceId) {
+    public Optional<LiteEssence> findById(@NotNull UUID userEssenceId) {
+        checkNotNull(userEssenceId);
+
         Optional<LiteEssence> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role FROM user_essence WHERE user_essence_id=?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role,status FROM user_essence WHERE user_essence_id=?")) {
             statement.setObject(1, userEssenceId);
             result = this.getOptional(statement);
         } catch (SQLException e) {
@@ -59,12 +67,13 @@ public class LiteEssenceStorage {
     }
 
     public Optional<Set<LiteEssence>> findByIds(Set<UUID> userEssenceIds) {
-        if (userEssenceIds.size() == 0) return Optional.empty();
+        checkState(userEssenceIds.stream().noneMatch(Objects::isNull));
+        checkState(userEssenceIds.size() != 0);
 
         Optional<Set<LiteEssence>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role FROM user_essence WHERE user_essence_id = ALL(?)",
+                     connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role,status FROM user_essence WHERE user_essence_id = ALL(?)",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             Array varchar = statement.getConnection().createArrayOf("UUID", userEssenceIds.toArray());
 

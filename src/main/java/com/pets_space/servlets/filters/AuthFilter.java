@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
 @WebFilter(urlPatterns = {"/*"}, initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
 public class AuthFilter implements Filter {
@@ -37,7 +40,7 @@ public class AuthFilter implements Filter {
 
         if (req.getRequestURI().contains(PathHelper.LOGIN_PATH))
             chain.doFilter(request, response);
-        else if (user == null)
+        else if (user == null && !req.getRequestURI().contains("web_resources"))
             resp.sendRedirect(req.getContextPath() + PathHelper.LOGIN_PATH);
         else if ((!Strings.isNullOrEmpty(path) && req.getRequestURI().contains(path))
                 || req.getRequestURI().contains("web_resources")

@@ -37,4 +37,9 @@ public class LiteEssence extends Essence {
     public LiteEssence setStatusEssence(StatusEssence statusEssence) {
         return (LiteEssence) super.setStatusEssence(statusEssence);
     }
+
+    @Override
+    public LiteEssence setAboutOfSelf(String text) {
+        return (LiteEssence) super.setAboutOfSelf(aboutOfSelf);
+    }
 }

@@ -6,19 +6,14 @@ import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -30,10 +25,17 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         String contextPath = config.getServletContext().getContextPath();
-        if (config.getServletContext().getVirtualServerName().contains("localhost"))
+        if (config.getServletContext().getVirtualServerName().contains("localhost")) {
+            config.getServletContext().setAttribute("bootstrap.css", contextPath + "/web_resources/css/bootstrap.css");
             config.getServletContext().setAttribute("jquery", contextPath + "/web_resources/js/jquery-3.3.1.js");
-        else
+            config.getServletContext().setAttribute("popper", contextPath + "/web_resources/js/popper.js");
+            config.getServletContext().setAttribute("bootstrap.js", contextPath + "/web_resources/js/bootstrap.js");
+        } else {
+            config.getServletContext().setAttribute("bootstrap.css", contextPath + "/web_resources/css/bootstrap.min.css");
             config.getServletContext().setAttribute("jquery", contextPath + "/web_resources/js/jquery-3.3.1.min.js");
+            config.getServletContext().setAttribute("popper", contextPath + "/web_resources/js/popper.min.js");
+            config.getServletContext().setAttribute("bootstrap.js", contextPath + "/web_resources/js/bootstrap.min.js");
+        }
     }
 
     @Override

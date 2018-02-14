@@ -51,6 +51,7 @@ public class UserEssenceStorage {
                 .password(rs.getString("password"))
                 .patronymic(rs.getString("patronymic"))
                 .birthday(birthday != null ? LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()) : null)
+                .aboutOfSelf(rs.getString("about_of_self"))
                 .build();
 
         userEssence.setFollowPets(FollowPetStorage.getInstance().getFollowPets(userEssence.getUserEssenceId()));
@@ -147,6 +148,7 @@ public class UserEssenceStorage {
 
     public boolean setFriendState(@NotNull UUID essence, @NotNull UUID friend, @NotNull StateFriend stateFriend) {
         checkNotNull(essence);
+        checkNotNull(friend);
         checkNotNull(stateFriend);
         checkArgument(!essence.equals(friend));
 

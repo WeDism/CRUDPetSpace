@@ -138,6 +138,11 @@ public class UserEssence extends Essence {
             return this;
         }
 
+        @Override
+        public IBuild aboutOfSelf(String text) {
+            this.userEssence.setAboutOfSelf(text);
+            return this;
+        }
     }
 
     public interface IUserEssenceId {
@@ -191,6 +196,8 @@ public class UserEssence extends Essence {
 
         IBuild requestedFriendsFrom(Map<UUID, StateFriend> requestedFriendsFrom);
 
+        IBuild aboutOfSelf(String text);
+
         UserEssence build();
     }
 
@@ -207,8 +214,9 @@ public class UserEssence extends Essence {
         return this.phone;
     }
 
-    public void setPhone(List<Byte> phone) {
+    public UserEssence setPhone(List<Byte> phone) {
         this.phone = phone;
+        return this;
     }
 
     public String getEmail() {
@@ -222,14 +230,12 @@ public class UserEssence extends Essence {
 
     @Override
     public UserEssence setRole(Role role) {
-        super.setRole(role);
-        return this;
+        return (UserEssence) super.setRole(role);
     }
 
     @Override
     public UserEssence setPatronymic(String patronymic) {
-        super.setPatronymic(patronymic);
-        return this;
+        return (UserEssence) super.setPatronymic(patronymic);
     }
 
     @Override
@@ -240,6 +246,11 @@ public class UserEssence extends Essence {
     @Override
     public UserEssence setUserEssenceId(UUID userEssenceId) {
         return (UserEssence) super.setUserEssenceId(userEssenceId);
+    }
+
+    @Override
+    public UserEssence setAboutOfSelf(String aboutOfSelf) {
+        return (UserEssence) super.setAboutOfSelf(aboutOfSelf);
     }
 
     public Map<UUID, StateFriend> getRequestedFriendsFrom() {

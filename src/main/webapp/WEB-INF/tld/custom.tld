@@ -28,6 +28,6 @@
     <function>
         <name>getFriends</name>
         <function-class>com.pets_space.jstl_tags.functions.GetFriendsFunction</function-class>
-        <function-signature>java.util.Set getFriends(java.util.Map)</function-signature>
+        <function-signature>java.util.Set getFriends(com.pets_space.models.essences.UserEssence)</function-signature>
     </function>
 </taglib>

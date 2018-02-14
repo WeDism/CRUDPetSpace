@@ -1,17 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head><c:import url="../parts/fragments/htmlHeadTags.jsp"/>
-    <script src='<c:url value="/web_resources/js/root.js"/>'></script>
+<head><c:import url="fragments/htmlHeadTags.jsp"/>
+    <script src='<c:url value="/web_resources/js/custom/root.js"/>'></script>
 </head>
 <body>
-<div>
+<div class="container">
     <div>
         <div>
-            <c:import url="../parts/fragments/bodyHeader.jsp"/>
+            <c:import url="fragments/bodyHeader.jsp"/>
         </div>
     </div>
     <div>
-        <c:import url="../parts/fragments/tableUserInfo.jsp"/>
+        <c:import url="fragments/tableUserInfo.jsp"/>
     </div>
     <table>
         <caption>Users</caption>
@@ -61,7 +61,7 @@
         </tbody>
     </table>
     <div>
-        <c:import url="../parts/fragments/addSpeciesPart.jsp"/>
+        <c:import url="fragments/addSpeciesPart.jsp"/>
     </div>
 </div>
 </body>

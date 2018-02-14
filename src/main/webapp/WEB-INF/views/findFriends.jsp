@@ -1,45 +1,51 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="custom_tags" %>
 <html>
-<head><c:import url="../parts/fragments/htmlHeadTags.jsp"/>
-    <script src='<c:url value="/web_resources/js/findFriend.js"/>'></script>
+<head><c:import url="fragments/htmlHeadTags.jsp"/>
+    <script src='<c:url value="/web_resources/js/custom/findFriend.js"/>'></script>
 </head>
 <body>
-<div>
+<div class="container">
     <div>
-        <c:import url="../parts/fragments/bodyHeader.jsp"/>
+        <c:import url="fragments/bodyHeader.jsp"/>
     </div>
     <div>
-        <form id="findFriendForm"
-              action="${pageContext.request.contextPath}${requestScope['javax.servlet.forward.servlet_path']}"
-              method="post">
-            <div style="margin-bottom: 25px">
-                <label>Name
-                    <input type="text" name="name" placeholder="name"></label>
+        <form id="findFriendForm" method="post"
+              action="${pageContext.request.contextPath}${requestScope['javax.servlet.forward.servlet_path']}">
+            <div class="row">
+                <div class="col-4 offset-4">
+                    <h2>Seach your friends</h2>
+                </div>
             </div>
-            <div style="margin-bottom: 25px">
-                <label>Surname
-                    <input type="text" name="surname" placeholder="surname"></label>
+            <div class="row">
+                <div class="col-4">
+                    <label>Name
+                        <input type="text" name="name" placeholder="Name"></label>
+                </div>
+                <div class="col-4">
+                    <label>Surname
+                        <input type="text" name="surname" placeholder="Surname"></label>
+                </div>
+                <div class="col-4">
+                    <label>Patronymic
+                        <input type="text" name="patronymic" placeholder="Patronymic"></label>
+                </div>
             </div>
-            <div style="margin-bottom: 25px">
-                <label>Patronymic
-                    <input type="text" name="patronymic" placeholder="patronymic"></label>
-            </div>
-            <div style="margin-top:10px">
-                <div>
-                    <input type="submit" value="find">
+            <div class="row">
+                <div class="col-2 offset-10">
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="find">
                 </div>
             </div>
         </form>
     </div>
     <c:if test="${friends != null}">
         <div>
-            <table>
+            <table class="table">
                 <caption>Friends</caption>
                 <thead>
                 <tr>
                     <th>Nickname</th>
-                    <th>Add friend</th>
+                    <th>Add friend request</th>
                     <th>Name</th>
                     <th>Surname</th>
                     <th>Patronymic</th>

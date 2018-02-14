@@ -8,6 +8,7 @@ public abstract class Essence implements IEssence {
     protected String name;
     protected String surname;
     protected String patronymic;
+    protected String aboutOfSelf;
     protected Role role;
     protected StatusEssence statusEssence;
 
@@ -67,6 +68,15 @@ public abstract class Essence implements IEssence {
 
     public Essence setStatusEssence(StatusEssence statusEssence) {
         this.statusEssence = statusEssence;
+        return this;
+    }
+
+    public String getAboutOfSelf() {
+        return this.aboutOfSelf;
+    }
+
+    public Essence setAboutOfSelf(String text) {
+        this.aboutOfSelf = aboutOfSelf;
         return this;
     }
 

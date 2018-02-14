@@ -1,27 +1,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head><c:import url="../parts/fragments/htmlHeadTags.jsp"/>
-    <c:import url="../parts/fragments/htmlHeadAdminAndUserTags.jsp"/>
+<head><c:import url="fragments/htmlHeadTags.jsp"/>
+    <c:import url="fragments/htmlHeadAdminAndUserTags.jsp"/>
 </head>
 <body>
-<div>
-    <div>
-        <c:import url="../parts/fragments/bodyHeader.jsp"/>
+<div class="container">
+    <c:import url="fragments/bodyHeader.jsp"/>
+    <div class="row c-row">
+        <c:import url="fragments/userCard.jsp"/>
     </div>
-    <div>
-        <c:import url="../parts/fragments/tableYourFriends.jsp"/>
+    <div class="row c-row">
+        <c:import url="fragments/tableYourFriends.jsp"/>
     </div>
-    <div>
-        <c:import url="../parts/fragments/tableUserInfo.jsp"/>
+    <div class="row c-row">
+        <c:import url="fragments/tableYourPets.jsp"/>
     </div>
-    <div>
-        <c:import url="../parts/fragments/tableYourPets.jsp"/>
-    </div>
-    <div>
-        <a href="<c:url value="/user/add_pet"/>">Add pet</a>
-    </div>
-    <div>
-        <a href="<c:url value="/user/find_friend"/>">Find friend</a>
+    <div class="row">
+        <div class="col-2">
+            <a class="btn btn-lg btn-primary btn-block" href="<c:url value="/user/add_pet"/>">Add pet</a>
+        </div>
+        <div class="col-2 offset-8">
+            <a class="btn btn-lg btn-primary btn-block" href="<c:url value="/user/find_friend"/>">Find friend</a>
+        </div>
     </div>
 </div>
 </body>

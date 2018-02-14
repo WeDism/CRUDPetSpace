@@ -30,6 +30,7 @@ CREATE TABLE user_essence (
   email           CHARACTER(254) NOT NULL,
   phone           CHARACTER(15),
   birthday        TIMESTAMP,
+  about_of_self   TEXT,
   role            VARCHAR(100)   NOT NULL REFERENCES role_essence (role),
   status          VARCHAR(100)   NOT NULL REFERENCES status_essence (status),
   CONSTRAINT numbers CHECK (phone ~* '^[0-9]')
@@ -98,7 +99,5 @@ VALUES
   (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'Shevtsov', 'USER@USER', 'ADMIN', 'ACTIVE');
 --TODO create trigger for root on update and delete
 
-SELECT * FROM friends;
-SELECT f.user_essence_id AS essence_id, f.status FROM user_essence ue JOIN friends f USING(user_essence_id) WHERE f.friend_id='14c88e00-a325-4ac7-8c04-a43bc72cdc4a'::uuid;
-SELECT f.friend_id AS essence_id, f.status FROM user_essence ue JOIN friends f ON ue.user_essence_id=f.friend_id AND f.user_essence_id='14c88e00-a325-4ac7-8c04-a43bc72cdc4a'::uuid;
-UPDATE friends SET status='REQUESTED' WHERE user_essence_id='14c88e00-a325-4ac7-8c04-a43bc72cdc4a'::uuid AND friend_id='7c20a4d7-5f9b-416f-a910-b13a816ba90b'::uuid
+SELECT *
+FROM friends;

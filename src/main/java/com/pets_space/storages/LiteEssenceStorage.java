@@ -1,5 +1,6 @@
 package com.pets_space.storages;
 
+import com.google.common.base.Strings;
 import com.pets_space.models.essences.LiteEssence;
 import com.pets_space.models.essences.Role;
 import com.pets_space.models.essences.StatusEssence;
@@ -32,6 +33,7 @@ public class LiteEssenceStorage {
         liteEssence.setName(rs.getString("name"));
         liteEssence.setSurname(rs.getString("surname"));
         liteEssence.setPatronymic(rs.getString("patronymic"));
+        liteEssence.setAboutOfSelf(rs.getString("about_of_self"));
 
         final String role = rs.getString("role");
         liteEssence.setRole(Arrays.stream(Role.values()).filter(e -> e.name().equals(role)).findFirst().orElse(null));
@@ -66,9 +68,11 @@ public class LiteEssenceStorage {
         return result;
     }
 
-    public Optional<Set<LiteEssence>> findByIds(Set<UUID> userEssenceIds) {
+    public Optional<Set<LiteEssence>> findByIds(@NotNull Set<UUID> userEssenceIds) {
+        checkNotNull(userEssenceIds);
         checkState(userEssenceIds.stream().noneMatch(Objects::isNull));
-        checkState(userEssenceIds.size() != 0);
+
+        if (userEssenceIds.size() == 0) return Optional.empty();
 
         Optional<Set<LiteEssence>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();

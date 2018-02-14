@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -42,6 +45,29 @@ public class FriendController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        UserEssence user = (UserEssence) req.getSession().getAttribute("user");
+        UUID friendEssenceId = UUID.fromString(req.getParameter("user_essence_id"));
+        StateFriend stateFriend = Arrays.stream(StateFriend.values())
+                .filter(e -> e.name().equalsIgnoreCase(req.getParameter("state_friend")))
+                .findFirst().orElse(null);
+
+        UUID essence = null;
+        UUID friend = null;
+        boolean isFriendsToContains = false;
+
+        if (user.getRequestedFriendsTo().containsKey(friendEssenceId)) {
+            essence = user.getUserEssenceId();
+            friend = friendEssenceId;
+            isFriendsToContains = true;
+        } else if (user.getRequestedFriendsFrom().containsKey(friendEssenceId)) {
+            essence = friendEssenceId;
+            friend = user.getUserEssenceId();
+        }
+
+        if (Stream.of(essence, friend, stateFriend).allMatch(Objects::nonNull) && this.users.setFriendState(essence, friend, stateFriend)) {
+            if (isFriendsToContains) user.getRequestedFriendsTo().put(friendEssenceId, stateFriend);
+            else user.getRequestedFriendsFrom().put(friendEssenceId, stateFriend);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } else resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

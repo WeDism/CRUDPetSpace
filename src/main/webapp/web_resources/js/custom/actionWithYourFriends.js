@@ -3,7 +3,7 @@ var changeStateFriend = function () {
     var path = $(this).closest('tbody')[0];
     $.ajax({
         url: 'http://' + window.location.host + path.dataset.pathForStateFriend + '?' + $.param({
-            user_friend_id: tr.dataset.essenceId,
+            user_essence_id: tr.dataset.essenceId,
             state_friend: $(this).find(':selected')[0].value
         }),
         async: false,

@@ -91,13 +91,14 @@ INSERT INTO state_friend VALUES ('REQUESTED'), ('REJECTED'), ('APPROVED');
 INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status)
 VALUES
   (uuid('8ae453ef-4a97-46e9-803d-8502a446e6dc'), 'root', 'root', 'Andrey', 'Krasnov', 'root@root', 'ROOT', 'ACTIVE');
-INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status)
+INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status, about_of_self)
 VALUES
-  (uuid('14c88e00-a325-4ac7-8c04-a43bc72cdc4a'), 'user', 'user', 'Ivan', 'Makarenko', 'user@user', 'USER', 'ACTIVE');
-INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status)
+  (uuid('14c88e00-a325-4ac7-8c04-a43bc72cdc4a'), 'user', 'user', 'Ivan', 'Makarenko', 'user@user', 'USER', 'ACTIVE',
+   'I know some of us like really small text. (cough cough me) Because honestly text this big does looks odd in most layouts.');
+INSERT INTO user_essence (user_essence_id, nickname, password, name, surname, email, role, status, about_of_self)
 VALUES
-  (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'Shevtsov', 'USER@USER', 'ADMIN', 'ACTIVE');
+  (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'Shevtsov', 'USER@USER', 'ADMIN', 'ACTIVE',
+   ' Sometimes I''d see really cute layouts, with words so tiny that you wouldn''t get that from just clicking ''8'' in the size bar.');
 --TODO create trigger for root on update and delete
 
-SELECT *
-FROM friends;
+SELECT * FROM user_essence WHERE LOWER(name)=LOWER('petr')

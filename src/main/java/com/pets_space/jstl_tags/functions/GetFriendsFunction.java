@@ -12,7 +12,7 @@ import java.util.UUID;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class GetFriendsFunction {
-    private static Logger LOG = getLogger(GetFriendsFunction.class);
+    private static final Logger LOG = getLogger(GetFriendsFunction.class);
 
     public static Set<LiteEssence> getFriends(UserEssence userEssence) {
         Set<UUID> friendHashMap = new HashSet<>();

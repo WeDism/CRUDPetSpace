@@ -40,6 +40,6 @@ public class LiteEssence extends Essence {
 
     @Override
     public LiteEssence setAboutOfSelf(String text) {
-        return (LiteEssence) super.setAboutOfSelf(aboutOfSelf);
+        return (LiteEssence) super.setAboutOfSelf(text);
     }
 }

@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2 offset-10">
+                <div class="col-2 offset-9">
                     <input class="btn btn-lg btn-primary btn-block" type="submit" value="find">
                 </div>
             </div>
@@ -62,9 +62,8 @@
                             <a href="<c:url value="${homepage}"/>/essence?nickname=<c:out value="${friend.nickname}"/>">${friend.nickname}</a>
                         </td>
                         <td><input class="essence-friend-checkbox" type="checkbox"
-                            <ctg:map_contains essenceMap="${user.requestedFriendsFrom}"
-                                              userEssence="${friend.userEssenceId}"
-                                              text="checked=\"true\""/></td>
+                            <ctg:map_contains essenceMap="${user.requestedFriendsFrom}" userEssence="${friend.userEssenceId}" text="checked=\"true\""/>
+                        </td>
                         <td><c:out value="${friend.name}"/></td>
                         <td><c:out value="${friend.surname}"/></td>
                         <td><c:out value="${friend.patronymic}"/></td>

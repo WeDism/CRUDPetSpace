@@ -76,7 +76,7 @@ public abstract class Essence implements IEssence {
     }
 
     public Essence setAboutOfSelf(String text) {
-        this.aboutOfSelf = aboutOfSelf;
+        this.aboutOfSelf = text;
         return this;
     }
 

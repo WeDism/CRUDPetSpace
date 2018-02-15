@@ -21,15 +21,25 @@
             <td><c:out value="${liteEssence.name}"/></td>
             <td><c:out value="${liteEssence.surname}"/></td>
             <td><c:out value="${liteEssence.role}"/></td>
-            <td><select class="action-friends" name="action-friends" required>
-                <c:set var="stateFriendSet" value="<%=com.pets_space.models.essences.StateFriend.values()%>"/>
-                <c:forEach items="${stateFriendSet}" var="stateFriend" varStatus="status">
-                    <option value="<c:out value="${stateFriend}"/>"
-                            <c:if test="${user.requestedFriendsTo.get(liteEssence.userEssenceId).equals(stateFriend)
-                            or user.requestedFriendsFrom.get(liteEssence.userEssenceId).equals(stateFriend)}">selected</c:if>>
-                        <c:out value="${stateFriend}"/></option>
-                </c:forEach>
-            </select></td>
+            <td>
+                <c:choose>
+                    <c:when test="${user.requestedFriendsTo.containsKey(liteEssence.userEssenceId)}">
+                        <select class="action-friends" name="action-friends" required>
+                            <c:set var="stateFriendSet"
+                                   value="<%=com.pets_space.models.essences.StateFriend.values()%>"/>
+                            <c:forEach items="${stateFriendSet}" var="stateFriend" varStatus="status">
+                                <option value="<c:out value="${stateFriend}"/>"
+                                        <c:if test="${user.requestedFriendsTo.get(liteEssence.userEssenceId).equals(stateFriend)}">selected</c:if>>
+                                    <c:out value="${stateFriend}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </c:when>
+                    <c:otherwise>
+                        <label><c:out value="${user.requestedFriendsFrom.get(liteEssence.userEssenceId)}"/></label>
+                    </c:otherwise>
+                </c:choose>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

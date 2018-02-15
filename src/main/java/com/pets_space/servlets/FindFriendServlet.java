@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.pets_space.models.essences.Role.USER;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @WebServlet({"/admin/find_friend", "/user/find_friend"})
@@ -24,6 +23,7 @@ public class FindFriendServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getSession().removeAttribute("friends");
         req.getRequestDispatcher("/WEB-INF/views/findFriends.jsp").forward(req, resp);
     }
 
@@ -31,10 +31,6 @@ public class FindFriendServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<Set<UserEssence>> friends = this.users.findEssences(new EssenceForSearchFriend(req));
         req.getSession().setAttribute("friends", friends.get());
-        UserEssence user = (UserEssence) req.getSession().getAttribute("user");
-        if (user.getRole() == USER)
-            resp.sendRedirect(req.getContextPath() + "/user/find_friend");
-        else
-            resp.sendRedirect(req.getContextPath() + "/admin/find_friend");
+        req.getRequestDispatcher("/WEB-INF/views/findFriends.jsp").forward(req, resp);
     }
 }

@@ -64,7 +64,9 @@ public class FriendController extends HttpServlet {
             friend = user.getUserEssenceId();
         }
 
-        if (Stream.of(essence, friend, stateFriend).allMatch(Objects::nonNull) && this.users.setFriendState(essence, friend, stateFriend)) {
+        if (!user.getRequestedFriendsFrom().containsKey(essence)
+                && Stream.of(essence, friend, stateFriend).allMatch(Objects::nonNull)
+                && this.users.setFriendState(essence, friend, stateFriend)) {
             if (isFriendsToContains) user.getRequestedFriendsTo().put(friendEssenceId, stateFriend);
             else user.getRequestedFriendsFrom().put(friendEssenceId, stateFriend);
             resp.setStatus(HttpServletResponse.SC_OK);

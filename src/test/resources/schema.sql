@@ -54,7 +54,7 @@ CREATE TABLE pet (
   weight          REAL,
   birthday        TIMESTAMP,
   user_essence_id UUID         NOT NULL REFERENCES user_essence (user_essence_id),
-  genus_pet         VARCHAR(200) NOT NULL REFERENCES genus_pet (name)
+  genus         VARCHAR(200) NOT NULL REFERENCES genus_pet (name)
 );
 
 CREATE TABLE follow_pets (

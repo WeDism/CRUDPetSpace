@@ -171,7 +171,7 @@ public class UserEssenceStorage {
 
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("INSERT INTO user_essence VALUES (?,?,?,?,?,?,?,?,?,?,?)")) {
+                     connection.prepareStatement("INSERT INTO user_essence VALUES (?,?,?,?,?,?,?,?,?,?,?,?)")) {
 
             statement.setObject(1, userEssence.getUserEssenceId());
             statement.setString(2, userEssence.getNickname());
@@ -179,8 +179,8 @@ public class UserEssenceStorage {
             statement.setString(4, userEssence.getSurname());
             statement.setString(6, userEssence.getPassword());
             statement.setString(7, userEssence.getEmail());
-            statement.setString(10, userEssence.getRole().name());
-            statement.setString(11, userEssence.getStatusEssence().name());
+            statement.setString(11, userEssence.getRole().name());
+            statement.setString(12, userEssence.getStatusEssence().name());
 
             if (!Strings.isNullOrEmpty(userEssence.getPatronymic()))
                 statement.setString(5, userEssence.getPatronymic());
@@ -193,6 +193,10 @@ public class UserEssenceStorage {
             if (userEssence.getBirthday() != null)
                 statement.setTimestamp(9, Timestamp.valueOf(userEssence.getBirthday()));
             else statement.setNull(9, Types.TIMESTAMP);
+
+            if (Strings.isNullOrEmpty(userEssence.getAboutOfSelf()))
+                statement.setString(10, userEssence.getAboutOfSelf());
+            else statement.setNull(10, Types.CLOB);
 
             statement.execute();
         } catch (SQLException e) {

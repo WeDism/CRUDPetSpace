@@ -59,7 +59,7 @@ public class LiteEssenceStorage {
 
         Optional<LiteEssence> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role,status FROM user_essence WHERE user_essence_id=?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role,status,about_of_self FROM user_essence WHERE user_essence_id=?")) {
             statement.setObject(1, userEssenceId);
             result = this.getOptional(statement);
         } catch (SQLException e) {

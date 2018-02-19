@@ -28,6 +28,7 @@ CREATE TABLE user_essence (
   email           CHARACTER(254) NOT NULL,
   phone           CHARACTER(15),
   birthday        TIMESTAMP,
+  about_of_self   TEXT,
   role            VARCHAR(100)   NOT NULL REFERENCES role_essence (role),
   status          VARCHAR(100)   NOT NULL REFERENCES status_essence (status)
 );

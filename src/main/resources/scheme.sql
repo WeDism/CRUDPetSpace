@@ -100,5 +100,3 @@ VALUES
   (uuid('7c20a4d7-5f9b-416f-a910-b13a816ba90b'), 'admin', 'admin', 'Petr', 'Shevtsov', 'USER@USER', 'ADMIN', 'ACTIVE',
    ' Sometimes I''d see really cute layouts, with words so tiny that you wouldn''t get that from just clicking ''8'' in the size bar.');
 --TODO create trigger for root on update and delete
-
-SELECT * FROM user_essence WHERE LOWER(name)=LOWER('petr')

@@ -17,7 +17,7 @@ public class Pool {
         this.source = new ComboPooledDataSource();
         try {
             Properties properties = new Properties();
-            properties.load(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
+            properties.load(this.getClass().getClassLoader().getResourceAsStream("heroku_db.properties"));
 
             source.setJdbcUrl(properties.getProperty("url"));
             source.setUser(properties.getProperty("username"));
@@ -26,7 +26,7 @@ public class Pool {
             source.setInitialPoolSize(5);
             source.setMinPoolSize(5);
             source.setAcquireIncrement(5);
-            source.setMaxPoolSize(20);
+            source.setMaxPoolSize(15);
         } catch (Exception e) {
             LOG.error("Error", e);
         }

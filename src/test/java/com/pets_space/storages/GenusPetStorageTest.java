@@ -15,27 +15,27 @@ public class GenusPetStorageTest extends DbInit {
 
     @Test
     public void add() {
-        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
+        assertTrue(this.genus.add(getGenusPetCat()));
     }
 
     @Test
     public void addDoubleSpices() {
-        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
-        assertFalse(this.genusPetStorage.add(getGenusPetCat()));
+        assertTrue(this.genus.add(getGenusPetCat()));
+        assertFalse(this.genus.add(getGenusPetCat()));
     }
 
     @Test
     public void getAll() {
-        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
-        assertTrue(this.genusPetStorage.add(getGenusPetDog()));
-        assertTrue(this.genusPetStorage.add(getGenusPetEagle()));
+        assertTrue(this.genus.add(getGenusPetCat()));
+        assertTrue(this.genus.add(getGenusPetDog()));
+        assertTrue(this.genus.add(getGenusPetEagle()));
 
-        assertThat(3, is(this.genusPetStorage.getAll().size()));
+        assertThat(3, is(this.genus.getAll().size()));
     }
 
     @Test
     public void validateGenus() {
-        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
-        assertTrue(this.genusPetStorage.validateGenus(getGenusPetCat()));
+        assertTrue(this.genus.add(getGenusPetCat()));
+        assertTrue(this.genus.validateGenus(getGenusPetCat()));
     }
 }

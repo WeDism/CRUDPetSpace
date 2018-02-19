@@ -6,7 +6,7 @@
     <c:import url="fragments/bodyHeader.jsp"/>
     <div class="row">
         <div class="col-4 offset-4">
-            <h2>Add genusPet pet</h2>
+            <h2>Add genus pet</h2>
         </div>
     </div>
     <c:choose>

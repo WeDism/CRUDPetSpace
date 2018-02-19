@@ -30,7 +30,7 @@ public class FollowPetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
+        assertTrue(this.genus.add(getGenusPetCat()));
         assertTrue(this.petStorage.add(petPers));
         assertTrue(this.followPetStorage.add(userEssenceSteven.getUserEssenceId(), petPers.getPetId()));
     }
@@ -41,7 +41,7 @@ public class FollowPetStorageTest extends DbInit {
         Pet petPers = getPetPers(userEssenceRichard.getUserEssenceId());
 
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
-        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
+        assertTrue(this.genus.add(getGenusPetCat()));
         assertTrue(this.petStorage.add(petPers));
         this.followPetStorage.add(userEssenceRichard.getUserEssenceId(), petPers.getPetId());
     }
@@ -55,8 +55,8 @@ public class FollowPetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
-        assertTrue(this.genusPetStorage.add(getGenusPetDog()));
+        assertTrue(this.genus.add(getGenusPetCat()));
+        assertTrue(this.genus.add(getGenusPetDog()));
         assertTrue(this.petStorage.add(petPers));
         assertTrue(this.petStorage.add(petLayma));
         assertTrue(this.followPetStorage.add(userEssenceSteven.getUserEssenceId(), petPers.getPetId()));

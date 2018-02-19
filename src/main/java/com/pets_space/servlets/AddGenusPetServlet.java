@@ -15,7 +15,7 @@ import java.io.IOException;
 @WebServlet({"/admin/add_genus_pet", "/root/add_genus_pet"})
 public class AddGenusPetServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(AddGenusPetServlet.class);
-    private final GenusPetStorage genusPetStorage = GenusPetStorage.getInstance();
+    private final GenusPetStorage genus = GenusPetStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,7 +25,7 @@ public class AddGenusPetServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getSession().setAttribute("genusPetIsAdded", this.genusPetStorage.add(new GenusPet(req.getParameter("name"))));
+        req.getSession().setAttribute("genusPetIsAdded", this.genus.add(new GenusPet(req.getParameter("name"))));
         req.getRequestDispatcher("/WEB-INF/views/addGenusPet.jsp").forward(req, resp);
     }
 }

@@ -24,13 +24,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 @WebServlet({"/user/add_pet", "/admin/add_pet"})
 public class AddPetServlet extends HttpServlet {
     private static final Logger LOG = getLogger(AddPetServlet.class);
-    private final GenusPetStorage genusPetStorage = GenusPetStorage.getInstance();
+    private final GenusPetStorage genus = GenusPetStorage.getInstance();
     private final PetStorage pets = PetStorage.getInstance();
     private final UserEssenceStorage users = UserEssenceStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("genusPet", this.genusPetStorage.getAll());
+        req.setAttribute("genusPet", this.genus.getAll());
         req.getRequestDispatcher("/WEB-INF/views/addPet.jsp").forward(req, resp);
     }
 
@@ -42,7 +42,7 @@ public class AddPetServlet extends HttpServlet {
         UserEssence user = (UserEssence) req.getSession().getAttribute("user");
         String genusPetParameter = req.getParameter("genusPet");
         GenusPet genusPet = new GenusPet(genusPetParameter);
-        if (!(Strings.isNullOrEmpty(name) && Strings.isNullOrEmpty(genusPetParameter)) && this.genusPetStorage.validateGenus(genusPet)) {
+        if (!(Strings.isNullOrEmpty(name) && Strings.isNullOrEmpty(genusPetParameter)) && this.genus.validateGenus(genusPet)) {
             user.setPet(Pet.builder()
                     .petId(UUID.randomUUID())
                     .name(name)

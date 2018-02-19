@@ -21,10 +21,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class LoginServlet extends HttpServlet {
     private static final Logger LOG = getLogger(LoginServlet.class);
     private final UserEssenceStorage userEssenceStorage = UserEssenceStorage.getInstance();
+    private String contextPath;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        String contextPath = config.getServletContext().getContextPath();
+        contextPath = config.getServletContext().getContextPath();
         if (config.getServletContext().getVirtualServerName().contains("localhost")) {
             config.getServletContext().setAttribute("bootstrap.css", contextPath + "/web_resources/css/bootstrap.css");
             config.getServletContext().setAttribute("bootstrap-grid.css", contextPath + "/web_resources/css/bootstrap-grid.css");
@@ -45,6 +46,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if ("".equals(req.getParameter("logout"))) req.getSession().removeAttribute("user");
+        req.getSession().setAttribute("contextPath", contextPath);
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
     }
 

@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS role_essence CASCADE;
 DROP TABLE IF EXISTS user_essence CASCADE;
 DROP TABLE IF EXISTS state_friend CASCADE;
 DROP TABLE IF EXISTS friends CASCADE;
-DROP TABLE IF EXISTS species_pet CASCADE;
+DROP TABLE IF EXISTS genus_pet CASCADE;
 DROP TABLE IF EXISTS pet CASCADE;
 DROP TABLE IF EXISTS follow_pets CASCADE;
 DROP TABLE IF EXISTS date_of_message CASCADE;
@@ -44,7 +44,7 @@ CREATE TABLE friends (
   CONSTRAINT pk_friends_id PRIMARY KEY (user_essence_id, friend_id)
 );
 
-CREATE TABLE species_pet (
+CREATE TABLE genus_pet (
   name VARCHAR(200) PRIMARY KEY
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE pet (
   weight          REAL,
   birthday        TIMESTAMP,
   user_essence_id UUID         NOT NULL REFERENCES user_essence (user_essence_id),
-  species         VARCHAR(200) NOT NULL REFERENCES species_pet (name)
+  genus_pet         VARCHAR(200) NOT NULL REFERENCES genus_pet (name)
 );
 
 CREATE TABLE follow_pets (

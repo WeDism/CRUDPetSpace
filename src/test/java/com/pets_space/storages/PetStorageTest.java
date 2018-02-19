@@ -1,7 +1,7 @@
 package com.pets_space.storages;
 
 import com.pets_space.models.Pet;
-import com.pets_space.models.SpeciesPet;
+import com.pets_space.models.GenusPet;
 import com.pets_space.models.essences.UserEssence;
 import org.junit.Test;
 
@@ -23,18 +23,18 @@ public class PetStorageTest extends DbInit {
     }
 
     @Test
-    public void addWithOwnerAndSpeciesPet() {
+    public void addWithOwnerAndGenusPet() {
         UserEssence userEssenceSteven = getUserEssenceSteven();
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
         Pet pet = getPetTimon(userEssenceSteven.getUserEssenceId());
         assertTrue(this.petStorage.add(pet));
     }
 
     @Test
-    public void addWithSpeciesPet() {
+    public void addWithGenusPet() {
         UserEssence userEssenceSteven = getUserEssenceSteven();
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
         Pet pet = getPetTimon(userEssenceSteven.getUserEssenceId());
         assertFalse(this.petStorage.add(pet));
     }
@@ -51,7 +51,7 @@ public class PetStorageTest extends DbInit {
     public void delete() {
         UserEssence userEssenceSteven = getUserEssenceSteven();
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
         Pet pet = getPetTimon(userEssenceSteven.getUserEssenceId());
         assertTrue(this.petStorage.add(pet));
         assertTrue(this.petStorage.delete(pet));
@@ -64,8 +64,8 @@ public class PetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("dog")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("dog")));
 
         Pet petLayma = getPetLayma(userEssenceSteven.getUserEssenceId());
         Pet petPers = getPetPers(userEssenceSteven.getUserEssenceId());
@@ -82,8 +82,8 @@ public class PetStorageTest extends DbInit {
         UserEssence userEssenceSteven = getUserEssenceSteven();
 
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("dog")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("dog")));
 
         Pet petLayma = getPetLayma(userEssenceSteven.getUserEssenceId());
         Pet petPers = getPetPers(userEssenceSteven.getUserEssenceId());
@@ -101,7 +101,7 @@ public class PetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
         Pet pet = getPetTimon(userEssenceSteven.getUserEssenceId());
         assertTrue(this.petStorage.add(pet));
         assertTrue(this.petStorage.update(pet.setName("Lucky Timon")));
@@ -117,8 +117,8 @@ public class PetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("dog")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("dog")));
 
         Pet petLayma = getPetLayma(userEssenceSteven.getUserEssenceId());
         Pet petPers = getPetPers(userEssenceSteven.getUserEssenceId());
@@ -133,7 +133,7 @@ public class PetStorageTest extends DbInit {
     public void findById() {
         UserEssence userEssenceSteven = getUserEssenceSteven();
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
         Pet pet = getPetTimon(userEssenceSteven.getUserEssenceId());
         assertTrue(this.petStorage.add(pet));
         assertTrue(this.petStorage.findById(pet.getPetId()).isPresent());
@@ -146,8 +146,8 @@ public class PetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("dog")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("dog")));
 
         Pet petLayma = getPetLayma(userEssenceSteven.getUserEssenceId());
         Pet petPers = getPetPers(userEssenceSteven.getUserEssenceId());
@@ -165,8 +165,8 @@ public class PetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("cat")));
-        assertTrue(this.speciesPetStorage.add(new SpeciesPet("dog")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("cat")));
+        assertTrue(this.genusPetStorage.add(new GenusPet("dog")));
 
         Pet petLayma = getPetLayma(userEssenceSteven.getUserEssenceId());
         Pet petPers = getPetPers(userEssenceSteven.getUserEssenceId());

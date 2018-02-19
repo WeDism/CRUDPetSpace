@@ -1,7 +1,7 @@
 package com.pets_space.storages;
 
 import com.pets_space.models.Pet;
-import com.pets_space.models.SpeciesPet;
+import com.pets_space.models.GenusPet;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -31,7 +31,7 @@ public class PetStorage {
                 .petId(rs.getObject("pet_id", UUID.class))
                 .name(rs.getString("name"))
                 .owner(rs.getObject("user_essence_id", UUID.class))
-                .species(new SpeciesPet(rs.getString("species")))
+                .genusPet(new GenusPet(rs.getString("genus")))
                 .weight(rs.getDouble("weight"))
                 .birthday(rs.getTimestamp("birthday") != null
                         ? LocalDateTime.ofInstant(rs.getTimestamp("birthday").toInstant(), ZoneId.systemDefault()) : null)
@@ -42,7 +42,7 @@ public class PetStorage {
         statement.setObject(1, pet.getPetId());
         statement.setString(2, pet.getName());
         statement.setObject(5, pet.getOwner());
-        statement.setString(6, pet.getSpecies().getName());
+        statement.setString(6, pet.getGenusPet().getName());
 
         if (pet.getBirthday() != null) statement.setTimestamp(4, Timestamp.valueOf(pet.getBirthday()));
         else statement.setNull(4, Types.TIMESTAMP);
@@ -124,10 +124,10 @@ public class PetStorage {
 
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE pet SET name=?,weight=?,birthday=?,user_essence_id=?,species=?")) {
+                     "UPDATE pet SET name=?,weight=?,birthday=?,user_essence_id=?,genus=?")) {
             statement.setString(1, pet.getName());
             statement.setObject(4, pet.getOwner());
-            statement.setString(5, pet.getSpecies().getName());
+            statement.setString(5, pet.getGenusPet().getName());
 
             if (pet.getBirthday() != null) statement.setTimestamp(3, Timestamp.valueOf(pet.getBirthday()));
             else statement.setNull(3, Types.TIMESTAMP);

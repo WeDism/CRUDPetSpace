@@ -72,7 +72,7 @@
                         <td><c:out value="${friend.statusEssence}"/></td>
                         <td>
                             <c:forEach items="${friend.pets}" var="pet" varStatus="status">
-                                <c:out value="${pet.name}"/>&nbsp;(<c:out value="${pet.species.name}"/>)<br/>
+                                <c:out value="${pet.name}"/>&nbsp;(<c:out value="${pet.genusPet.name}"/>)<br/>
                             </c:forEach>
                         </td>
                     </tr>

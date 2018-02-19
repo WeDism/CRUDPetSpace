@@ -2,10 +2,10 @@ package com.pets_space.models;
 
 import java.util.Objects;
 
-public class SpeciesPet {
+public class GenusPet {
     private String name;
 
-    public SpeciesPet(String name) {
+    public GenusPet(String name) {
         this.name = name;
     }
 
@@ -16,9 +16,9 @@ public class SpeciesPet {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SpeciesPet)) return false;
-        SpeciesPet species = (SpeciesPet) o;
-        return Objects.equals(getName(), species.getName());
+        if (!(o instanceof GenusPet)) return false;
+        GenusPet genusPet = (GenusPet) o;
+        return Objects.equals(getName(), genusPet.getName());
     }
 
     @Override

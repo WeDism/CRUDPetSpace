@@ -60,7 +60,7 @@
                         <td>${user.statusEssence}</td>
                         <td>
                             <c:forEach items="${user.pets}" var="pet" varStatus="status">
-                                ${pet.name}&nbsp;(${pet.species.name})<br/>
+                                ${pet.name}&nbsp;(${pet.genusPet.name})<br/>
                             </c:forEach>
                         </td>
                     </tr>
@@ -71,7 +71,7 @@
     </div>
     <div class="row">
         <div class="col-3 offset-7">
-            <c:import url="fragments/addSpeciesPart.jsp"/>
+            <c:import url="fragments/addGenusPetPart.jsp"/>
 
         </div>
     </div>

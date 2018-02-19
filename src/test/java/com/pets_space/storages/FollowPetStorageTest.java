@@ -8,8 +8,8 @@ import java.util.Set;
 
 import static com.pets_space.storages.PetStorageTestData.getPetLayma;
 import static com.pets_space.storages.PetStorageTestData.getPetPers;
-import static com.pets_space.storages.SpeciesPetStorageTestData.getSpeciesPetCat;
-import static com.pets_space.storages.SpeciesPetStorageTestData.getSpeciesPetDog;
+import static com.pets_space.storages.GenusPetStorageTestData.getGenusPetCat;
+import static com.pets_space.storages.GenusPetStorageTestData.getGenusPetDog;
 import static com.pets_space.storages.UserEssenceStorageTestData.getUserEssenceRichard;
 import static com.pets_space.storages.UserEssenceStorageTestData.getUserEssenceSteven;
 import static org.hamcrest.CoreMatchers.is;
@@ -30,7 +30,7 @@ public class FollowPetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.speciesPetStorage.add(getSpeciesPetCat()));
+        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
         assertTrue(this.petStorage.add(petPers));
         assertTrue(this.followPetStorage.add(userEssenceSteven.getUserEssenceId(), petPers.getPetId()));
     }
@@ -41,7 +41,7 @@ public class FollowPetStorageTest extends DbInit {
         Pet petPers = getPetPers(userEssenceRichard.getUserEssenceId());
 
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
-        assertTrue(this.speciesPetStorage.add(getSpeciesPetCat()));
+        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
         assertTrue(this.petStorage.add(petPers));
         this.followPetStorage.add(userEssenceRichard.getUserEssenceId(), petPers.getPetId());
     }
@@ -55,8 +55,8 @@ public class FollowPetStorageTest extends DbInit {
 
         assertTrue(this.userEssenceStorage.add(userEssenceRichard));
         assertTrue(this.userEssenceStorage.add(userEssenceSteven));
-        assertTrue(this.speciesPetStorage.add(getSpeciesPetCat()));
-        assertTrue(this.speciesPetStorage.add(getSpeciesPetDog()));
+        assertTrue(this.genusPetStorage.add(getGenusPetCat()));
+        assertTrue(this.genusPetStorage.add(getGenusPetDog()));
         assertTrue(this.petStorage.add(petPers));
         assertTrue(this.petStorage.add(petLayma));
         assertTrue(this.followPetStorage.add(userEssenceSteven.getUserEssenceId(), petPers.getPetId()));

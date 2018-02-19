@@ -2,11 +2,11 @@ package com.pets_space.servlets;
 
 import com.google.common.base.Strings;
 import com.pets_space.models.Pet;
-import com.pets_space.models.SpeciesPet;
+import com.pets_space.models.GenusPet;
 import com.pets_space.models.essences.UserEssence;
 import com.pets_space.servlets.helpers.PathHelper;
 import com.pets_space.storages.PetStorage;
-import com.pets_space.storages.SpeciesPetStorage;
+import com.pets_space.storages.GenusPetStorage;
 import com.pets_space.storages.UserEssenceStorage;
 import org.slf4j.Logger;
 
@@ -24,13 +24,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 @WebServlet({"/user/add_pet", "/admin/add_pet"})
 public class AddPetServlet extends HttpServlet {
     private static final Logger LOG = getLogger(AddPetServlet.class);
-    private final SpeciesPetStorage species = SpeciesPetStorage.getInstance();
+    private final GenusPetStorage genusPetStorage = GenusPetStorage.getInstance();
     private final PetStorage pets = PetStorage.getInstance();
     private final UserEssenceStorage users = UserEssenceStorage.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("species", this.species.getAll());
+        req.setAttribute("genusPet", this.genusPetStorage.getAll());
         req.getRequestDispatcher("/WEB-INF/views/addPet.jsp").forward(req, resp);
     }
 
@@ -40,14 +40,14 @@ public class AddPetServlet extends HttpServlet {
         Double weight = Double.valueOf(req.getParameter("weight"));
         LocalDateTime birthday = LocalDateTime.parse(req.getParameter("birthday"));
         UserEssence user = (UserEssence) req.getSession().getAttribute("user");
-        String species = req.getParameter("species");
-        SpeciesPet speciesPet = new SpeciesPet(species);
-        if (!(Strings.isNullOrEmpty(name) && Strings.isNullOrEmpty(species)) && this.species.validateSpecies(speciesPet)) {
+        String genusPetParameter = req.getParameter("genusPet");
+        GenusPet genusPet = new GenusPet(genusPetParameter);
+        if (!(Strings.isNullOrEmpty(name) && Strings.isNullOrEmpty(genusPetParameter)) && this.genusPetStorage.validateGenus(genusPet)) {
             user.setPet(Pet.builder()
                     .petId(UUID.randomUUID())
                     .name(name)
                     .owner(user.getUserEssenceId())
-                    .species(speciesPet)
+                    .genusPet(genusPet)
                     .weight(weight)
                     .birthday(birthday)
                     .build());

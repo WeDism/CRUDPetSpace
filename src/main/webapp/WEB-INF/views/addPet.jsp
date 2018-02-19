@@ -20,10 +20,10 @@
             <div class="row">
                 <div class="col-4"><label>Birthday
                     <input type="datetime-local" name="birthday" required></label></div>
-                <div class="col-4 offset-4"><label>Species
-                    <select name="species" required>
-                        <c:forEach items="${species}" var="species" varStatus="status">
-                            <option><c:out value="${species.name}"/></option>
+                <div class="col-4 offset-4"><label>Genus Pet
+                    <select name="genusPet" required>
+                        <c:forEach items="${genusPet}" var="genusPet" varStatus="status">
+                            <option><c:out value="${genusPet.name}"/></option>
                         </c:forEach>
                     </select></label></div>
             </div>

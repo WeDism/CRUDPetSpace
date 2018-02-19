@@ -6,7 +6,7 @@
         <th>Name</th>
         <th>Weight</th>
         <th>Birthday</th>
-        <th>Species name</th>
+        <th>Genus pet name</th>
     </tr>
     </thead>
     <tbody>
@@ -15,7 +15,7 @@
             <td><c:out value="${pet.name}"/></td>
             <td><c:out value="${pet.weight}"/></td>
             <td><c:out value="${pet.birthday}"/></td>
-            <td><c:out value="${pet.species.name}"/></td>
+            <td><c:out value="${pet.genusPet.name}"/></td>
         </tr>
     </c:forEach>
     </tbody>

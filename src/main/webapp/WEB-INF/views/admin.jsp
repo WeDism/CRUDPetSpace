@@ -16,7 +16,7 @@
     </div>
     <div class="row">
         <div class="col-3">
-            <c:import url="fragments/addSpeciesPart.jsp"/>
+            <c:import url="fragments/addGenusPetPart.jsp"/>
         </div>
         <div class="col-2 offset-2">
             <a class="btn btn-lg btn-primary btn-block" href="<c:url value="/admin/add_pet"/>">Add pet</a>

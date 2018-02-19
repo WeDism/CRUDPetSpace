@@ -14,7 +14,7 @@ public class Pet {
     private Double weight;
     private LocalDateTime birthday;
     private UUID owner;
-    private SpeciesPet species;
+    private GenusPet genusPet;
 
     private Pet() {
     }
@@ -23,7 +23,7 @@ public class Pet {
         return new BuilderPet();
     }
 
-    public static class BuilderPet implements IPetId, IName, IOwner, ISpeciesPet, IBuild {
+    public static class BuilderPet implements IPetId, IName, IOwner, IGenusPet, IBuild {
         Pet pet = new Pet();
 
         @Override
@@ -39,20 +39,20 @@ public class Pet {
         }
 
         @Override
-        public ISpeciesPet owner(@NotNull UUID owner) {
+        public IGenusPet owner(@NotNull UUID owner) {
             this.pet.setOwner(owner);
             return this;
         }
 
         @Override
-        public IBuild species(SpeciesPet species) {
-            this.pet.setSpecies(species);
+        public IBuild genusPet(GenusPet genusPet) {
+            this.pet.setGenusPet(genusPet);
             return this;
         }
 
         @Override
         public Pet build() {
-            Set<?> setArguments = Set.of(this.pet.petId, this.pet.name, this.pet.owner, this.pet.species);
+            Set<?> setArguments = Set.of(this.pet.petId, this.pet.name, this.pet.owner, this.pet.genusPet);
             if (setArguments.stream().anyMatch(Objects::isNull)) {
                 throw new IllegalArgumentException(
                         String.format("The arguments(%s) are null", setArguments.stream().filter(Objects::isNull).collect(Collectors.toList())));
@@ -82,11 +82,11 @@ public class Pet {
     }
 
     public interface IOwner {
-        ISpeciesPet owner(@NotNull UUID owner);
+        IGenusPet owner(@NotNull UUID owner);
     }
 
-    public interface ISpeciesPet {
-        IBuild species(SpeciesPet species);
+    public interface IGenusPet {
+        IBuild genusPet(GenusPet genusPet);
     }
 
     public interface IBuild {
@@ -113,8 +113,8 @@ public class Pet {
         return this.owner;
     }
 
-    public SpeciesPet getSpecies() {
-        return this.species;
+    public GenusPet getGenusPet() {
+        return this.genusPet;
     }
 
     public LocalDateTime getBirthday() {
@@ -146,8 +146,8 @@ public class Pet {
         return this;
     }
 
-    public Pet setSpecies(SpeciesPet species) {
-        this.species = species;
+    public Pet setGenusPet(GenusPet genusPet) {
+        this.genusPet = genusPet;
         return this;
     }
 

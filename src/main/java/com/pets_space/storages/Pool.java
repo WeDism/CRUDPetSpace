@@ -16,13 +16,16 @@ public class Pool {
     private Pool() {
         this.source = new ComboPooledDataSource();
         try {
-            Properties properties = new Properties();
-            properties.load(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
+            String jdbcUrl = System.getenv("JDBC_DATABASE_URL");
+            if (jdbcUrl == null) {
+                Properties properties = new Properties();
+                properties.load(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
+                source.setJdbcUrl(properties.getProperty("url"));
+                source.setUser(properties.getProperty("username"));
+                source.setPassword(properties.getProperty("password"));
+                source.setDriverClass(properties.getProperty("driver"));
 
-            source.setJdbcUrl(properties.getProperty("url"));
-            source.setUser(properties.getProperty("username"));
-            source.setPassword(properties.getProperty("password"));
-            source.setDriverClass(properties.getProperty("driver"));
+            } else source.setJdbcUrl(jdbcUrl);
             source.setInitialPoolSize(5);
             source.setMinPoolSize(5);
             source.setAcquireIncrement(5);

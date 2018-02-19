@@ -21,13 +21,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class LoginServlet extends HttpServlet {
     private static final Logger LOG = getLogger(LoginServlet.class);
     private final UserEssenceStorage userEssenceStorage = UserEssenceStorage.getInstance();
-    private String virtualServerName;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         String contextPath = config.getServletContext().getContextPath();
-        virtualServerName = config.getServletContext().getVirtualServerName();
-        if (config.getServletContext().getVirtualServerName().contains("localhost")) {
+        if (!contextPath.equals("")) {
             config.getServletContext().setAttribute("bootstrap.css", contextPath + "/web_resources/css/bootstrap.css");
             config.getServletContext().setAttribute("bootstrap-grid.css", contextPath + "/web_resources/css/bootstrap-grid.css");
             config.getServletContext().setAttribute("bootstrap-reboot.css", contextPath + "/web_resources/css/bootstrap-reboot.css");
@@ -47,7 +45,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if ("".equals(req.getParameter("logout"))) req.getSession().removeAttribute("user");
-        req.getSession().setAttribute("virtualServerName", virtualServerName);
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
     }
 

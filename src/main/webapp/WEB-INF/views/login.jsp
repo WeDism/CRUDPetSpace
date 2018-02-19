@@ -4,9 +4,6 @@
     <link rel="stylesheet" href="<c:url value="/web_resources/css/custom/signin.css"/>">
 </head>
 <body>
-<div>
-    <c:out value="${virtualServerName}"/>
-</div>
 <div class="container">
     <form id="loginForm" class="form-signin" action="<c:url value="/login"/>" method="post">
         <h2 class="form-signin-heading"><a href="<c:url value="/login"/>">Pet network</a></h2>

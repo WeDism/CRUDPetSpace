@@ -5,7 +5,7 @@
 </head>
 <body>
 <div>
-    <c:out value="${contextPath}"/>
+    <c:out value="${virtualServerName}"/>
 </div>
 <div class="container">
     <form id="loginForm" class="form-signin" action="<c:url value="/login"/>" method="post">

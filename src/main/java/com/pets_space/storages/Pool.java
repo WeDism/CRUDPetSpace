@@ -17,7 +17,7 @@ public class Pool {
         this.source = new ComboPooledDataSource();
         try {
             Properties properties = new Properties();
-            properties.load(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
+            properties.load(this.getClass().getClassLoader().getResourceAsStream("local_db.properties"));
 
             source.setJdbcUrl(properties.getProperty("url"));
             source.setUser(properties.getProperty("username"));

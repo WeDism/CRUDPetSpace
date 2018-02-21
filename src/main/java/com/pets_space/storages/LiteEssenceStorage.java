@@ -1,13 +1,16 @@
 package com.pets_space.storages;
 
-import com.google.common.base.Strings;
+import com.pets_space.models.PreparedStatementIterator;
 import com.pets_space.models.essences.LiteEssence;
 import com.pets_space.models.essences.Role;
 import com.pets_space.models.essences.StatusEssence;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -74,14 +77,15 @@ public class LiteEssenceStorage {
 
         if (userEssenceIds.size() == 0) return Optional.empty();
 
+        PreparedStatementIterator iterator = new PreparedStatementIterator(userEssenceIds.toArray());
         Optional<Set<LiteEssence>> result = Optional.empty();
         try (Connection connection = Pool.getDataSource().getConnection();
              PreparedStatement statement =
-                     connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role,status,about_of_self FROM user_essence WHERE user_essence_id = ALL(?)",
+                     connection.prepareStatement("SELECT user_essence_id,nickname,name,surname,patronymic,role,status,about_of_self " +
+                                     "FROM user_essence WHERE user_essence_id IN(" + iterator.resultString() + ")",
                              ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-            Array varchar = statement.getConnection().createArrayOf("UUID", userEssenceIds.toArray());
+            for (Object elem : iterator) statement.setObject(iterator.getNumber(), elem);
 
-            statement.setArray(1, varchar);
             try (ResultSet rs = statement.executeQuery()) {
                 rs.last();
                 result = Optional.of(new HashSet<>(rs.getRow()));

@@ -6,8 +6,11 @@ import com.pets_space.models.essences.UserEssence;
 import org.junit.Test;
 
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-import static com.pets_space.storages.UserEssenceStorageTestData.*;
+import static com.pets_space.storages.UserEssenceStorageTestData.getUserEssenceAndrey;
+import static com.pets_space.storages.UserEssenceStorageTestData.getUserEssenceSteven;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -31,5 +34,31 @@ public class LiteEssenceStorageTest extends DbInit {
         assertTrue(userEssenceSteven.getRole().equals(liteEssence.getRole()));
         assertTrue(userEssenceSteven.getStatusEssence().equals(liteEssence.getStatusEssence()));
         assertTrue(userEssenceSteven.getSurname().equals(liteEssence.getSurname()));
+    }
+
+    @Test
+    public void findByIds() {
+        UserEssence userEssenceSteven = getUserEssenceSteven();
+        UserEssence userEssenceAndrey = getUserEssenceAndrey();
+        assertTrue(this.userEssenceStorage.add(userEssenceSteven));
+        assertTrue(this.userEssenceStorage.add(userEssenceAndrey));
+        assertTrue(this.userEssenceStorage.setFriendsRequest(userEssenceSteven.getUserEssenceId(), userEssenceAndrey.getUserEssenceId()));
+
+        userEssenceSteven=this.userEssenceStorage.findById(userEssenceSteven.getUserEssenceId()).orElse(null);
+        userEssenceAndrey=this.userEssenceStorage.findById(userEssenceAndrey.getUserEssenceId()).orElse(null);
+        assertNotNull(userEssenceSteven);
+        assertNotNull(userEssenceAndrey);
+
+        Set<LiteEssence> liteEssences = this.liteEssenceStorage.findByIds(userEssenceSteven.getRequestedFriendsFrom().keySet()).orElse(null);
+        assertNotNull(liteEssences);
+        Set<UUID> collectUuidSet = liteEssences.stream().map(Essence::getUserEssenceId).collect(Collectors.toSet());
+        assertTrue(collectUuidSet.contains(userEssenceAndrey.getUserEssenceId()));
+
+
+        liteEssences = this.liteEssenceStorage.findByIds(userEssenceAndrey.getRequestedFriendsTo().keySet()).orElse(null);
+        assertNotNull(liteEssences);
+        collectUuidSet = liteEssences.stream().map(Essence::getUserEssenceId).collect(Collectors.toSet());
+        assertTrue(collectUuidSet.contains(userEssenceSteven.getUserEssenceId()));
+
     }
 }

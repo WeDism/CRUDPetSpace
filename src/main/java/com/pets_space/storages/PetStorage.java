@@ -1,7 +1,7 @@
 package com.pets_space.storages;
 
-import com.pets_space.models.Pet;
 import com.pets_space.models.GenusPet;
+import com.pets_space.models.Pet;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 

@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import java.util.Set;
 
-import static com.pets_space.storages.PetStorageTestData.getPetLayma;
-import static com.pets_space.storages.PetStorageTestData.getPetPers;
 import static com.pets_space.storages.GenusPetStorageTestData.getGenusPetCat;
 import static com.pets_space.storages.GenusPetStorageTestData.getGenusPetDog;
+import static com.pets_space.storages.PetStorageTestData.getPetLayma;
+import static com.pets_space.storages.PetStorageTestData.getPetPers;
 import static com.pets_space.storages.UserEssenceStorageTestData.getUserEssenceRichard;
 import static com.pets_space.storages.UserEssenceStorageTestData.getUserEssenceSteven;
 import static org.hamcrest.CoreMatchers.is;

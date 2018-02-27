@@ -26,7 +26,7 @@
                     <c:when test="${user.requestedFriendsTo.containsKey(liteEssence.userEssenceId)}">
                         <select class="action-friends" name="action-friends" required>
                             <c:set var="stateFriendSet"
-                                   value="<%=com.pets_space.models.essences.StateFriend.values()%>"/>
+                                   value="<%=com.pet_space.models.essences.StateFriend.values()%>"/>
                             <c:forEach items="${stateFriendSet}" var="stateFriend" varStatus="status">
                                 <option value="<c:out value="${stateFriend}"/>"
                                         <c:if test="${user.requestedFriendsTo.get(liteEssence.userEssenceId).equals(stateFriend)}">selected</c:if>>

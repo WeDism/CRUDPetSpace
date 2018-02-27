@@ -1,4 +1,4 @@
--- CREATE DATABASE pets_space;
+-- CREATE DATABASE pet_space;
 
 DROP TABLE IF EXISTS status_essence CASCADE;
 DROP TABLE IF EXISTS role_essence CASCADE;

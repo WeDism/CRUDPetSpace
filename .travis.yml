@@ -5,24 +5,20 @@ jdk: oraclejdk9
 addons:
   apt:
     packages:
-      - oracle-java9-installer
+    - oracle-java9-installer
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: SGVNLFxaZI+n5+mF9//4hEk7M90WH6CFLzXzBoVyhfml/fZgfXCQCSVbbjT8p3rcLTW+vjl9aLmuVGwDbMhUmhsr+OlPliN5WOSMmG+i0hTWMozqDO3swIdJxfFUwRY2yd8t2cPunXwlU7UjkYVZSFBpO8mGNETxvXGZiRVQ5QlLpal+pvgxPH/ISwx0m7qYA+RatuK9XTdoYhsgWGs05P4CUfPSKcM/Jmh5xHSVzbWaMGkXKTjZdDLiQyDG+abyWbl/FDvG6a5q/vF6eAJyzXNSsEvyJK/6u7DWI7ZraNUE31g3NNZpyW0XSjCf3RY9081SkR1s23PKK3377/pUyj7bH0denZkpzb6e6Aj1ltd27ulVcTn+45j7AD3RpHket0zxDJvovS21SbEXWNLD6I+LgUaAuTHBId9OV8YOb5x2Cipx7ToNHJ01IdEmTKb6oekB9kBq7F/CoaklaGfWRJuZwIwdVZCLwSpdySe7AIpOvxJ5HAya+wynw+PHnEXeU/2i1WhLiUu9lv0guErTJxcMP4rZDZjuc5wc2goUcDEwUyjjkekKHfiOaHolulcVRtsXoRYIerYFjirMZvTs6jpi7T+1d7Nn4rPYjCf8kpERrJ9H6rTqzVxCTuA8YXNvvexa90aABXrmbZqQG3fhUnS1WJxsvqiC7r+vZmWE7/g=
-  file: $TRAVIS_BUILD_DIR/target/CRUDPetSpace-1.0.war
+    secure: MZ2Ks9SuHGSsxchcCajwLjsIAdLXwG2fofKcYKjnfbSkB+HUi/hSZdR1M8bwHI3XWZlOSqt/YOzm681LbLrPCmxcug/9Ue+cO+rrSxFqqPEnfR4+wjpPoHhCqly1o/rJyDOgfy3lGffM0+yHk6IsliHn6P2VpYud5opb/ZJq2IGUyKJUajmtENHk2GzrCNIyC68RFUXgmWFxv2a0G6Y/c9zvt0OihnBlVgitc38Pit9U33ktYsDnlNmUjefQPqpos2k54d2hX5lw6fmqqUiZSzBj5fE47Vl6fcz+bTEA9Qo4mJkmtuzEv4rg9K67EvOB8wOVAcxGEK979u+3wrZYAD0cABuG5KXhbNYzSqXHixIEtZoizkQQRh/mI2MJq0OVY8rOJiF+Kas9C81nsKNwEGs6lIwNrayEYMnkft5d760Hq1GSf0b0D7f+C8qHfDmH5F2x3EMUddNRTAXbFUQBRHspsBXVXmxKQrDmKVihv7uZbEWqmV+suH3Le6YzgHvXiMQ2QzBL6+6aoJPLW4CrCdgqoKCuOfA04wFsrXmL40eqZLw2F1woz/nZKS5NApyHUZh/oBIrIuBqcUvxiwImg9y3GeabZ937IH9gwvLTTp6hCO4mK6oLnxQPWCCYval3w6xF2gbpcUjduHkSPfbAZyJwyzq9E0LkahH/urAnbWs=
+  file: CRUDPetSpace-1.0.war
   on:
     repo: WeDism/CRUDPetSpace
-
-# после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
-# Здесь используется сторонни сервис https://codecov.io/
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
+- bash <(curl -s https://codecov.io/bash)
 notifications:
   email:
     recipients:
-      - wedinakawer58@gnail.com
-    on_success: never # default: change
-    on_failure: always # default: always
+    - wedinakawer58@gnail.com
+    on_success: never
+    on_failure: always

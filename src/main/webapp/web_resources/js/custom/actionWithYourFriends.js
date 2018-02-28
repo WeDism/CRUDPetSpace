@@ -1,8 +1,9 @@
 var changeStateFriend = function () {
     var tr = $(this).closest('tr')[0];
     var path = $(this).closest('tbody')[0];
+    var protocol = window.location.protocol
     $.ajax({
-        url: 'http://' + window.location.host + path.dataset.pathForStateFriend + '?' + $.param({
+        url: location.protocol + '//' + window.location.host + path.dataset.pathForStateFriend + '?' + $.param({
             user_essence_id: tr.dataset.essenceId,
             state_friend: $(this).find(':selected')[0].value
         }),

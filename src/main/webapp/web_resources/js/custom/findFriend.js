@@ -2,7 +2,7 @@ var doFriend = function (input, typeRequest, bool) {
     var tr = $(input).closest('tr')[0];
     var path = $(input).closest('tbody')[0];
     $.ajax({
-        url: 'http://' + window.location.host + path.dataset.pathForEssenceFriend + '?' + $.param({user_essence_id: tr.dataset.essenceId}),
+        url: location.protocol + '//' + window.location.host + path.dataset.pathForEssenceFriend + '?' + $.param({user_essence_id: tr.dataset.essenceId}),
         async: false,
         type: typeRequest,
         success: function () {

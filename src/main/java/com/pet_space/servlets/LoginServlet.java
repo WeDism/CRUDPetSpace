@@ -26,12 +26,12 @@ public class LoginServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         String contextPath = config.getServletContext().getContextPath();
         if (!contextPath.equals("")) {
-            config.getServletContext().setAttribute("bootstrap.css", contextPath + "/web_resources/css/bootstrap.css");
-            config.getServletContext().setAttribute("bootstrap-grid.css", contextPath + "/web_resources/css/bootstrap-grid.css");
-            config.getServletContext().setAttribute("bootstrap-reboot.css", contextPath + "/web_resources/css/bootstrap-reboot.css");
-            config.getServletContext().setAttribute("jquery", contextPath + "/web_resources/js/jquery-3.3.1.js");
-            config.getServletContext().setAttribute("popper", contextPath + "/web_resources/js/popper.js");
-            config.getServletContext().setAttribute("bootstrap.js", contextPath + "/web_resources/js/bootstrap.js");
+            config.getServletContext().setAttribute("bootstrap.css", "/web_resources/css/bootstrap.css");
+            config.getServletContext().setAttribute("bootstrap-grid.css", "/web_resources/css/bootstrap-grid.css");
+            config.getServletContext().setAttribute("bootstrap-reboot.css", "/web_resources/css/bootstrap-reboot.css");
+            config.getServletContext().setAttribute("jquery", "/web_resources/js/jquery-3.3.1.js");
+            config.getServletContext().setAttribute("popper", "/web_resources/js/popper.js");
+            config.getServletContext().setAttribute("bootstrap.js", "/web_resources/js/bootstrap.js");
         } else {
             config.getServletContext().setAttribute("bootstrap.css", contextPath + "/web_resources/css/bootstrap.min.css");
             config.getServletContext().setAttribute("bootstrap-grid.css", contextPath + "/web_resources/css/bootstrap-grid.min.css");
